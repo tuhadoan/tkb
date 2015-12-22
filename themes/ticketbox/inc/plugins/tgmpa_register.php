@@ -3,6 +3,16 @@ if (! function_exists ( 'theme_register_plugin' )) :
 	function theme_register_plugin() {
 		$plugins = array (
 				array (
+					'name' => 'DawmThemes Core',
+					'slug' => 'dawnthemes-core',
+					'source' => get_template_directory_uri () . '/includes/plugins/dawnthemes-core.zip',
+					'required' =>true,
+					'version' => '1.0.0',
+					'force_activation' => false,
+					'force_deactivation' => false,
+					'external_url' => ''
+				),
+				array (
 					'name' => 'Revolution Slider',
 					'slug' => 'revslider',
 					'source' => get_template_directory_uri () . '/inc/plugins/revslider.zip',

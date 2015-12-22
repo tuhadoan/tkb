@@ -265,55 +265,55 @@ function dt_container_class(){
 function dt_social($use = array(),$hover = true,$soild_bg=false,$outlined=false){
 	$socials = apply_filters('dt_social',array(
 		'facebook'=>array(
-				'label'=>esc_html_e('Facebook','ticketbox'),
+				'label'=>esc_html_e('Facebook','dawnthemes'),
 				'url'=>dt_get_theme_option('facebook-url')
 		),
 		'twitter'=>array(
-				'label'=>esc_html_e('Twitter','ticketbox'),
+				'label'=>esc_html_e('Twitter','dawnthemes'),
 				'url'=>dt_get_theme_option('twitter-url')
 		),
 		'google-plus'=>array(
-				'label'=>esc_html_e('Google+','ticketbox'),
+				'label'=>esc_html_e('Google+','dawnthemes'),
 				'url'=>dt_get_theme_option('google-plus-url')
 		),
 		'pinterest'=>array(
-				'label'=>esc_html_e('Pinterest','ticketbox'),
+				'label'=>esc_html_e('Pinterest','dawnthemes'),
 				'url'=>dt_get_theme_option('pinterest-url')
 		),
 		'linkedin'=>array(
-				'label'=>esc_html_e('LinkedIn','ticketbox'),
+				'label'=>esc_html_e('LinkedIn','dawnthemes'),
 				'url'=>dt_get_theme_option('linkedin-url')
 		),
 		'rss'=>array(
-				'label'=>esc_html_e('RSS','ticketbox'),
+				'label'=>esc_html_e('RSS','dawnthemes'),
 				'url'=>dt_get_theme_option('rss-url')
 		),
 		'instagram'=>array(
-				'label'=>esc_html_e('Instagram','ticketbox'),
+				'label'=>esc_html_e('Instagram','dawnthemes'),
 				'url'=>dt_get_theme_option('instagram-url')
 		),
 		'github'=>array(
-				'label'=>esc_html_e('GitHub','ticketbox'),
+				'label'=>esc_html_e('GitHub','dawnthemes'),
 				'url'=>dt_get_theme_option('github-url')
 		),
 		'behance'=>array(
-				'label'=>esc_html_e('Behance','ticketbox'),
+				'label'=>esc_html_e('Behance','dawnthemes'),
 				'url'=>dt_get_theme_option('behance-url')
 		),
 		'stack-exchange'=>array(
-				'label'=>esc_html_e('StackExchange','ticketbox'),
+				'label'=>esc_html_e('StackExchange','dawnthemes'),
 				'url'=>dt_get_theme_option('stack-exchange-url')
 		),
 		'tumblr'=>array(
-				'label'=>esc_html_e('Tumblr','ticketbox'),
+				'label'=>esc_html_e('Tumblr','dawnthemes'),
 				'url'=>dt_get_theme_option('tumblr-url')
 		),
 		'soundcloud'=>array(
-				'label'=>esc_html_e('SoundCloud','ticketbox'),
+				'label'=>esc_html_e('SoundCloud','dawnthemes'),
 				'url'=>dt_get_theme_option('soundcloud-url')
 		),
 		'dribbble'=>array(
-				'label'=>esc_html_e('Dribbble','ticketbox'),
+				'label'=>esc_html_e('Dribbble','dawnthemes'),
 				'url'=>dt_get_theme_option('dribbble-url')
 		),
 				
@@ -361,27 +361,27 @@ function dt_share($title='',$facebook = true,$twitter = true,$google = true,$pin
 		<div class="share-icons">
 			<?php if($facebook):?>
 			<span class="facebook-share">
-				<a href="<?php echo esc_url('http://www.facebook.com/sharer.php?u='.get_the_permalink()) ?>" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=220,width=600');return false;" title="<?php echo esc_html_e('Facebook','ticketbox')?>"><i class="fa fa-facebook<?php echo ($outlined ? ' facebook-outlined':'')?>"></i></a>
+				<a href="<?php echo esc_url('http://www.facebook.com/sharer.php?u='.get_the_permalink()) ?>" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=220,width=600');return false;" title="<?php echo esc_html_e('Facebook','dawnthemes')?>"><i class="fa fa-facebook<?php echo ($outlined ? ' facebook-outlined':'')?>"></i></a>
 			</span>
 			<?php endif;?>
 			<?php if($twitter):?>
 			<span  class="twitter-share">
-				<a href="<?php echo esc_url('https://twitter.com/share?url='.get_the_permalink()) ?>" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=260,width=600');return false;" title="<?php echo esc_html_e('Twitter','ticketbox')?>"><i class="fa fa-twitter<?php echo ($outlined ? ' twitter-outlined':'')?>"></i></a>
+				<a href="<?php echo esc_url('https://twitter.com/share?url='.get_the_permalink()) ?>" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=260,width=600');return false;" title="<?php echo esc_html_e('Twitter','dawnthemes')?>"><i class="fa fa-twitter<?php echo ($outlined ? ' twitter-outlined':'')?>"></i></a>
 			</span>
 			<?php endif;?>
 			<?php if($google):?>
 			<span class="google-plus-share">
-				<a href="<?php echo esc_url('https://plus.google.com/share?url='.get_the_permalink()) ?>" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;" title="<?php echo esc_html_e('Google +','ticketbox')?>"><i class="fa fa-google-plus<?php echo ($outlined ? ' google-plus-outlined':'')?>"></i></a>
+				<a href="<?php echo esc_url('https://plus.google.com/share?url='.get_the_permalink()) ?>" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;" title="<?php echo esc_html_e('Google +','dawnthemes')?>"><i class="fa fa-google-plus<?php echo ($outlined ? ' google-plus-outlined':'')?>"></i></a>
 			</span>
 			<?php endif;?>
 			<?php if($pinterest):?>
 			<span class="pinterest-share">
-				<a href="<?php echo esc_url('http://pinterest.com/pin/create/button/?url='.get_the_permalink().'&media='.(function_exists('the_post_thumbnail') ? wp_get_attachment_url(get_post_thumbnail_id()):'').'&description='.get_the_title()) ?>" title="<?php echo esc_html_e('pinterest','ticketbox')?>"><i class="fa fa-pinterest<?php echo ($outlined ? ' pinterest-outlined':'')?>"></i></a>
+				<a href="<?php echo esc_url('http://pinterest.com/pin/create/button/?url='.get_the_permalink().'&media='.(function_exists('the_post_thumbnail') ? wp_get_attachment_url(get_post_thumbnail_id()):'').'&description='.get_the_title()) ?>" title="<?php echo esc_html_e('pinterest','dawnthemes')?>"><i class="fa fa-pinterest<?php echo ($outlined ? ' pinterest-outlined':'')?>"></i></a>
 			</span>
 			<?php endif;?>
 			<?php if($linkedin):?>
 			<span class="linkedin-share">
-				<a href="<?php echo esc_url('http://www.linkedin.com/shareArticle?mini=true&url='.get_the_permalink().'&title='.get_the_title())?>" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;" title="<?php echo esc_html_e('Linked In','ticketbox')?>"><i class="fa fa-linkedin<?php echo ($outlined ? ' linkedin-outlined':'')?>"></i></a>
+				<a href="<?php echo esc_url('http://www.linkedin.com/shareArticle?mini=true&url='.get_the_permalink().'&title='.get_the_title())?>" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;" title="<?php echo esc_html_e('Linked In','dawnthemes')?>"><i class="fa fa-linkedin<?php echo ($outlined ? ' linkedin-outlined':'')?>"></i></a>
 			</span>
 			<?php endif;?>
 		</div>
@@ -547,7 +547,7 @@ function dt_related_post(){
 <?php if($related->have_posts()): ?>
 <div class="related-post">
 	<div class="related-post-title">
-		<h3><span><?php echo esc_html_e("You may also like",'ticketbox')?></span></h3>
+		<h3><span><?php echo esc_html_e("You may also like",'dawnthemes')?></span></h3>
 	</div>
 	<div class="row related-post-items">
 		<?php while ($related->have_posts()): $related->the_post();global $post;?>
@@ -572,7 +572,7 @@ function dt_related_post(){
 				<?php dt_post_meta(false,true,false,true,true,', ')?>
 				</div>
 				<div class="readmore-link">
-					<a href="<?php the_permalink()?>"><?php esc_html_e("Read More", 'ticketbox');?></a>
+					<a href="<?php the_permalink()?>"><?php esc_html_e("Read More", 'dawnthemes');?></a>
 				</div>
 			</div>
 		<?php endwhile;?>
@@ -601,20 +601,20 @@ function dt_list_comments($comment, $args, $depth) {
 							</span>
 							<?php if ($comment->user_id === $post->post_author): ?>
 							<span class="ispostauthor">
-								<?php esc_html_e('Author', 'ticketbox'); ?>
+								<?php esc_html_e('Author', 'dawnthemes'); ?>
 							</span>
 							<?php endif; ?>
 							<span class="comment-meta">
 								<time datetime="<?php echo get_comment_time('c'); ?>">
-									<?php echo sprintf(esc_html_e('%1$s at %2$s', 'ticketbox') , get_comment_date() , get_comment_time()); ?>
+									<?php echo sprintf(esc_html_e('%1$s at %2$s', 'dawnthemes') , get_comment_date() , get_comment_time()); ?>
 								</time>
 								<span class="comment-edit">
-									<?php edit_comment_link('' . esc_html_e('Edit', 'ticketbox')); ?>
+									<?php edit_comment_link('' . esc_html_e('Edit', 'dawnthemes')); ?>
 								</span>
 							</span>
 						</div>
 						<?php if ('0' == $comment->comment_approved): ?>
-							<p class="comment-pending"><?php esc_html_e('Your comment is awaiting moderation.', 'ticketbox'); ?></p>
+							<p class="comment-pending"><?php esc_html_e('Your comment is awaiting moderation.', 'dawnthemes'); ?></p>
 						<?php endif; ?>
 					</header>
 					<section class="comment-content">
@@ -622,7 +622,7 @@ function dt_list_comments($comment, $args, $depth) {
 					</section>
 					<div class="comment-reply-link-wrap">
 						<?php comment_reply_link(array_merge($args, array(
-							'reply_text' => (esc_html_e('Reply', 'ticketbox') . '') ,
+							'reply_text' => (esc_html_e('Reply', 'dawnthemes') . '') ,
 							'depth' => $depth,
 							'max_depth' => $args['max_depth']
 						))); ?>
@@ -652,19 +652,19 @@ function dt_comment_form( $args = array(), $post_id = null ) {
 			$req = get_option( 'require_name_email' );
 			$aria_req = ( $req ? " aria-required='true'" : '' );
 			$fields =  array(
-				'author' => '<div class="row"><p class="comment-form-author col-sm-4"><label for="author">' . esc_html_e( 'Name', 'ticketbox' ) . '</label> ' . ( $req ? '<span class="required">*</span>' : '' ) . '<input id="author" name="author" type="text" class="form-control" value="' . esc_attr( $commenter['comment_author'] ) . '" size="30"' . $aria_req . ' /></p>',
-				'email' => '<p class="comment-form-email col-sm-4"><label for="email">' . esc_html_e( 'Email', 'ticketbox' ) . '</label> ' . ( $req ? '<span class="required">*</span>' : '' ) . '<input id="email" name="email" type="text" class="form-control" value="' . esc_attr(  $commenter['comment_author_email'] ) . '" size="30"' . $aria_req . ' /></p>',
-				'url' => '<p class="comment-form-url col-sm-4"><label for="url">' . esc_html_e( 'Website', 'ticketbox' ) . '</label><input id="url" name="url" type="text" class="form-control" value="' . esc_attr( $commenter['comment_author_url'] ) . '" size="30" /></p></div>'
+				'author' => '<div class="row"><p class="comment-form-author col-sm-4"><label for="author">' . esc_html_e( 'Name', 'dawnthemes' ) . '</label> ' . ( $req ? '<span class="required">*</span>' : '' ) . '<input id="author" name="author" type="text" class="form-control" value="' . esc_attr( $commenter['comment_author'] ) . '" size="30"' . $aria_req . ' /></p>',
+				'email' => '<p class="comment-form-email col-sm-4"><label for="email">' . esc_html_e( 'Email', 'dawnthemes' ) . '</label> ' . ( $req ? '<span class="required">*</span>' : '' ) . '<input id="email" name="email" type="text" class="form-control" value="' . esc_attr(  $commenter['comment_author_email'] ) . '" size="30"' . $aria_req . ' /></p>',
+				'url' => '<p class="comment-form-url col-sm-4"><label for="url">' . esc_html_e( 'Website', 'dawnthemes' ) . '</label><input id="url" name="url" type="text" class="form-control" value="' . esc_attr( $commenter['comment_author_url'] ) . '" size="30" /></p></div>'
 			);
 			$comments_args = array(
 					'fields'               => apply_filters( 'comment_form_default_fields', $fields ),
-					'logged_in_as'		   => '<p class="logged-in-as">' . sprintf( esc_html_e( 'Logged in as <a href="%1$s">%2$s</a>. <a href="%3$s" title="Log out of this account">Log out?</a>', 'ticketbox' ), admin_url( 'profile.php' ), $user_identity, wp_logout_url( apply_filters( 'the_permalink', get_permalink( ) ) ) ) . '</p>',
-					'title_reply'          => sprintf('<span>%s</span>',esc_html_e( 'Leave a reply', 'ticketbox' )),
-					'title_reply_to'       => sprintf('<span>%s</span>',esc_html_e( 'Leave a reply to %s', 'ticketbox' )),
-					'cancel_reply_link'    => esc_html_e( 'Click here to cancel the reply', 'ticketbox' ),
-					'label_submit'         => esc_html_e( 'Submit', 'ticketbox' ),
-					'comment_field'		   => '<p class="comment-form-comment"><label for="comment">' . esc_html_e( 'Comment', 'ticketbox' ) . '</label><textarea class="form-control" id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>',
-					'must_log_in'		   => '<p class="must-log-in">' .  sprintf( esc_html_e( 'You must be <a href="%s">logged in</a> to post a comment.', 'ticketbox' ), wp_login_url( apply_filters( 'the_permalink', get_permalink( ) ) ) ) . '</p>',
+					'logged_in_as'		   => '<p class="logged-in-as">' . sprintf( esc_html_e( 'Logged in as <a href="%1$s">%2$s</a>. <a href="%3$s" title="Log out of this account">Log out?</a>', 'dawnthemes' ), admin_url( 'profile.php' ), $user_identity, wp_logout_url( apply_filters( 'the_permalink', get_permalink( ) ) ) ) . '</p>',
+					'title_reply'          => sprintf('<span>%s</span>',esc_html_e( 'Leave a reply', 'dawnthemes' )),
+					'title_reply_to'       => sprintf('<span>%s</span>',esc_html_e( 'Leave a reply to %s', 'dawnthemes' )),
+					'cancel_reply_link'    => esc_html_e( 'Click here to cancel the reply', 'dawnthemes' ),
+					'label_submit'         => esc_html_e( 'Submit', 'dawnthemes' ),
+					'comment_field'		   => '<p class="comment-form-comment"><label for="comment">' . esc_html_e( 'Comment', 'dawnthemes' ) . '</label><textarea class="form-control" id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>',
+					'must_log_in'		   => '<p class="must-log-in">' .  sprintf( esc_html_e( 'You must be <a href="%s">logged in</a> to post a comment.', 'dawnthemes' ), wp_login_url( apply_filters( 'the_permalink', get_permalink( ) ) ) ) . '</p>',
 			);
 
 		comment_form($comments_args); 
@@ -678,7 +678,7 @@ function dt_comment_form( $args = array(), $post_id = null ) {
 function dt_nth_word($text, $nth = 1, $echo = true,$is_typed = false,$typed_color = ''){
 	$text = strip_shortcodes($text);
 	$text = wp_strip_all_tags( $text );
-	if ( 'characters' == _x( 'words', 'word count: words or characters?','ticketbox') && preg_match( '/^utf\-?8$/i', get_option( 'blog_charset' ) ) ) {
+	if ( 'characters' == _x( 'words', 'word count: words or characters?','dawnthemes') && preg_match( '/^utf\-?8$/i', get_option( 'blog_charset' ) ) ) {
 		$text = trim( preg_replace( "/[\n\r\t ]+/", ' ', $text ), ' ' );
 		preg_match_all( '/./u', $text, $words_array );
 		$sep = '';
@@ -733,23 +733,23 @@ function dt_post_nav() {
 	?>
 	<nav class="post-navigation" role="navigation">
 		<div class="row">
-			<?php $prev_link = get_previous_post_link( '%link', _x( '%title', 'Previous post link', 'ticketbox' ) ); ?>
+			<?php $prev_link = get_previous_post_link( '%link', _x( '%title', 'Previous post link', 'dawnthemes' ) ); ?>
 			<div class="col-sm-6">
 			<?php if($prev_link):?>
 				<div class="prev-post">
 					<span>
-					<?php echo esc_html_e('Previous article','ticketbox')?>
+					<?php echo esc_html_e('Previous article','dawnthemes')?>
 					</span>
 					<?php echo dt_echo($prev_link)?>
 				</div>
 			<?php endif;?>
 			</div>
-			<?php $next_link = get_next_post_link( '%link', _x( '%title', 'Next post link', 'ticketbox' ) ); ?>
+			<?php $next_link = get_next_post_link( '%link', _x( '%title', 'Next post link', 'dawnthemes' ) ); ?>
 			<div class="col-sm-6">
 			<?php if(!empty($next_link)):?>
 				<div class="next-post">
 					<span>
-						<?php echo esc_html_e('Next article','ticketbox')?>
+						<?php echo esc_html_e('Next article','dawnthemes')?>
 					</span>
 					<?php echo dt_echo($next_link)?>
 				</div>
@@ -787,15 +787,15 @@ function dt_page_title($echo = true){
 	}
 	elseif (is_day())
 	{
-		$title = esc_html_e('Archive for date:','ticketbox')." ".get_the_time('F jS, Y');
+		$title = esc_html_e('Archive for date:','dawnthemes')." ".get_the_time('F jS, Y');
 	}
 	elseif (is_month())
 	{
-		$title = esc_html_e('Archive for month:','ticketbox')." ".get_the_time('F, Y');
+		$title = esc_html_e('Archive for month:','dawnthemes')." ".get_the_time('F, Y');
 	}
 	elseif (is_year())
 	{
-		$title = esc_html_e('Archive for year:','ticketbox')." ".get_the_time('Y');
+		$title = esc_html_e('Archive for year:','dawnthemes')." ".get_the_time('Y');
 	}
 	elseif (is_search())
 	{
@@ -804,22 +804,22 @@ function dt_page_title($echo = true){
 		{
 			if($wp_query->found_posts > 1)
 			{
-				$title =  $wp_query->found_posts ." ". esc_html_e('search results for','ticketbox').' <span class="search-query">'.esc_attr( get_search_query() ).'</span>';
+				$title =  $wp_query->found_posts ." ". esc_html_e('search results for','dawnthemes').' <span class="search-query">'.esc_attr( get_search_query() ).'</span>';
 			}
 			else
 			{
-				$title =  $wp_query->found_posts ." ". esc_html_e('search result for','ticketbox').' <span class="search-query">'.esc_attr( get_search_query() ).'</span>';
+				$title =  $wp_query->found_posts ." ". esc_html_e('search result for','dawnthemes').' <span class="search-query">'.esc_attr( get_search_query() ).'</span>';
 			}
 		}
 		else
 		{
 			if(!empty($_GET['s']))
 			{
-				$title = esc_html_e('Search results for','ticketbox').' <span class="search-query">'.esc_attr( get_search_query() ).'</span>';
+				$title = esc_html_e('Search results for','dawnthemes').' <span class="search-query">'.esc_attr( get_search_query() ).'</span>';
 			}
 			else
 			{
-				$title = esc_html_e('To search the site please enter a valid term','ticketbox');
+				$title = esc_html_e('To search the site please enter a valid term','dawnthemes');
 			}
 		}
 	
@@ -847,7 +847,7 @@ function dt_page_title($echo = true){
 	    $title = get_the_title(get_option('page_for_posts'));
 	    
 	} elseif ( is_404() ) {
-	    $title = esc_html_e('404 - Page not found','ticketbox');
+	    $title = esc_html_e('404 - Page not found','dawnthemes');
 	}
 	else {
 		$title = get_the_title();
@@ -855,7 +855,7 @@ function dt_page_title($echo = true){
 	
 	if (isset($_GET['paged']) && !empty($_GET['paged']))
 	{
-		$title .= " (".esc_html_e('Page','ticketbox')." ".$_GET['paged'].")";
+		$title .= " (".esc_html_e('Page','dawnthemes')." ".$_GET['paged'].")";
 	}
 
 	if( defined('WOOCOMMERCE_VERSION') && is_woocommerce() && ( is_product() || is_shop() ) && !is_search() ) {
@@ -867,7 +867,7 @@ function dt_page_title($echo = true){
 		$title = woocommerce_page_title( false );
 	}
 	if(is_post_type_archive( 'portfolio' )){
-		$title = esc_html(dt_get_theme_option('portfolio-archive-title',esc_html_e('My Portfolio','ticketbox')));
+		$title = esc_html(dt_get_theme_option('portfolio-archive-title',esc_html_e('My Portfolio','dawnthemes')));
 	}
 	if($echo)
 		echo dt_echo($title);
@@ -1186,14 +1186,14 @@ function dt_post_meta($show_date=true,$show_comment = true,$show_category= true,
 	if($show_author){
 		$author_html .= '<span class="meta-author">';
 		if($icon)
-			$author_html .= '<i class="fa fa-pencil-square-o"></i>';//esc_html_e('By', 'ticketbox');
+			$author_html .= '<i class="fa fa-pencil-square-o"></i>';//esc_html_e('By', 'dawnthemes');
 		$author = sprintf(
 			'<a href="%1$s" title="%2$s" rel="author">%3$s</a>',
 			esc_url( get_author_posts_url( get_the_author_meta( 'ID' ), get_the_author_meta( 'nicename' ) ) ),
-			esc_attr( sprintf( esc_html_e( 'Posts by %s', 'ticketbox'), get_the_author() ) ),
+			esc_attr( sprintf( esc_html_e( 'Posts by %s', 'dawnthemes'), get_the_author() ) ),
 			get_the_author()
 		);
-		$author_html .= sprintf(esc_html_e('By %1$s', 'ticketbox'),$author);
+		$author_html .= sprintf(esc_html_e('By %1$s', 'dawnthemes'),$author);
 		$author_html .= '</span>';
 		$html[] = $author_html;
 	}
@@ -1215,7 +1215,7 @@ function dt_post_meta($show_date=true,$show_comment = true,$show_category= true,
 		$categories_html .= '<span class="meta-category">';
 		if($icon)
 			$categories_html .= '<i class="fa fa-folder-open-o"></i>';
-		$categories_html .= sprintf(esc_html_e('In %1$s','ticketbox'),get_the_category_list(', '));
+		$categories_html .= sprintf(esc_html_e('In %1$s','dawnthemes'),get_the_category_list(', '));
 		$categories_html .= '</span>';
 		$html[] = $categories_html;
 	}
@@ -1227,14 +1227,14 @@ function dt_post_meta($show_date=true,$show_comment = true,$show_category= true,
 		$comment_title = '';
 		$comment_number = get_comments_number();
 		if (get_comments_number() == 0) {
-			$comment_title = sprintf(esc_html_e('Leave a comment on: &ldquo;%s&rdquo;', 'ticketbox') , get_the_title());
-			$comment_number = '0 '.esc_html_e('Comment', 'ticketbox');
+			$comment_title = sprintf(esc_html_e('Leave a comment on: &ldquo;%s&rdquo;', 'dawnthemes') , get_the_title());
+			$comment_number = '0 '.esc_html_e('Comment', 'dawnthemes');
 		} else if (get_comments_number() == 1) {
-			$comment_title = sprintf(esc_html_e('View a comment on: &ldquo;%s&rdquo;', 'ticketbox') , get_the_title());
-			$comment_number = '1 ' . esc_html_e('Comment', 'ticketbox');
+			$comment_title = sprintf(esc_html_e('View a comment on: &ldquo;%s&rdquo;', 'dawnthemes') , get_the_title());
+			$comment_number = '1 ' . esc_html_e('Comment', 'dawnthemes');
 		} else {
-			$comment_title = sprintf(esc_html_e('View all comments on: &ldquo;%s&rdquo;', 'ticketbox') , get_the_title());
-			$comment_number =  get_comments_number() . ' ' . esc_html_e('Comments', 'ticketbox');
+			$comment_title = sprintf(esc_html_e('View all comments on: &ldquo;%s&rdquo;', 'dawnthemes') , get_the_title());
+			$comment_number =  get_comments_number() . ' ' . esc_html_e('Comments', 'dawnthemes');
 		}
 			
 		$comments_html.= '<span class="meta-comment">';
@@ -1311,7 +1311,7 @@ function dt_paginate_links_short($args = array(), $query = null){
 		'next_text' => '<i class="fa fa-angle-right"></i>',
 		'add_fragment' => '',
 		'add_args'=>array(),
-		'before' => '<div class="paginate"><div class="paginate_links"><span class="pagination-meta">'.sprintf(esc_html_e("%d/%d", 'ticketbox'), $paged, $max_num_pages).'</span>',
+		'before' => '<div class="paginate"><div class="paginate_links"><span class="pagination-meta">'.sprintf(esc_html_e("%d/%d", 'dawnthemes'), $paged, $max_num_pages).'</span>',
 		'after' => '</div></div>',
 		'echo' => true,
 	);
@@ -1532,13 +1532,13 @@ function dt_morphsearchform(){
 	?>
 	<div class="morphsearch" id="morphsearch">
 		<form class="morphsearch-form" method="get"  action="<?php echo esc_url( home_url( '/' ) ) ?>" role="form">
-			<input type="search" name="s" placeholder="<?php esc_html__('Search...','ticketbox')?>" class="morphsearch-input">
+			<input type="search" name="s" placeholder="<?php esc_html__('Search...','dawnthemes')?>" class="morphsearch-input">
 			<button type="submit" class="morphsearch-submit"></button>
 		</form>
 		<div class="morphsearch-content<?php echo (defined( 'WOOCOMMERCE_VERSION' )  ? ' has-3colum':'') ?>">
 			<?php if ( defined( 'WOOCOMMERCE_VERSION' ) ) { ?>
 			<div class="dummy-column">
-				<h2><?php esc_html_e('Product','ticketbox') ?></h2>
+				<h2><?php esc_html_e('Product','dawnthemes') ?></h2>
 				<?php 
 				$query_args = array(
 		    		'posts_per_page' => 6,
@@ -1573,7 +1573,7 @@ function dt_morphsearchform(){
 			</div>
 			<?php }?>
 			<div class="dummy-column">
-				<h2><?php esc_html_e('Popular','ticketbox') ?></h2>
+				<h2><?php esc_html_e('Popular','dawnthemes') ?></h2>
 				<?php 
 				$re = new WP_Query(array(
 					'posts_per_page'      => 6,
@@ -1591,7 +1591,7 @@ function dt_morphsearchform(){
 					<?php the_post_thumbnail('dt-thumbnail-square')?>
 					<div>
 						<h3><?php the_title()?></h3>
-						<?php echo '<span>'.sprintf(esc_html_e('%s Comment','ticketbox'),get_comments_number()).'</span>'; ?>
+						<?php echo '<span>'.sprintf(esc_html_e('%s Comment','dawnthemes'),get_comments_number()).'</span>'; ?>
 					</div>
 				</a>
 				<?php endwhile; ?>
@@ -1601,7 +1601,7 @@ function dt_morphsearchform(){
 				?>
 			</div>
 			<div class="dummy-column">
-				<h2><?php esc_html_e('Recent','ticketbox') ?></h2>
+				<h2><?php esc_html_e('Recent','dawnthemes') ?></h2>
 				<?php 
 				$rc = new WP_Query(array(
 					'posts_per_page'      => 6,
@@ -1638,7 +1638,7 @@ function dt_morphsearchform(){
 
 function dt_font_awesome_options($none_select = true){
 	$font_awesome =  array(
-			esc_html_e('None','ticketbox') =>'none',
+			esc_html_e('None','dawnthemes') =>'none',
 			'fa fa-adjust' => '\f042',
 			'fa fa-adn' => '\f170',
 			'fa fa-align-center' => '\f037',
