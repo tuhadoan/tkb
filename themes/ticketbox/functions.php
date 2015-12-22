@@ -25,7 +25,10 @@ if(!defined('DT_ASSETS_URI'))
 /*
  * Require core
  */
-require get_template_directory() . '/inc/init.php';
+do_action('dt_theme_includes');
+if(!defined('DAWN_CORE_DIR')){
+	include_once (get_template_directory().'/inc/functions.php');
+}
 
 // Plugins Required - recommended
 $plugin_path = get_template_directory() . '/inc/plugins';
@@ -151,9 +154,6 @@ add_action( 'template_redirect', 'dawn_content_width' );
  *
  */
 function dawn_widgets_init() {
-	require get_template_directory() . '/inc/widgets.php';
-	register_widget( 'Dawn_Ephemera_Widget' );
-
 	register_sidebar( array(
 		'name'          => __( 'Main Sidebar', 'ticketbox' ),
 		'id'            => 'main-sidebar',
