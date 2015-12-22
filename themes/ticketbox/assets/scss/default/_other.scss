@@ -1,0 +1,42 @@
+/**
+ * 13.0 Other
+ * -----------------------------------------------------------------------------
+ */
+ 
+ .box-shadow {
+    box-shadow: 0 -3px 0 rgba(0,0,0,.25)inset;
+}
+
+// define 5 Columns layout
+.col-xs-15,
+.col-sm-15,
+.col-md-15,
+.col-lg-15{
+	position: relative;
+	min-height: 1px;
+	padding-right: 10px;
+	padding-left: 10px;
+}
+
+.col-xs-15{
+	width: 20%;
+	float: left;
+}
+@media(min-width: 768px){
+	.col-sm-15{
+		width:20%;
+		float: left;
+	}
+}
+@media(min-width: 992px){
+	.col-md-15{
+		width: 20%;
+		float: left;
+	}
+}
+@media(min-width: 1200px){
+	.col-lg-15{
+		width: 20%;
+		float: left;
+	}
+}
