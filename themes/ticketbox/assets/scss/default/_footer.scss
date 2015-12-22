@@ -1,0 +1,254 @@
+/**
+ * 8.0 Footer
+ * -----------------------------------------------------------------------------
+ */
+#footer{
+	position: relative;
+	background: #3c5d7a;
+
+		.back-to-top{
+			width: 48px;
+			height: 48px;
+			line-height: 50px;
+			text-align: center;
+			background: #f08818;
+			position: absolute;
+			left: 50%;
+			margin-left: -24px;
+			top: -24px;
+			color: #fff;
+			-webkit-border-radius: 50%;
+			-moz-border-radius: 50%;
+			border-radius: 50%;
+			font-size: 16px;
+			-webkit-transition: all 0.3s ease-in-out;
+			-moz-transition: all 0.3s ease-in-out;
+			-o-transition: all 0.3s ease-in-out;
+			transition: all 0.3s ease-in-out;
+
+			&:before{
+				content: '';
+			    position: absolute;
+			    top: -8px;
+			    left: -8px;
+			    width: 64px;
+			    height: 32px;
+			    background: rgba(0,0,0,0.2);
+			    background: -moz-linear-gradient(top, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 100%);
+			    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0.2)), color-stop(100%,rgba(0,0,0,0)));
+			    background: -webkit-linear-gradient(top, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0) 100%);
+			    background: -o-linear-gradient(top, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0) 100%);
+			    background: -ms-linear-gradient(top, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0) 100%);
+			    background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0) 100%);
+			    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#33000000', endColorstr='#00000000',GradientType=0 );
+			    -webkit-border-top-left-radius: 64px;
+			    -webkit-border-top-right-radius: 64px;
+			    -moz-border-radius-topleft: 64px;
+			    -moz-border-radius-topright: 64px;
+			    border-top-left-radius: 64px;
+			    border-top-right-radius: 64px;
+			    z-index: -1;
+			}
+			&:after{
+				content: '';
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 48px;
+				height: 24px;
+				-webkit-border-top-left-radius: 48px;
+				-webkit-border-top-right-radius: 48px;
+				-moz-border-radius-topleft: 48px;
+				-moz-border-radius-topright: 48px;
+				border-top-left-radius: 48px;
+				border-top-right-radius: 48px;
+				background: rgba(255,255,255,0.15);
+				-webkit-transition: all 0.3s ease-in-out;
+				-moz-transition: all 0.3s ease-in-out;
+				-o-transition: all 0.3s ease-in-out;
+				transition: all 0.3s ease-in-out;
+			}
+
+			&:hover{
+				line-height: 43px !important;
+				&:after{
+					width: 48px;
+					height: 48px;
+					-webkit-border-radius: 50%;
+					-moz-border-radius: 50%;
+					border-radius: 50%;
+				}
+			}
+		}
+
+		#supplementary {
+		padding: 0;
+		}
+
+		.site-footer,
+		.site-info,
+		.site-info a {
+			color: rgba(255, 255, 255, 0.7);
+		}
+
+		.site-footer {
+			background-color: #000;
+			font-size: 12px;
+			position: relative;
+			z-index: 3;
+		}
+
+
+		.footer-sidebar {
+			padding-top: 54px;
+			> .container{
+				> .row{
+					margin-right: -10px;
+		   	 		margin-left: -10px;
+				}
+			}
+
+			.widget{
+				margin-bottom: 54px;
+				.widget-title{
+				    color: #ffffff;
+				    font-size: 1.077em;
+				    font-weight: 900;
+				    margin: 0 0 16px;
+				    text-transform: uppercase;
+				}
+				*{
+					color:#b1c6d8;
+				}
+				a{
+					text-decoration: none;
+					&:hover{
+						color: #ffffff;
+						text-decoration: none;
+					}
+				}
+				
+				ul{
+					padding: 0;
+					li{
+						margin-bottom: 7px;
+					}
+				}
+
+				&.widget_nav_menu{ /* Custom menu widget */
+					ul{
+						li{
+							border-bottom: 1px solid rgba(255,255,255,0.1);
+						    padding-bottom: 9px;
+						    margin-bottom: 9px;
+						    a{
+						    	position: relative;
+						    	padding-left: 15px;
+						    	font-size: 1em;
+						    	&:before{
+						    		position: absolute;
+						    		content: "\f105";
+						    		font: 14px/1 FontAwesome;
+						    		top: 0;
+						    		left: 0;
+						    		font-size: 1em;
+						    	}
+						    	&:hover{
+						    		color: #ffffff;
+						    		&:before{
+						    			color: #ffffff;
+						    		}
+						    	}
+						    }
+
+						    &:last-child{
+						    	border: none;
+						    }
+							ul{
+								display: none;
+							}
+						}
+					}
+				}
+			}
+			input:not([type]), input[type="color"], input[type="email"], input[type="number"], input[type="password"], input[type="tel"], input[type="url"], input[type="text"], input[type="search"], textarea, .form-control, select
+			{
+				margin-bottom: 12px;
+			}
+			button, input[type="submit"]{
+				padding: 7px 20px;
+			    background: #6ac229;
+			    color: #fff;
+			    font-size: 1em;
+			    font-weight: bold;
+			    border: 0;
+			    -webkit-border-radius: 2px;
+			    -moz-border-radius: 2px;
+			    border-radius: 2px;
+			}
+
+			.footer-newsletter{
+				position: relative;
+				overflow: hidden;
+				margin-bottom: 12px;
+				.fa{
+					position: absolute;
+					left: 10px;
+					color: #d8d8d8;
+					top: 50%;
+					@include translate(0,-50%);
+				}
+				input.wpcf7-email{
+					padding: 10px 15px 10px 30px;
+					margin: 0;
+				}
+			}
+		}
+
+
+		.site-info {
+			padding: 15px 0px;
+			text-align: center;
+		}
+
+		#supplementary + .site-info {
+			border-top: 1px solid rgba(255, 255, 255, 0.2);
+		}
+
+		.site-info a:hover {
+			color: #41a62a;
+			text-decoration: none;
+		}
+
+		.footer-navigation{
+			padding: 15px 0px;
+		}
+		.footer-navigation ul.menu{
+			list-style: none;
+			margin:0;
+			text-align:right;
+		}
+		.footer-navigation ul li{
+			position: relative;
+		    display: inline-block;
+		    padding: 0 13px 0 13px;
+		    line-height: 1;
+		}
+		.footer-navigation ul:after{
+			display:table;
+			content:"";
+			clear:both;
+		}
+		.footer-navigation ul li a{
+			color:#999999;
+		}
+		.footer-navigation ul li a:hover{
+			color:#ffffff;
+			text-decoration:none;
+		}
+
+		.copyright-section{
+			background: #223d54;
+    		padding: 20px 0;
+		}
+}
