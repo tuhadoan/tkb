@@ -2,7 +2,7 @@
 /**
  * dawn functions and definitions
  *
- * @package dawn
+ * @package tickbox
  */
 
 $themeInfo            =  wp_get_theme();
@@ -39,8 +39,6 @@ if ( file_exists( $plugin_path . '/tgmpa_register.php' ) ) {
  */
 function dawn_admin_js_and_css(){
 	$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
-	
-	
 	
 }
 add_action('admin_enqueue_scripts', 'dawn_admin_js_and_css');
@@ -203,8 +201,10 @@ function dawn_font_url() {
  *
  */
 function dawn_scripts() {
+	$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+	
 	// Add Lato font, used in the main stylesheet.
-	wp_enqueue_style( 'dawn-lato', dawn_font_url(), array(), null );
+	wp_enqueue_style( 'ticketbox-lato', dawn_font_url(), array(), null );
 
 	// Add Awesome font, used in the main stylesheet.
 	wp_enqueue_style( 'bootstrap', get_template_directory_uri() . '/assets/css/bootstrap.min.css', array(), '3.3.5' );
@@ -213,12 +213,12 @@ function dawn_scripts() {
 	wp_enqueue_style( 'animate', get_template_directory_uri() . '/assets/css/animate.css', array());
 
 	// Load our main stylesheet.
-	wp_enqueue_style( 'dawn-style', get_stylesheet_uri() );
-	wp_enqueue_style( 'dawn-theme-style', get_template_directory_uri() . '/assets/css/styles.css' );
+	wp_enqueue_style( 'ticketbox-style', get_stylesheet_uri() );
+	wp_enqueue_style( 'ticketbox-theme-style', get_template_directory_uri() . '/assets/css/styles.css' );
 
 	// Load the Internet Explorer specific stylesheet.
-	wp_enqueue_style( 'dawn-ie', get_template_directory_uri() . '/assets/css/ie.css', array( 'dawn-style' ), '20131205' );
-	wp_style_add_data( 'dawn-ie', 'conditional', 'lt IE 9' );
+	wp_enqueue_style( 'ticketbox-ie', get_template_directory_uri() . '/assets/css/ie.css', array( 'dawn-style' ), '20131205' );
+	wp_style_add_data( 'ticketbox-ie', 'conditional', 'lt IE 9' );
 
 	wp_enqueue_script( 'jquery'); // use default jQuery packed inside WordPress. If newer version is needed, this should be dequeue and enqueue again
 	
@@ -227,7 +227,7 @@ function dawn_scripts() {
 	}
 
 	if ( is_singular() && wp_attachment_is_image() ) {
-		wp_enqueue_script( 'dawn-keyboard-image-navigation', get_template_directory_uri() . '/assets/js/keyboard-image-navigation.js', array( 'jquery' ), '20130402' );
+		wp_enqueue_script( 'ticketbox-keyboard-image-navigation', get_template_directory_uri() . '/assets/js/keyboard-image-navigation.js', array( 'jquery' ), '20130402' );
 	}
 
 	if ( is_active_sidebar( 'sidebar-3' ) ) {
@@ -238,7 +238,7 @@ function dawn_scripts() {
 	
 	wp_enqueue_script( 'hover-intent', get_template_directory_uri() . '/assets/js/jquery.hoverIntent.js', array(), '', true );
 
-	wp_enqueue_script( 'dawn-script', get_template_directory_uri() . '/assets/js/functions.js', array( 'jquery' ), '20150315', true );
+	wp_enqueue_script( 'ticketbox-script', get_template_directory_uri() . '/assets/js/functions.js', array( 'jquery' ), '20150315', true );
 }
 
 add_action( 'wp_enqueue_scripts', 'dawn_scripts' );
@@ -248,7 +248,7 @@ add_action( 'wp_enqueue_scripts', 'dawn_scripts' );
  *
  */
 function dawn_admin_fonts() {
-	wp_enqueue_style( 'dawn-lato', dawn_font_url(), array(), null );
+	wp_enqueue_style( 'ticketbox-lato', dawn_font_url(), array(), null );
 }
 add_action( 'admin_print_scripts-appearance_page_custom-header', 'dawn_admin_fonts' );
 
