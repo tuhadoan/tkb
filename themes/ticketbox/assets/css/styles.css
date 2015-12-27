@@ -3594,7 +3594,6 @@ body.sticky-menu #dt-slides {
 #footer .back-to-top {
   width: 48px;
   height: 48px;
-  line-height: 50px;
   text-align: center;
   background: #f08818;
   position: absolute;
@@ -3605,9 +3604,12 @@ body.sticky-menu #dt-slides {
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   border-radius: 50%;
+}
+#footer .back-to-top .fa {
   font-size: 16px;
+  line-height: 48px;
+  color: #fff;
   -webkit-transition: all 0.3s ease-in-out;
-  -moz-transition: all 0.3s ease-in-out;
   -o-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
@@ -3632,7 +3634,6 @@ body.sticky-menu #dt-slides {
   -moz-border-radius-topright: 64px;
   border-top-left-radius: 64px;
   border-top-right-radius: 64px;
-  z-index: -1;
 }
 #footer .back-to-top:after {
   content: '';
@@ -3649,11 +3650,10 @@ body.sticky-menu #dt-slides {
   border-top-right-radius: 48px;
   background: rgba(255, 255, 255, 0.15);
   -webkit-transition: all 0.3s ease-in-out;
-  -moz-transition: all 0.3s ease-in-out;
   -o-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
-#footer .back-to-top:hover {
+#footer .back-to-top:hover .fa {
   line-height: 43px !important;
 }
 #footer .back-to-top:hover:after {

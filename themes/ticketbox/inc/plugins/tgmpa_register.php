@@ -5,9 +5,19 @@ if (! function_exists ( 'theme_register_plugin' )) :
 				array (
 					'name' => 'DawmThemes Core',
 					'slug' => 'dawnthemes-core',
-					'source' => get_template_directory_uri () . '/includes/plugins/dawnthemes-core.zip',
+					'source' => get_template_directory_uri () . '/inc/plugins/dawnthemes-core.zip',
 					'required' =>true,
 					'version' => '1.0.0',
+					'force_activation' => false,
+					'force_deactivation' => false,
+					'external_url' => ''
+				),
+				array (
+					'name' => 'Visual Composer',
+					'slug' => 'js_composer',
+					'source' => get_template_directory_uri () . '/inc/plugins/js_composer.zip',
+					'required' =>true,
+					'version' => '4.8.0.1',
 					'force_activation' => false,
 					'force_deactivation' => false,
 					'external_url' => ''

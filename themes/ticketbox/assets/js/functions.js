@@ -164,6 +164,7 @@
 			ini: function(){
 				dawn.sidebar_offcanvas();
 				dawn.menu();
+				dawn.scrollToTOp();
 			},
 			
 			//Set up "Sidebar Offcanvas"
@@ -254,7 +255,18 @@
 					    }
 					}
 				});
-			}
+			},
+			
+			scrollToTOp: function(){
+				var linkToTop = $('#scroll-to-top');
+				
+				linkToTop.on('click', function(){
+					$('html, body').animate({
+						scrollTop: 0
+					}, 400);
+					return false;
+				});
+			},
 	};
 	
 	$(document).ready(function(){

@@ -1,7 +1,7 @@
 <?php
 
-if (! class_exists ( 'DTInit' )) :
-	class DTInit {
+if (! class_exists ( 'DT_Init' )) :
+	class DT_Init {
 		public $version = '1.0.0';
 		
 		public function __construct() {
@@ -17,16 +17,6 @@ if (! class_exists ( 'DTInit' )) :
 		}
 		
 		private function _define_constants() {
-
-			if(!defined('DAWN_CORE_VERSION'))
-				define('DAWN_CORE_VERSION', '1.1.5');
-
-
-			if(!defined('DAWN_CORE_URL'))
-				define('DAWN_CORE_URL', get_template_directory_uri());
-
-			if(!defined('DAWN_CORE_DIR'))
-				define('DAWN_CORE_DIR', get_template_directory());
 
 			if(!defined('DTINC_VERSION'))
 				define( 'DTINC_VERSION', $this->version );
@@ -47,11 +37,16 @@ if (! class_exists ( 'DTInit' )) :
 			
 			// Register
 			include_once (DTINC_DIR . '/register.php');
+			
 			// Hook
 			include_once (DTINC_DIR . '/hook.php');
 			
+			//Visual Composer
+			include_once (DTINC_DIR . '/visual-composer.php');
+			
 			// Widget
 			include_once (DTINC_DIR . '/widget.php');
+			
 			// Breadcrumb
 			include_once (DTINC_DIR . '/breadcrumb.php');
 			
@@ -85,5 +80,5 @@ if (! class_exists ( 'DTInit' )) :
 		}
 		
 	}
-	new DTInit ();
+	new DT_Init ();
 endif;
