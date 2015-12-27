@@ -12,6 +12,7 @@
  */
 (function(t){"use strict";var e=t.GreenSockGlobals||t,i=function(t){var i,s=t.split("."),r=e;for(i=0;s.length>i;i++)r[s[i]]=r=r[s[i]]||{};return r},s=i("com.greensock.utils"),r=function(t){var e=t.nodeType,i="";if(1===e||9===e||11===e){if("string"==typeof t.textContent)return t.textContent;for(t=t.firstChild;t;t=t.nextSibling)i+=r(t)}else if(3===e||4===e)return t.nodeValue;return i},n=document,a=n.defaultView?n.defaultView.getComputedStyle:function(){},o=/([A-Z])/g,h=function(t,e,i,s){var r;return(i=i||a(t,null))?(t=i.getPropertyValue(e.replace(o,"-$1").toLowerCase()),r=t||i.length?t:i[e]):t.currentStyle&&(i=t.currentStyle,r=i[e]),s?r:parseInt(r,10)||0},l=function(t){return t.length&&t[0]&&(t[0].nodeType&&t[0].style&&!t.nodeType||t[0].length&&t[0][0])?!0:!1},_=function(t){var e,i,s,r=[],n=t.length;for(e=0;n>e;e++)if(i=t[e],l(i))for(s=i.length,s=0;i.length>s;s++)r.push(i[s]);else r.push(i);return r},u=")eefec303079ad17405c",c=/(?:<br>|<br\/>|<br \/>)/gi,p=n.all&&!n.addEventListener,f="<div style='position:relative;display:inline-block;"+(p?"*display:inline;*zoom:1;'":"'"),m=function(t){t=t||"";var e=-1!==t.indexOf("++"),i=1;return e&&(t=t.split("++").join("")),function(){return f+(t?" class='"+t+(e?i++:"")+"'>":">")}},d=s.SplitText=e.SplitText=function(t,e){if("string"==typeof t&&(t=d.selector(t)),!t)throw"cannot split a null element.";this.elements=l(t)?_(t):[t],this.chars=[],this.words=[],this.lines=[],this._originals=[],this.vars=e||{},this.split(e)},g=function(t,e,i,s,o){c.test(t.innerHTML)&&(t.innerHTML=t.innerHTML.replace(c,u));var l,_,p,f,d,g,v,y,T,w,b,x,P,S=r(t),C=e.type||e.split||"chars,words,lines",k=-1!==C.indexOf("lines")?[]:null,R=-1!==C.indexOf("words"),A=-1!==C.indexOf("chars"),D="absolute"===e.position||e.absolute===!0,O=D?"&#173; ":" ",M=-999,L=a(t),I=h(t,"paddingLeft",L),E=h(t,"borderBottomWidth",L)+h(t,"borderTopWidth",L),N=h(t,"borderLeftWidth",L)+h(t,"borderRightWidth",L),F=h(t,"paddingTop",L)+h(t,"paddingBottom",L),U=h(t,"paddingLeft",L)+h(t,"paddingRight",L),X=h(t,"textAlign",L,!0),z=t.clientHeight,B=t.clientWidth,j=S.length,Y="</div>",q=m(e.wordsClass),V=m(e.charsClass),Q=-1!==(e.linesClass||"").indexOf("++"),G=e.linesClass;for(Q&&(G=G.split("++").join("")),p=q(),f=0;j>f;f++)g=S.charAt(f),")"===g&&S.substr(f,20)===u?(p+=Y+"<BR/>",f!==j-1&&(p+=" "+q()),f+=19):" "===g&&" "!==S.charAt(f-1)&&f!==j-1?(p+=Y,f!==j-1&&(p+=O+q())):p+=A&&" "!==g?V()+g+"</div>":g;for(t.innerHTML=p+Y,d=t.getElementsByTagName("*"),j=d.length,v=[],f=0;j>f;f++)v[f]=d[f];if(k||D)for(f=0;j>f;f++)y=v[f],_=y.parentNode===t,(_||D||A&&!R)&&(T=y.offsetTop,k&&_&&T!==M&&"BR"!==y.nodeName&&(l=[],k.push(l),M=T),D&&(y._x=y.offsetLeft,y._y=T,y._w=y.offsetWidth,y._h=y.offsetHeight),k&&(R!==_&&A||(l.push(y),y._x-=I),_&&f&&(v[f-1]._wordEnd=!0)));for(f=0;j>f;f++)y=v[f],_=y.parentNode===t,"BR"!==y.nodeName?(D&&(b=y.style,R||_||(y._x+=y.parentNode._x,y._y+=y.parentNode._y),b.left=y._x+"px",b.top=y._y+"px",b.position="absolute",b.display="block",b.width=y._w+1+"px",b.height=y._h+"px"),R?_?s.push(y):A&&i.push(y):_?(t.removeChild(y),v.splice(f--,1),j--):!_&&A&&(T=!k&&!D&&y.nextSibling,t.appendChild(y),T||t.appendChild(n.createTextNode(" ")),i.push(y))):k||D?(t.removeChild(y),v.splice(f--,1),j--):R||t.appendChild(y);if(k){for(D&&(w=n.createElement("div"),t.appendChild(w),x=w.offsetWidth+"px",T=w.offsetParent===t?0:t.offsetLeft,t.removeChild(w)),b=t.style.cssText,t.style.cssText="display:none;";t.firstChild;)t.removeChild(t.firstChild);for(P=!D||!R&&!A,f=0;k.length>f;f++){for(l=k[f],w=n.createElement("div"),w.style.cssText="display:block;text-align:"+X+";position:"+(D?"absolute;":"relative;"),G&&(w.className=G+(Q?f+1:"")),o.push(w),j=l.length,d=0;j>d;d++)"BR"!==l[d].nodeName&&(y=l[d],w.appendChild(y),P&&(y._wordEnd||R)&&w.appendChild(n.createTextNode(" ")),D&&(0===d&&(w.style.top=y._y+"px",w.style.left=I+T+"px"),y.style.top="0px",T&&(y.style.left=y._x-T+"px")));R||A||(w.innerHTML=r(w).split(String.fromCharCode(160)).join(" ")),D&&(w.style.width=x,w.style.height=y._h+"px"),t.appendChild(w)}t.style.cssText=b}D&&(z>t.clientHeight&&(t.style.height=z-F+"px",z>t.clientHeight&&(t.style.height=z+E+"px")),B>t.clientWidth&&(t.style.width=B-U+"px",B>t.clientWidth&&(t.style.width=B+N+"px")))},v=d.prototype;v.split=function(t){this.isSplit&&this.revert(),this.vars=t||this.vars,this._originals.length=this.chars.length=this.words.length=this.lines.length=0;for(var e=0;this.elements.length>e;e++)this._originals[e]=this.elements[e].innerHTML,g(this.elements[e],this.vars,this.chars,this.words,this.lines);return this.isSplit=!0,this},v.revert=function(){if(!this._originals)throw"revert() call wasn't scoped properly.";for(var t=this._originals.length;--t>-1;)this.elements[t].innerHTML=this._originals[t];return this.chars=[],this.words=[],this.lines=[],this.isSplit=!1,this},d.selector=t.$||t.jQuery||function(e){return t.$?(d.selector=t.$,t.$(e)):n?n.getElementById("#"===e.charAt(0)?e.substr(1):e):e}})(window||{});
 
+
 /*! ROTATABLE */
 // ROTATABLE
 // 
@@ -19,6 +20,7 @@
 
 jQuery(document).ready(function(){
 	UniteLayersRev.setGlobalAction(wp.template( "rs-action-layer-wrap" ));
+	UniteLayersRev.setGlobalSlideImport(wp.template( "rs-import-layer-wrap" ));
 });
 
 jQuery(document).ready(function(){
@@ -30,18 +32,26 @@ jQuery(document).ready(function(){
 		_renderMenu: function( ul, items ) {
 			var that = this,
 			currentCategory = "";
-			if (items)
+			if (items){
 				jQuery.each( items, function( index, item ) {
 					var li;
 					if ( item.version != currentCategory ) {
-						ul.append( "<li class='ui-autocomplete-category' style='font-size: 24px;'>Version: " + item.version + "</li>" );
+						if (ul.closest("#tp-thelistoffonts").length>0)
+							ul.append( "<li class='ui-autocomplete-category' style='font-size: 24px;'>" + item.version + "</li>" );
+						else
+							ul.append( "<li class='ui-autocomplete-category' style='font-size: 24px;'>Version: " + item.version + "</li>" );
 						currentCategory = item.version;
 					}
 					li = that._renderItemData( ul, item );
 					if ( item.version ) {
 						li.attr( "aria-label", item.version + " : " + item.label );
 					}
+					/*if( typeof(item.variants) !== 'undefined' ) {
+						li.attr( 'variants', item.variants );
+					}*/
 				});
+
+			}
 		}
 	});
 });
@@ -63,7 +73,7 @@ var UniteLayersRev = new function(){
 
 		initText = "Caption Text",
 		layout = 'desktop', //can be also tablet and mobil
-		transSettings = [], //can be also tablet and mobil
+		transSettings = [],
 
 		t = this,
 		u = tpLayerTimelinesRev,
@@ -93,12 +103,19 @@ var UniteLayersRev = new function(){
 		unique_layer_id = 0,
 		add_meta_into = '',
 		global_action_template = null,
-		updateRevTimer = 0;
+		global_layer_import_template = null,
+		updateRevTimer = 0,
+		import_slides = {};
+		
+
 
 	t.ulff_core = 0;
 		
 	t.setGlobalAction = function (glfunc){
 		global_action_template = glfunc;
+	}
+	t.setGlobalSlideImport = function (glfunc){
+		global_layer_import_template = glfunc;
 	}
 	
 	t.arrLayers = arrLayers;
@@ -137,12 +154,41 @@ var UniteLayersRev = new function(){
 
 	// set init font family types array
 	t.setInitFontTypes = function(jsonClasses){ initArrFontTypes = jQuery.parseJSON(jsonClasses); }
-
+	
 	// GET / SET MAIN TIME
 	t.getMaintime = function() { return g_slideTime; }
 	t.setMaintime = function(a) { g_slideTime = a; }
-
-
+	
+	
+	t.sortFontTypesByUsage = function(){
+		for(var skey in sgfamilies){
+			for(var key in initArrFontTypes){
+				
+				if(initArrFontTypes[key]['label'].replace(/\ /g,'+') == sgfamilies[skey].replace(/\ /g,'+')){
+					//add to front
+					if(typeof(initArrFontTypes[key]['top']) == 'undefined'){ //push to top and define top
+						initArrFontTypes[key]['top'] = true;
+						//initArrFontTypes[key]['version'] = rev_lang.google_fonts_loaded;												
+					}
+					break;
+				}
+			}
+		}
+		
+		//reorder the keys from 1 to xxx
+		var items = {};
+		var i = 0;
+		for(var index in initArrFontTypes) {
+			items[i] = initArrFontTypes[index];
+			i++;
+		}
+		initArrFontTypes = items;
+		
+		
+		//reinitialize the catcomplete on the field!
+		//jQuery("#css_font-family").catcomplete("option","source",initArrFontTypes);
+		
+	}
 	
 	/**
 	 * SET option to object depending on which size is choosen
@@ -348,7 +394,7 @@ var UniteLayersRev = new function(){
 		for(var key in arrLayers){
 			var layer = t.getHtmlLayerFromSerial(key);			
 			layer.draggable({
-					drag: onLayerDrag,						
+					drag: t.onLayerDrag,						
 					snap: snapto,
 					snapMode:"outer"
 
@@ -383,6 +429,13 @@ var UniteLayersRev = new function(){
 		
 	}
 
+	t.timeLineTableDimensionUpdate = function() {
+
+		jQuery('#mastertimer-wrapper').height((jQuery('#layers-right ul li').length+1)*32);
+		jQuery('.layers-wrapper').height(jQuery('#mastertimer-wrapper').height()-40);			
+		jQuery('.master-rightcell .layers-wrapper, .master-leftcell .layers-wrapper, #divLayers-wrapper, .quick-layers-list').perfectScrollbar("update");
+	}
+
 	//======================================================
 	//	Init Functions
 	//======================================================
@@ -392,12 +445,12 @@ var UniteLayersRev = new function(){
 			jQuery("#jqueryui_error_message").show();
 		
 
+		jQuery('body').addClass("rs-layer-editor-view");
+		
 		g_slideTime = Number(slideTime);
 		u.init(g_slideTime);
 		container = jQuery(containerID);
-
-
-		
+					
 		//add all layers from init
 		if(initDemoLayers){
 			var len = initDemoLayers.length;
@@ -405,60 +458,99 @@ var UniteLayersRev = new function(){
 				for(var i=0;i<len;i++){
 					for(var key in initDemoLayers[i]){
 						curDemoSlideID = i;
-						addLayer(initDemoLayers[i][key],true,true);
+						
+						addLayer(initDemoLayers[i][key],true,true,true);
+						
 					}
 				}
 			}else{
 				for(var i in initDemoLayers){
 					for(var key in initDemoLayers[i]){
 						curDemoSlideID = i;
-						addLayer(initDemoLayers[i][key],true,true);
+						
+						addLayer(initDemoLayers[i][key],true,true,true);
+					
 					}
 				}
 			}
 		}
 
 		
-		
 		//add all layers from init
 		if(initLayers){
 			var len = initLayers.length;
 			if(len){
-				for(var i=0;i<len;i++) {
-
-					addLayer(initLayers[i],true);
+				for(var i=0;i<len;i++) {							
+					addLayer(initLayers[i],true,false,true);										
 				}
-			}else{
-				for(var key in initLayers) {
-
-					addLayer(initLayers[key],true);
+			}else{				
+				for(var key in initLayers) {										
+					addLayer(initLayers[key],true,false,true);										
 				}
-			}
-			
-			t.add_missing_unique_ids();
-			
+			}			
+			t.add_missing_unique_ids();								
 		}
+		
+		// IF LAYERS ADDED, WE CAN CALCULATE THE SCROLLER
+		t.timeLineTableDimensionUpdate();
+		
+		
 
 		
 		//disable the properties box
 		disableFormFields();
+		
+		
 
 		
 		//init elements
 		initMainEvents();	// CLICK ON CONTAINER
+		
 		initButtons();		// MAIN BUTTONS - ADD LAYERS, DUPLICATE, DELETE
+		
 		initHtmlFields();	// HTML FIELD HANDLINGS
+		
 		initAlignTable();
+		
 		initLoopFunctions();
+		
 		scaleImage();
+		
 		positionChanged();
+		
 		initBackgroundFunctions();
 		
+
 		
+		// STICKY CATEGORIES FOR SCROLL SELECTORS
+		jQuery('#tp-thelistofclasses ul, #tp-thelistoffonts ul').bind('scroll',function() {
+			var u = jQuery(this),
+				s = u.scrollTop(),
+				os = u.data('olds'),
+				h = u.parent().height(),
+				l,
+				d = os==undefined || os<s ? "up" : "down";			
+			u.find('.ui-autocomplete-category').each(function(i) {
+				var t = jQuery(this),
+					p = t.next().position().top,
+					corr = i==0 ? 0 : 15;
+
+				if ((d=="up" && p<50) || (d=="down" && p<(0-corr))) {
+
+					t.css({position:"absolute",top:s-(corr),zIndex:i});	
+					t.next().css({marginTop:(50+corr)})			
+				} else {					
+					t.css({position:"relative",top:0,zIndex:i});				
+					t.next().css({marginTop:0})			
+				}
+			});
+			u.data('olds',s);			
+		});
+
 
 		// HIDE/SHOW MAIN IMAGE SELECTION
 		jQuery('.bgsrcchanger').each(function(){
-			if(jQuery(this).is(':checked'))
+			if(jQuery(this)[0].checked)
 				initSliderMainOptions(jQuery(this));
 		});
 		// INIT CLICK HANDLING ON MAIN IMAGE SETTINGS
@@ -574,29 +666,39 @@ var UniteLayersRev = new function(){
 			jQuery('#divbgholder').css({backgroundImage:"none",backgroundColor:"transparent"});
 			//t.changeSlotBGs();
 		});
-		
-		
+			
+		jQuery('#thumb_for_admin').on('change',function() {
+			t.changeSlotBGs();
+		});
+
+		if (jQuery('#slide_thumb_button_preview').find('div').length>0) 
+			jQuery('.show_on_thumbnail_exist').show();
 		
 		jQuery('.rs-slide-device_selector').click(function(){
 			if(rev_adv_resp_sizes == false) return;
-
-			// SAVE THE TOOLBAR :)
-			jQuery('#layer-short-toolbar').appendTo(jQuery('#layer-settings-toolbar-bottom'));
-			jQuery('#layer_text_wrapper').appendTo(jQuery('#layer_text_holder'));
-			
+					
 			var changeto = jQuery(this).data('val');
 			layout = changeto;
 			
 			jQuery('.tp-bgimg.defaultimg, #divLayers').css({
-				width:rev_sizes[changeto][0], 
-				height:rev_sizes[changeto][1]
-			})
+					width:rev_sizes[changeto][0], 
+					height:rev_sizes[changeto][1]
+				});
+					
+			if (__slidertype!="auto") {
+				jQuery('#divbgholder').css({minWidth:rev_sizes[changeto][0], maxWidth:"100%", marginLeft:"auto",marginRight:"auto"});
+				jQuery('#divbgholder').css({minHeight:rev_sizes[changeto][1],height:rev_sizes[changeto][1]});
+				jQuery('.slotholder .tp-bgimg.defaultimg').css({minWidth:rev_sizes[changeto][0], maxWidth:"100%" });
+				jQuery('.tp-bgimg.defaultimg').css({
+					width:"100%"					
+				})
+			} else {
+				
+				jQuery('#divbgholder').css({minWidth:rev_sizes[changeto][0], maxWidth:rev_sizes[changeto][0], marginLeft:"auto",marginRight:"auto"});
+				jQuery('#divbgholder').css({minHeight:rev_sizes[changeto][1],height:rev_sizes[changeto][1]});
+				jQuery('.slotholder .tp-bgimg.defaultimg').css({minWidth:rev_sizes[changeto][0], maxWidth:rev_sizes[changeto][0] })
 
-			jQuery('#divbgholder').css({minWidth:rev_sizes[changeto][0], maxWidth:rev_sizes[changeto][0]});
-			jQuery('#divbgholder').css({minHeight:rev_sizes[changeto][1],height:rev_sizes[changeto][1]});
-			jQuery('.slotholder .tp-bgimg.defaultimg').css({minWidth:rev_sizes[changeto][0], maxWidth:rev_sizes[changeto][0] })
-
-			
+			}			
 			
 			jQuery('#divLayers-wrapper').css('height', rev_sizes[changeto][1] + 1);
 
@@ -619,10 +721,12 @@ var UniteLayersRev = new function(){
 			u.resetSlideAnimations();
 			jQuery(window).trigger("resize");			
 			redrawAllLayerHtml();
-			jQuery('#layer-short-toolbar').appendTo('.slide_layer.layer_selected');
+			//jQuery('#layer-short-toolbar').appendTo('.slide_layer.layer_selected');
 			// update Background Size !!
 			
 		});
+
+	   
 
 		
 		//copy idle to hover
@@ -717,7 +821,6 @@ var UniteLayersRev = new function(){
 
 		
 		function edit_content_current_layer(){
-			
 
 			var layer = t.getCurrentLayer();
 			if(layer !== null){
@@ -725,30 +828,40 @@ var UniteLayersRev = new function(){
 				switch(layer.type){
 					case 'text':
 					case 'button':
-						jQuery('#layer_text_wrapper').appendTo(jQuery('.layer_selected.slide_layer'));
+						
 						t.showHideContentEditor(true);
+						jQuery('#quick-layers-wrapper').slideUp(300);						
+						jQuery('.current-active-main-toolbar').removeClass("opened");
+						jQuery('#button_show_all_layer i').removeClass("eg-icon-up").addClass("eg-icon-menu");
 						jQuery('#layer_text').focus();	
 						
 					break;
 					case 'video':
 						var objVideoData = layer.video_data;
 						
-						jQuery('#layer-short-toolbar').appendTo(jQuery('#layer-settings-toolbar-bottom'));
-						jQuery('#layer_text_wrapper').appendTo(jQuery('#layer_text_holder'));
 						//open video dialog
 						UniteAdminRev.openVideoDialog(function(videoData){
 							//update video layer
 							var objLayer = getVideoObjLayer(videoData);
 							
-							updateCurrentLayer(objLayer);
+							t.updateCurrentLayer(objLayer);
 							updateHtmlLayersFromObject(selectedLayerSerial);
 							updateLayerFormFields(selectedLayerSerial);
 							redrawLayerHtml(selectedLayerSerial);
-							jQuery('#layer-short-toolbar').appendTo('.slide_layer.layer_selected');
+							
 							scaleNormalVideo();
 						}, objVideoData);
-						jQuery('#layer-short-toolbar').appendTo('.slide_layer.layer_selected');
-						
+					break;
+					case 'image':
+						UniteAdminRev.openAddImageDialog(rev_lang.select_layer_image,function(urlImage){
+							var objData = {};
+							objData.image_url = urlImage;
+							t.updateCurrentLayer(objData);
+							
+							redrawLayerHtml(selectedLayerSerial);
+							
+							scaleNormal();
+						});	
 					break;
 					case 'shape':
 					break;
@@ -763,19 +876,81 @@ var UniteLayersRev = new function(){
 			}
 		}
 		
+		function edit_image_current_layer() {
+			
+		}
 
 		jQuery('body').on('dblclick','.layer_selected',edit_content_current_layer);
-		jQuery('#button_edit_layer, #button_change_video_settings').click(edit_content_current_layer);
 		
-		t.showHideContentEditor(false);
+		// EDIT LAYER CONTENT FROM QUICK LIST		
+		jQuery('body').on('click','.button_change_image_source, .button_edit_layer, .button_change_video_settings, .button_reset_size, .button_edit_shape',function() {
+			jQuery(':focus').blur(); // Blur Focused Elements first
+			var b = jQuery(this),
+				serial = b.closest('.layer-toolbar-li').data('serial');
+			t.setLayerSelected(serial);		
+			if (b.hasClass("button_reset_size")) 
+				resetCurrentElementSize();
+			else	
+				edit_content_current_layer();
+		});
+
+		jQuery('body').on('click','.layer-title-with-icon',function() {
+			jQuery(':focus').blur(); // Blur Focused Elements first
+			var b = jQuery(this),
+				serial = b.closest('.layer-toolbar-li').data('serial');
+			t.setLayerSelected(serial);		
+		})
 
 		
+		// EDIT LAYER CONTENT FROM MAIN TOOLBAR
+		jQuery('#button_edit_layer, #button_change_video_settings,#button_change_image_source').click(edit_content_current_layer);		
+
+		//delete layer actions:
+		jQuery('body').on('click',".button_delete_layer, #button_delete_layer", function(){
+			jQuery(':focus').blur(); // Blur Focused Elements first
+			var b = jQuery(this);
+
+			if(b.hasClass("button-now-disabled")) return(false);
+			
+			if(confirm(rev_lang.delete_layer)){
+			
+				if (b.hasClass("button_delete_layer")) {
+					var serial = b.closest('.layer-toolbar-li').data('serial');
+					t.setLayerSelected(serial);	
+				}
+				
+				//delete selected layer
+				deleteCurrentLayer();
+				unselectLayers();
+			
+
+			}
+		});
+
+		//delete layer actions:
+		jQuery('body').on('click',".button_duplicate_layer, #button_duplicate_layer",function(){
+			jQuery(':focus').blur(); // Blur Focused Elements first
+			var b = jQuery(this);
+
+			if(b.hasClass("button-now-disabled")) return(false);
+			if (b.hasClass("button_duplicate_layer")) {
+				var serial = b.closest('.layer-toolbar-li').data('serial');
+				t.setLayerSelected(serial);	
+			}
+			//duplicate selected layer			
+			duplicateCurrentLayer();			
+			return false;
+		});
+				
+		t.showHideContentEditor(false);
+	
 		t.changeSlotBGs();
 		jQuery("#hide_layer_content_editor").click(function() {
 			t.showHideContentEditor(false);
 		});
 
 		jQuery('#layer_animation, #layer_endanimation').change(function(){
+			
 			//set values from elements if existing
 			var set_anim = (jQuery(this).attr('id') == 'layer_animation') ? 'in' : 'out';
 			var anim_handle = jQuery(this).val();
@@ -813,16 +988,14 @@ var UniteLayersRev = new function(){
 			}
 			
 			if(set_anim == 'out' && anim_handle == 'auto'){ //check if masking is enabled for in-animation, if yes do it here, too
-				if(jQuery('input[name="masking-start"]').is(':checked')){
-					if(jQuery('input[name="masking-start"]').is(':checked') == true){
-						jQuery('input[name="masking-end"]').attr('checked', true);
-						RevSliderSettings.onoffStatus(jQuery('input[name="masking-end"]'));	
+				if(jQuery('#masking-start')[0].checked){
+					if(jQuery('#masking-start')[0].checked == true){
+						jQuery('#masking-end').attr('checked', true);
+						RevSliderSettings.onoffStatus(jQuery('#masking-end'));	
 						jQuery('.mask-end-settings').show();
 					}
 				}
 			}
-			
-			
 			
 			t.updateLayerFromFields();
 		});
@@ -920,6 +1093,9 @@ var UniteLayersRev = new function(){
 			
 			
 		});
+
+		
+		
 		
 		jQuery('.save-as-current-animin, .save-as-current-animout').click(function() {
 			var what = (jQuery(this).hasClass('save-as-current-animin')) ? 'start' : 'end';
@@ -1257,14 +1433,14 @@ var UniteLayersRev = new function(){
 						var set_to = {'device':[],'include':[]};
 						
 						jQuery('input[name="rs-css-set-on[]"]').each(function(){
-							if(jQuery(this).is(':checked')){
+							if(jQuery(this)[0].checked){
 								is_allowed = true;
 								set_to['device'].push(jQuery(this).val());
 							}
 						});
 						
 						jQuery('input[name="rs-css-include[]"]').each(function(){
-							if(jQuery(this).is(':checked')){
+							if(jQuery(this)[0].checked){
 								set_to['include'].push(jQuery(this).val());
 							}
 						});
@@ -1349,7 +1525,7 @@ var UniteLayersRev = new function(){
 			jQuery('#horlinie').css({top:my+"px"});
 
 			jQuery('#verlinetext').html(Math.round(mx-l));
-			jQuery('#horlinetext').html(Math.round(my-40));
+			jQuery('#horlinetext').html(Math.round(my-90));
 
 			jQuery('#hor-css-linear .helplines-offsetcontainer').data('x',event.pageX-jQuery('#hor-css-linear .helplines-offsetcontainer').offset().left);
 			jQuery('#hor-css-linear .helplines-offsetcontainer').data('y',my);
@@ -1402,9 +1578,9 @@ var UniteLayersRev = new function(){
 				my_sel.find('option[value="custom"]').attr('selected', true).change();
 				//set animation fallback to the original
 				if(currentAnimationType == 'customin')
-					updateCurrentLayer({'animation':'custom','orig-anim':original,'orig-anim-handle':original_handle});
+					t.updateCurrentLayer({'animation':'custom','orig-anim':original,'orig-anim-handle':original_handle});
 				else
-					updateCurrentLayer({'endanimation':'custom','orig-endanim':original,'orig-endanim-handle':original_handle});
+					t.updateCurrentLayer({'endanimation':'custom','orig-endanim':original,'orig-endanim-handle':original_handle});
 					
 			}
 		});
@@ -1424,9 +1600,110 @@ var UniteLayersRev = new function(){
 		jQuery('body').on('blur','.timer-layer-text',function() {
 			t.updateLayerFromFields(); 			
 		});
+
+		jQuery('#the_current-editing-layer-title').on('blur',function() {
+			//var objLayer = selectedLayerSerial === -1 ? "" : t.getLayer(selectedLayerSerial);
+			//objLayer.alias = jQuery(this).val();
+			jQuery('#layer_sort_'+selectedLayerSerial+" .timer-layer-text").val(jQuery(this).val());
+			t.updateLayerFromFields();
+		});
+
+		jQuery('body').on('blur','.layer-title-in-list',function() {
+			var serial = jQuery(this).closest('li').data('serial');		
+			if (serial===undefined || serial==="") return false;	
+			jQuery('#layer_sort_'+serial+" "+' .timer-layer-text').val(jQuery(this).val());
+			var objUpdate= {};
+			objUpdate.alias = jQuery(this).val();			
+			t.updateLayerFromFields();
+		});
+
+
+		// LOCK / UNLOCK / 
+		jQuery('body').on("click",'.quick-layer-lock',function() {
+			var b = jQuery(this),
+				i = b.find('i'),
+				p = b.closest('.layer-toolbar-li'),				
+				serial = p.data('serial');
+
+			if (serial===undefined || serial==="") return false;
+									
+			if(u.isLayerLocked(serial)) {
+				u.unlockLayer(serial);	
+				jQuery('.layer-toolbar-li').each(function() {
+					var li = jQuery(this);
+					if (li.data('serial')==serial) {
+						var b=li.find('.quick-layer-lock'),
+							i=b.find('i');
+						b.addClass("in-on").removeClass("in-off");
+						i.removeClass("eg-icon-lock").addClass("eg-icon-lock-open");	
+					}
+				});	
+			} else {
+				u.lockLayer(serial);	
+				jQuery('.layer-toolbar-li').each(function() {
+					var li = jQuery(this);
+					if (li.data('serial')==serial) {
+						var b=li.find('.quick-layer-lock'),
+							i=b.find('i');
+						b.addClass("in-off").removeClass("in-on");
+						i.removeClass("eg-icon-lock-open").addClass("eg-icon-lock");		
+					}
+				});				
+			}
+		});
+
+		// VIEW / UNVIEW ELEMENTS
+		jQuery('body').on("click",'.quick-layer-view',function() {
+			var b = jQuery(this),				
+				p = b.closest('.layer-toolbar-li'),
+				serial = p.data('serial');
+
+			if (serial===undefined || serial==="") return false;
+			var	objLayer = t.getLayer(serial);
+			
+			
+			if(u.isLayerVisible(serial)){				
+				objLayer.visible = false;
+				u.hideLayer(serial);
+				jQuery('.layer-toolbar-li').each(function() {
+					var li = jQuery(this);
+					if (li.data('serial')==serial) {
+						var b=li.find('.quick-layer-view'),
+							i=b.find('i');
+						b.addClass("in-off").removeClass("in-on");
+						i.removeClass("eg-icon-eye").addClass("eg-icon-eye-off");
+					}
+				});				
+			}else{
+				objLayer.visible = true;
+				u.showLayer(serial);
+				jQuery('.layer-toolbar-li').each(function() {
+					var li = jQuery(this);
+					if (li.data('serial')==serial) {
+						var b=li.find('.quick-layer-view'),
+							i=b.find('i');
+						b.addClass("in-on").removeClass("in-off");				
+						i.removeClass("eg-icon-eye-off").addClass("eg-icon-eye");		
+					}		
+				});
+			}
+		});
+		
+		
+		t.sortFontTypesByUsage();
+	
 	}
 	
 	
+
+	t.showHideToggleContent = function(objLayer) {		
+		if (objLayer["toggle"]===true) {
+			jQuery('#layer_text_wrapper').addClass("withtoggle");
+		} else {
+			jQuery('#layer_text_wrapper').removeClass("withtoggle");
+		}
+	}
+
 	t.showHideContentEditor = function(show) {
 		if (show) {
 			jQuery('#button_edit_layer').hide();
@@ -1439,22 +1716,28 @@ var UniteLayersRev = new function(){
 			jQuery('#button_reset_size').hide();
 			jQuery('#button_change_video_settings').hide();
 			jQuery('#layer_text_wrapper').addClass('currently_editing_txt');
+			jQuery('#layer-short-tool-placeholder-a').hide();
+			jQuery('#layer-short-tool-placeholder-b').hide();
 		} else {
-			jQuery('#button_edit_layer').show();
+		
+			jQuery('#layer-short-tool-placeholder-a').show();
+			jQuery('#layer-short-tool-placeholder-b').show();
+			jQuery('#button_edit_layer').hide();
+			jQuery('#button_change_image_source').hide();
 			jQuery('#button_delete_layer').show();
 			jQuery('#button_duplicate_layer').show();
 			jQuery('#tp-addiconbutton').hide();
 			jQuery('#hide_layer_content_editor').hide();
-			jQuery('#linkInsertTemplate').hide();
+			jQuery('#linkInsertTemplate').hide();			
+			jQuery('#button_reset_size').hide();
+			jQuery('#button_change_video_settings').hide();
 			jQuery('#layer_text_wrapper').hide();
-			jQuery('#button_reset_size').show();
-			jQuery('#button_change_video_settings').show();
-			jQuery('#layer_text_wrapper').removeClass('currently_editing_txt');
-			
+			jQuery('#layer_text_wrapper').removeClass('currently_editing_txt');			
 		}
 		
 		var objLayer = selectedLayerSerial === -1 ? "" : t.getLayer(selectedLayerSerial);	
 		t.toolbarInPos(objLayer);
+		t.showHideToggleContent(objLayer);
 	}
 	
 	t.changeSlotBGs = function() {
@@ -1469,7 +1752,7 @@ var UniteLayersRev = new function(){
 			gallery_type = jQuery('input[name="rs-gallery-type"]').val();
 
 			jQuery('#the_image_source_url').html(bgimg);
-		
+
 		jQuery('#video-settings').hide();
 		jQuery('#bg-setting-wrap').show();
 		jQuery('#vid-rev-youtube-options').hide();
@@ -1481,7 +1764,9 @@ var UniteLayersRev = new function(){
 		
 		jQuery('.video_volume_wrapper').hide();
 		
-		switch(jQuery('input[name="background_type"]:checked').data('bgtype')){
+		jQuery('#slide_selector .list_slide_links li.selected .slide-media-container ').removeClass("mini-transparent").css({backgroundSize:"cover"});
+		var bbggtt = jQuery('input[name="background_type"]:checked').data('bgtype');
+		switch(bbggtt){
 			case "image":
 				jQuery('#button_change_image').hide();
 				
@@ -1491,6 +1776,9 @@ var UniteLayersRev = new function(){
 					break;
 					case 'posts':
 						bgimg = rs_plugin_url+'public/assets/assets/sources/post.png';
+					break;
+					case 'woocommerce':
+						bgimg = rs_plugin_url+'public/assets/assets/sources/wc.png';
 					break;
 					case 'facebook':
 						bgimg = rs_plugin_url+'public/assets/assets/sources/fb.png';
@@ -1516,7 +1804,7 @@ var UniteLayersRev = new function(){
 				jQuery('.mainbg-sub-parallax-selector').show();
 				jQuery('.mainbg-sub-settings-selector').show();
 				jQuery('#button_change_image').appendTo(jQuery('#tp-bgimagewpsrc'));
-				
+								
 				nextsh.find('.defaultimg, .slotslidebg').css({
 						backgroundImage:("url("+bgimg+")"),
 						backgroundPosition:bgpos,
@@ -1524,6 +1812,8 @@ var UniteLayersRev = new function(){
 						backgroundColor:"transparent"});		
 			break;
 			case "trans":
+
+				jQuery('#slide_selector .list_slide_links li.selected .slide-media-container ').css("background-image","").addClass("mini-transparent").css({backgroundSize:"inherit"});
 				nextsh.find('.defaultimg, .slotslidebg').css({
 						backgroundImage:"none",
 						backgroundPosition:bgpos,
@@ -1542,6 +1832,11 @@ var UniteLayersRev = new function(){
 				jQuery('.mainbg-sub-kenburns-selector').hide();
 				jQuery('.mainbg-sub-parallax-selector').hide();
 				jQuery('.mainbg-sub-settings-selector').hide();
+				jQuery('#slide_selector .list_slide_links li.selected .slide-media-container ').css({
+						backgroundImage:"none",
+						backgroundPosition:bgpos,
+						backgroundSize:bgfit,
+						backgroundColor:bgcolor});
 			break;
 			case "external":
 				bgimg = jQuery('#slide_bg_external').val();
@@ -1637,13 +1932,19 @@ var UniteLayersRev = new function(){
 
 			break;
 		}
-
+		if (bbggtt != "solid" && bbggtt!="trans")
+			jQuery('#slide_selector .list_slide_links li.selected .slide-media-container ').css("background-image","url("+bgimg+")");
 		jQuery('#divbgholder').css({background:"none",backgroundImage:"none",backgroundColor:"transparent"});
 		
+		// Use Admin Thumbnail if Selected
+		if (jQuery('#thumb_for_admin').attr('checked')=="checked") {
+			var tbgimg = jQuery('#slide_thumb_button_preview div').css("background-image");			
+			jQuery('#slide_selector .list_slide_links li.selected .slide-media-container').css({"background-image":tbgimg, backgroundSize:"cover",backgroundPosition:"center center"});
+		}
 		u.resetSlideAnimations(false);
 	}
 	
-
+	
 	var initDisallowCaptionsOnClick = function(){
 
 		jQuery('.slide_layer.tp-caption a').on('click', function(){
@@ -1758,8 +2059,13 @@ var UniteLayersRev = new function(){
 	var initMainEvents = function(){		
 		//unselect layers on container click
 		container.click(function() {			
-			if (!layerresized)
+			if (!layerresized) {
 				unselectLayers();
+				jQuery('#quick-layers-wrapper').slideUp(300);						
+				jQuery('.current-active-main-toolbar').removeClass("opened");
+				jQuery('#button_show_all_layer i').removeClass("eg-icon-up").addClass("eg-icon-menu");
+
+			}
 			else
 				layerresized=false;
 		});
@@ -1801,15 +2107,17 @@ var UniteLayersRev = new function(){
 			case "start_out":
 			case "start_video":
 			case "stop_video":
+			case "mute_video":
+			case "unmute_video":
+			case "toggle_video":
+			case "toggle_mute_video":
 				li.find('.action-target-layer').show();
 			break;
 			case "toggle_layer":
 				li.find('.action-target-layer').show();
 				li.find('.action-toggle_layer').show();
 			break;
-			case "toggle_video":
-				li.find('.action-target-layer').show();
-			break;
+
 			case "simulate_click":
 				li.find('.action-target-layer').show();
 			break;
@@ -1831,10 +2139,13 @@ var UniteLayersRev = new function(){
 		}
 		switch (value) {
 			case "toggle_video":
+			case "mute_video":
+			case "unmute_video":
+			case "toggle_mute_video":
 			case "start_video":
 			case "stop_video":
 				li.find('.action-target-layer').find('select[name="layer_target[]"] option').each(function(){
-					if(jQuery(this).data('mytype') !== 'video'){
+					if(jQuery(this).data('mytype') !== 'video' && jQuery(this).data('mytype') !== 'video-special'){
 						jQuery(this).hide();
 					}else{
 						jQuery(this).show();
@@ -1843,7 +2154,11 @@ var UniteLayersRev = new function(){
 			break;
 			default:
 				li.find('.action-target-layer').find('select[name="layer_target[]"] option').each(function(){
-					jQuery(this).show();
+					if(jQuery(this).data('mytype') !== 'video-special'){
+						jQuery(this).show();
+					}else{
+						jQuery(this).hide();
+					}
 				});
 			break;
 		}
@@ -1875,7 +2190,93 @@ var UniteLayersRev = new function(){
 		var result = jQuery.inArray(putin,possiblevalues)>=0 ? putin : putin===undefined || !jQuery.isNumeric(parseInt(putin,0)) || putin.length===0 ? "" : parseInt(putin,0)+suffix;		
 		return result;
 	}
-
+	
+	t.check_the_font_bold = function(font){
+		var variants = ['100','200','300','400','500','600','700','800','900'];
+		
+		for(var key in initArrFontTypes){
+			if(initArrFontTypes[key].label == font){
+				if(typeof(initArrFontTypes[key].variants) !== 'undefined'){
+					variants = initArrFontTypes[key].variants;
+				}
+				break;
+			}
+		}
+		
+		var fws = jQuery('select[name="font_weight_static"]');
+		var sel = fws.find('option:selected').val();
+		fws.html('');
+		
+		for(var key in variants){
+			if(variants[key].indexOf('italic') > -1) continue;
+			fws.append('<option value="'+variants[key]+'">'+variants[key]+'</option>');
+		}
+		fws.find('option[value="'+sel+'"]').attr('selected', 'selected');
+	}
+	
+	
+	t.do_google_font_loading = function(font){
+		var gfamilies  = [];
+		//check if this is a google font, if yes, then load the font with all stuff available
+		for(var key in initArrFontTypes){
+			if(initArrFontTypes[key].label == font){
+				if(initArrFontTypes[key].type == 'googlefont'){
+					//load font now!, its google
+					var gstring = '';
+					for(var mkey in initArrFontTypes[key].variants){
+						if(mkey > 0) gstring += ',';
+						gstring += initArrFontTypes[key].variants[mkey];
+					}
+					if(typeof(initArrFontTypes[key].subsets) !== 'undefined'){
+						gstring += '&subset=';
+						for(var mkey in initArrFontTypes[key].subsets){
+							if(mkey > 0) gstring += ',';
+							gstring += initArrFontTypes[key].subsets[mkey];
+						}
+					}
+					fontclass = font.replace(/\ /g,'-');
+					font = font.replace(/\ /g,'+');
+					
+					if(jQuery('.rev-css-'+fontclass).length == 0){
+						//jQuery('head').append('<link class="rev-css-'+fontclass+'" href="//fonts.googleapis.com/css?family='+font+':'+gstring+'" rel="stylesheet" type="text/css">');
+						gfamilies.push(font+":"+gstring);
+						jQuery('body').append('<div style="display:none" class="rev-css-'+fontclass+'">RevSliderFont</div>');
+						
+						if(sgfamilies.indexOf(font) == -1){
+							sgfamilies.push(font);
+						}
+						
+						if (gfamilies.length>0)
+						tpWebFont.load({
+							google:{
+								families:gfamilies
+							},
+							loading:function() {								
+								showWaitAMinute({fadeIn:300,text:font+" is Loading..."});
+							},
+							active:function() {
+								setTimeout(function() {
+									showWaitAMinute({fadeOut:300});
+								},300);								
+								u.allLayerToIdle({type:"text"});								
+							},		
+							inactive:function() {
+								setTimeout(function() {
+									showWaitAMinute({fadeOut:300});
+								},300);								
+								u.allLayerToIdle({type:"text"});								
+							}		
+						})
+					}//else already loaded
+				}
+				break;
+			}
+		}
+		
+		t.sortFontTypesByUsage();
+	}
+	
+	
 	/*****************************************************
 					INIT HTML FIELDS 
 	  init events (update) for html properties change.
@@ -1897,8 +2298,10 @@ var UniteLayersRev = new function(){
 			minLength:0,
 			appendTo:"#tp-thelistofclasses",
 			open:function(event,ui) {
-				if (jQuery('#tp-thelistofclasses ul').height()>450)
-					jQuery('#tp-thelistofclasses ul').perfectScrollbar("destroy").perfectScrollbar({wheelPropagation:true, suppressScrollX:true});
+				if (jQuery('#tp-thelistofclasses ul').height()>450) {
+					jQuery('#tp-thelistofclasses ul').perfectScrollbar("destroy").perfectScrollbar({wheelPropagation:false, suppressScrollX:true});					
+				}
+
 			},
 			close: function(event, ui){
 				var layer = t.getCurrentLayer();
@@ -1934,11 +2337,14 @@ var UniteLayersRev = new function(){
 			return listItem;
 		};
 
+		
 
 		//open the list on right button
 		jQuery( "#layer_captions_down" ).click(function(event){
 			event.stopPropagation();
 
+			jQuery('#css_font-family').catcomplete("close");
+			
 			jQuery("#css_editor_expert").hide();
 			jQuery("#css_editor_wrap").hide();
 
@@ -1981,13 +2387,9 @@ var UniteLayersRev = new function(){
 		jQuery('#layer_caption').bind('catcompleteclose', function() {
 			jQuery(this).data('is_open',false);
 		});
-
-		//set layers autocompolete
-		jQuery('input[name="css_font-family"]').autocomplete({
-			source: initArrFontTypes,
-			minLength:0,
-			close:t.updateLayerFromFields
-		});
+		
+		
+		t.setLayersAutoComplete();
 		
 		//set layers autocompolete
 		jQuery('input[name="adbutton-fontfamily"]').autocomplete({
@@ -1996,30 +2398,24 @@ var UniteLayersRev = new function(){
 		});
 
 		//open the list on right button
-		jQuery("#font_family_down").click(function(event){
+		jQuery("#css_fonts_down").click(function(event){
 			event.stopPropagation();
-
+			
+			jQuery('#layer_caption').catcomplete("close");
+			
 			//if opened - close autocomplete
-			if(jQuery('input[name="css_font-family"]').data("is_open") == true)
-				jQuery('input[name="css_font-family"]').autocomplete("close");
+			if(jQuery('#css_font-family').data("is_open") == true)
+				jQuery('#css_font-family').catcomplete("close");
 			else   //else open autocomplete
 			if(jQuery(this).hasClass("ui-state-active"))
-				jQuery('input[name="css_font-family"]').autocomplete( "search", "" ).data("ui-autocomplete");
+				jQuery('#css_font-family').catcomplete( "search", "" ).data("ui-autocomplete");
+
 		});
 
-		//handle autocomplete close
-		jQuery('input[name="css_font-family"]').bind('autocompleteopen', function() {
-			jQuery(this).data('is_open',true);
-		});
-
-		jQuery('input[name="css_font-family"]').bind('autocompleteclose', function() {
-			jQuery(this).data('is_open',false);
-		});
-
-
+		
 		jQuery("body").click(function(){
 			jQuery( "#layer_caption" ).catcomplete("close");
-			jQuery('input[name="css_font-family"]').autocomplete("close");
+			jQuery('#css_font-family').catcomplete("close");
 		});
 
 		//set events:
@@ -2028,7 +2424,7 @@ var UniteLayersRev = new function(){
 		});
 
 		jQuery('#layer_proportional_scale, #layer_auto_line_break').change(function(){
-			if(jQuery(this).is(':checked'))
+			if(jQuery(this)[0].checked)
 				jQuery(this).parent().removeClass("notselected")
 			else
 				jQuery(this).parent().addClass("notselected")
@@ -2037,6 +2433,16 @@ var UniteLayersRev = new function(){
 		var keyuprefresh;
 		// UPDATE LAYER TEXT FIELD
 		jQuery("#layer_text").keyup(function(){
+			clearTimeout(keyuprefresh);
+			var v = jQuery(this).val();
+			keyuprefresh = setTimeout(function() {						
+				updateLayerTextField("",jQuery('.sortlist li.ui-state-hover .tl-fullanim'),v);						
+				t.toolbarInPos();
+				t.updateLayerFromFields();
+			},150);
+		});
+
+		jQuery("#layer_text_toggle").keyup(function(){
 			clearTimeout(keyuprefresh);
 			var v = jQuery(this).val();
 			keyuprefresh = setTimeout(function() {						
@@ -2116,9 +2522,7 @@ var UniteLayersRev = new function(){
 							inp.val(cv+usuffix);
 					}
 				}
-			}
-			
-			
+			}						
 		});
 
 		jQuery('#clayer_start_time, #clayer_end_time, #clayer_start_speed, #clayer_end_speed').on("change blur", function() {
@@ -2132,7 +2536,13 @@ var UniteLayersRev = new function(){
 			jQuery('#layer_speed').val(objLayer.speed);
 			jQuery('#layer_endspeed').val(objLayer.endspeed);
 			t.updateLayerFromFields();
+			u.updateCurrentLayerTimeline();
 		});
+
+		jQuery('#layer_speed, #layer_endspeed, #layer_splitdelay, #layer_endsplitdelay, #layer_split, #layer_endsplit').on("change blur", function() {
+			u.updateCurrentLayerTimeline();
+		});
+		
 
 
 		jQuery('body').on('click','.timer-manual-edit, #layers-right .sortablelayers',function() {
@@ -2143,8 +2553,69 @@ var UniteLayersRev = new function(){
 			jQuery('#timline-manual-dialog').hide();
 		});
 
-	}
+		jQuery('body').on('focus','#layer_text, #layer_text_toggle',function() {		
+			jQuery('#layer_text').removeClass("lasteditedlayertext");
+			jQuery('#layer_text_toggle').removeClass("lasteditedlayertext");
+			jQuery(this).addClass("lasteditedlayertext")
+		})
 
+	}
+	
+	t.setLayersAutoComplete = function(){
+		
+		//set layers autocompolete
+		jQuery('#css_font-family').catcomplete({
+			source: initArrFontTypes,
+			appendTo:"#tp-thelistoffonts",
+			open:function(event,ui) {
+				if (jQuery('#tp-thelistoffonts ul').height()>450) {
+					jQuery('#tp-thelistoffonts ul').perfectScrollbar("destroy").perfectScrollbar({wheelPropagation:false, suppressScrollX:true});				
+					jQuery('#tp-thelistoffonts ul').scrollTop(0);
+				}
+			},
+			minLength:0,
+			close:t.updateLayerFromFields,
+			select: function( event, ui ) {
+				t.check_the_font_bold(ui.item.label);
+				t.do_google_font_loading(ui.item.label);
+			}
+		}).data("customCatcomplete")._renderItem = function(ul, item) {			
+			var listItem = jQuery("<li></li>")
+				.data("item.autocomplete", item)
+				.append("<a>" + item.label + "</a>");
+			if (item.top) {				
+				listItem.prependTo(ul);
+				listItem.insertAfter('#insert-google-font-after-me');
+			}
+			else {
+				listItem.appendTo(ul);
+			}
+
+			if (item.label=="Dont Show Me") {
+				listItem.css({display:"block",height:"0px",width:"0px",visibility:"hidden"});
+				listItem.attr('id','insert-google-font-after-me');
+			}
+			
+			listItem.attr('original-title', item.value);
+			return listItem;
+		};
+		
+		jQuery('#css_font-family').change(function(){
+			var font = jQuery(this).val();
+			t.check_the_font_bold(font);
+			t.do_google_font_loading(font);
+		});
+		
+		//handle autocomplete close
+		jQuery('#css_font-family').bind('catcompleteopen', function() {
+			jQuery(this).data('is_open',true);
+		});
+
+		jQuery('#css_font-family').bind('catcompleteclose', function() {
+			jQuery(this).data('is_open',false);
+		});
+		
+	}
 
 	/**
 	 * init buttons actions
@@ -2241,25 +2712,25 @@ var UniteLayersRev = new function(){
 					data['deformation']['border-style'] = 'solid';
 					data['deformation']['border-radius'] = [jQuery('.example-shape').css('borderTopLeftRadius'),jQuery('.example-shape').css('borderTopRightRadius'),jQuery('.example-shape').css('borderBottomRightRadius'),jQuery('.example-shape').css('borderBottomLeftRadius')];
 					
-					if(jQuery('input[name="shape_fullwidth"]').is(':checked')){
+					if(jQuery('input[name="shape_fullwidth"]')[0].checked){
 						data['max_width'] = '100%';
 						data['cover_mode'] = 'fullwidth';
 					}else{
 						data['max_width'] = jQuery('input[name="shape_width"]').val();
 					}
 					
-					if(jQuery('input[name="shape_fullheight"]').is(':checked')){
+					if(jQuery('input[name="shape_fullheight"]')[0].checked){
 						data['max_height'] = '100%';
 						data['cover_mode'] = 'fullheight';
 					}else{
 						data['max_height'] = jQuery('input[name="shape_height"]').val();
 					}
 					
-					if(jQuery('input[name="shape_fullheight"]').is(':checked') && jQuery('input[name="shape_fullwidth"]').is(':checked')){
+					if(jQuery('input[name="shape_fullheight"]')[0].checked && jQuery('input[name="shape_fullwidth"]')[0].checked){
 						data['cover_mode'] = 'cover';
 					}
 					
-					//if(jQuery('input[name="shape_fullwidth"]').is(':checked') && jQuery('input[name="shape_fullheight"]').is(':checked')){
+					//if(jQuery('input[name="shape_fullwidth"]')[0].checked && jQuery('input[name="shape_fullheight"]')[0].checked){
 					//	data['deformation']['padding'] = [jQuery('.example-shape').css('paddingTop'), jQuery('.example-shape').css('paddingRight'), jQuery('.example-shape').css('paddingBottom'), jQuery('.example-shape').css('paddingLeft')];
 					//}
 					
@@ -2275,6 +2746,384 @@ var UniteLayersRev = new function(){
 			});
 		});
 		
+		
+		jQuery('#button_add_layer_import').click(function(){
+			t.reset_import_layer();
+			
+			jQuery('#dialog_addimport').dialog({
+				minWidth: 830,
+				minHeight: 500,
+				modal: true,
+				dialogClass: 'tpdialogs'
+			});
+		});
+		
+		
+		/**
+		 * get slides plus layers of the selected slider
+		 * 
+		 **/
+		jQuery('#rs-import-layer-slider').change(function(){
+			var im_slider_id = jQuery(this).val();
+			if(im_slider_id == '-'){
+				t.reset_import_layer();
+				return false;
+			}else{
+				if(typeof(import_slides[im_slider_id]) == 'undefined'){ //get data for the im_slider_id
+					UniteAdminRev.ajaxRequest('get_import_slides_data', im_slider_id, function(response){
+						if(typeof(response.slides) !== 'undefined'){
+							import_slides[im_slider_id] = response.slides;
+							t.do_clear_layer_import();
+							t.do_clear_slide_import();
+							t.do_add_slide_import();
+							t.do_show_sliders_import();
+							return true;
+						}else{
+							alert(rev_lang.empty_data_retrieved_for_slider);
+							t.reset_import_layer();
+							return false;
+						}
+					});
+					return false;
+				}
+				t.do_clear_layer_import();
+				t.do_clear_slide_import();
+				t.do_add_slide_import();
+				t.do_show_sliders_import();
+			}
+		});
+		
+		jQuery('#rs-import-layer-type').change(function(){
+			t.do_clear_layer_import();
+			t.do_show_sliders_import();
+		});
+		
+		jQuery('#rs-import-layer-slide').change(function(){
+			t.do_clear_layer_import();
+			t.do_show_sliders_import();
+		});
+		
+		jQuery('body').on('click', '#rs-import-layer-holder li .import-layer-now', function(){
+			if(confirm(rev_lang.import_selected_layer)){
+				//import selected layer with the unique id clicked
+				var btn = jQuery(this),
+					li = btn.closest('li'),
+					slider_id = li.data('sliderid'),
+					slide_id = li.data('slideid'),
+					unique_layer = li.data('id'),
+					action_dependencies = li.data('actiondep');
+				
+				if(typeof(import_slides[slider_id]) == 'undefined') return false;
+				if(typeof(import_slides[slider_id][slide_id]) == 'undefined') return false;
+				
+				var layers_to_add = t.get_layers_to_add_through_actions(import_slides[slider_id][slide_id]['layers'], unique_layer);
+				
+				//get the data, then use it to add a new layer
+				if(layers_to_add.length > 0){
+					if(layers_to_add.length > 1 && confirm(rev_lang.import_all_layer_from_actions)){
+						var dependencies = [];
+						dependencies = t.get_action_dependencies(li, slide_id, dependencies);
+						
+						for(var lta in layers_to_add){
+							addLayer(layers_to_add[lta], true);
+							
+							li.addClass("layerimported");
+							btn.find('i').addClass("eg-icon-ok").removeClass("eg-icon-plus");
+							
+							for(var dkey in dependencies){
+								var cli = jQuery('#to-import-layer-id-'+slide_id+'-'+dependencies[dkey]);
+								if(!cli.hasClass('layerimported')){
+									cli.addClass('layerimported');
+									cli.find('.import-layer-now i').addClass("eg-icon-ok").removeClass("eg-icon-plus");
+								}
+							}
+							
+						}
+					}else{ //just need to add one layer, so take the first one
+						for(var lta in layers_to_add){
+							//remove actions of first layer that are connected to other layers
+							layers_to_add[lta] = t.remove_import_layer_actions(layers_to_add[lta]);
+							addLayer(layers_to_add[lta], true);
+							li.addClass("layerimported");
+							btn.find('i').addClass("eg-icon-ok").removeClass("eg-icon-plus");
+							break;
+						}
+					}
+				}
+			}
+		});
+		
+		
+		t.get_action_dependencies = function(li, slide_id, dependencies){
+			var action_dependencies = li.data('actiondep');
+			if(action_dependencies !== ''){
+				action_dependencies = action_dependencies.toString().split(',');
+
+				for(var adkey in action_dependencies){
+					if(action_dependencies[adkey] !== 'backgroundvideo' && action_dependencies[adkey] !== 'firstvideo' && jQuery.inArray(action_dependencies[adkey], dependencies) == -1){
+						
+						dependencies.push(action_dependencies[adkey]);
+						
+						var new_dep = t.get_action_dependencies(jQuery('#to-import-layer-id-'+slide_id+'-'+action_dependencies[adkey]), slide_id, dependencies);
+
+						for(var key in new_dep){
+							if(jQuery.inArray(new_dep[key], dependencies) == -1) dependencies.push(new_dep[key]);
+						}
+					}
+				}
+			}
+
+			return dependencies;
+		}
+
+		t.remove_import_layer_actions = function(layer){
+			var attr = ['tooltip_event', 'action', 'image_link', 'link_open_in', 'jump_to_slide', 'scrollunder_offset', 'actioncallback', 'layer_target', 'action_delay', 'link_type', 'toggle_layer_type', 'toggle_class'];
+			
+			if(typeof(layer['layer_action']) !== 'undefined' && typeof(layer['layer_action']['action']) !== 'undefined' && layer['layer_action']['action'].length > 0){
+				for(var lkey in layer['layer_action']['action']){
+					switch(layer['layer_action']['action'][lkey]){
+						case 'start_in':
+						case 'start_out':
+						case 'toggle_layer':
+						case 'start_video':
+						case 'stop_video':
+						case 'toggle_video':
+						case 'mute_video':
+						case 'unmute_video':
+						case 'toggle_mute_video':
+						case 'simulate_click':
+						case 'toggle_class':
+							for(var akey in attr){
+								if(typeof(layer['layer_action'][attr[akey]]) !== 'undefined' && typeof(layer['layer_action'][attr[akey]][lkey]) !== 'undefined') delete(layer['layer_action'][attr[akey]][lkey]);
+							}
+						break;
+					}
+				}
+			}
+			return layer;
+		}
+		
+		t.get_layers_to_add_through_actions = function(layers, unique_id){
+			var layers_to_add = [];
+			
+			layers_to_add = t.add_layer_to_queue_by_unique_id(layers, unique_id, layers_to_add);
+			
+			layers_to_add = t.check_actions_change_unique_ids(layers_to_add);
+			
+			return layers_to_add;
+		}
+		
+		t.add_layer_to_queue_by_unique_id = function(layers, unique_id, layers_to_add){
+			for(var key in layers){
+				if(layers[key]['unique_id'] == unique_id){
+					//remove the unique ID here, we need a new one
+					
+					layers_to_add.push(jQuery.extend(true, {}, layers[key]));
+					
+					if(typeof(layers[key]['layer_action']) !== 'undefined' && typeof(layers[key]['layer_action']['action']) !== 'undefined' && layers[key]['layer_action']['action'].length > 0){
+						var actions = layers[key]['layer_action'];
+						for(var lkey in actions['action']){
+							switch(actions['action'][lkey]){
+								case 'start_in':
+								case 'start_out':
+								case 'toggle_layer':
+								case 'start_video':
+								case 'stop_video':
+								case 'toggle_video':
+								case 'mute_video':
+								case 'unmute_video':
+								case 'toggle_mute_video':
+								case 'simulate_click':
+								case 'toggle_class':
+									//check layers
+									if(actions['layer_target'][lkey]){
+										var do_add = true;
+										for(var l in layers_to_add){
+											if(layers_to_add[l]['unique_id'] == actions['layer_target'][lkey]){
+												do_add = false;
+												break;
+											}
+										}
+										if(do_add){
+											for(var akey in layers){
+												if(layers[akey]['unique_id'] == actions['layer_target'][lkey]){
+													t.add_layer_to_queue_by_unique_id(layers, layers[akey]['unique_id'], layers_to_add);
+													//layers_to_add.push(jQuery.extend(true, {}, layers[akey]));
+													break;
+												}
+											}
+										}
+									}
+								break;
+							}
+						}
+					}
+				}
+			}
+			
+			return layers_to_add;
+		}
+		
+		t.check_actions_change_unique_ids = function(layers){
+			//map the old layer ids with the new one they get now
+			var map = {};
+			
+			for(var key in layers){
+				unique_layer_id++;
+				map[layers[key]['unique_id']] = unique_layer_id;
+				layers[key]['unique_id'] = unique_layer_id;
+			}
+			
+			//now change action layers connections to the new IDs
+			//remove the go to slide actions
+			for(var key in layers){
+				if(typeof(layers[key]['layer_action']) !== 'undefined' && typeof(layers[key]['layer_action']['action']) !== 'undefined' && layers[key]['layer_action']['action'].length > 0){
+					for(var lkey in layers[key]['layer_action']['layer_target']){
+						for(var l in map){
+							if(l == layers[key]['layer_action']['layer_target'][lkey]){
+								layers[key]['layer_action']['layer_target'][lkey] = map[l];
+								break;
+							}
+						}
+					}
+					for(var lkey in layers[key]['layer_action']['jump_to_slide']){
+						layers[key]['layer_action']['jump_to_slide'][lkey] = '-1';
+					}
+				}
+			}
+			
+			return layers;
+		}
+		
+		t.reset_import_layer = function(){
+			jQuery('#rs-import-layer-slider option[value="-"]').attr('selected', true);
+			jQuery('#rs-import-layer-slide option[value="-"]').attr('selected', true);
+			jQuery('#rs-import-layer-type option[value="-"]').attr('selected', true);
+		}
+		
+		/**
+		 * add slides to dropdown
+		 **/
+		t.do_add_slide_import = function(){
+			var im_slider_id = jQuery('#rs-import-layer-slider option:selected').val();
+			if(im_slider_id == '-' || typeof(import_slides[im_slider_id]) == 'undefined') return false;
+			
+			for(var key in import_slides[im_slider_id]){
+				jQuery('#rs-import-layer-slide').append(jQuery('<option></option>').val(key).text('Slide: '+import_slides[im_slider_id][key]['params']['title']));
+			}
+		}
+		
+		t.do_clear_slide_import = function(){
+			jQuery('#rs-import-layer-slide option').each(function(){
+				if(jQuery(this).val() !== 'all' && jQuery(this).val() !== '-') jQuery(this).remove();
+			});
+		}
+		
+		t.do_clear_layer_import = function(){
+			jQuery('#rs-import-layer-holder').html('');
+		}
+		
+		t.do_show_sliders_import = function(){
+			var im_slider_id = jQuery('#rs-import-layer-slider option:selected').val();
+			var im_slide_id = jQuery('#rs-import-layer-slide option:selected').val();
+			var im_slide_type = jQuery('#rs-import-layer-type option:selected').val();
+			
+			if(im_slider_id == '-') return false;
+			
+			if(typeof(import_slides[im_slider_id]) == 'undefined') return false;			
+			for(var key in import_slides[im_slider_id]){				
+				if(im_slide_id == 'all' || im_slide_id == '-' || im_slide_id == key){
+					if (import_slides[im_slider_id][key]['layers'].length>0)
+					jQuery('#rs-import-layer-holder').append('<li class="layer-import-slide-seperator">Slide Title - '+import_slides[im_slider_id][key].params.title+'</li>')
+
+					for(var lkey in import_slides[im_slider_id][key]['layers']){
+
+						if(im_slide_type == 'all' || im_slide_type == '-' || im_slide_type == import_slides[im_slider_id][key]['layers'][lkey]['type']){
+							
+							var action_string = [];
+							action_string = t.get_action_string_dependencies(import_slides[im_slider_id][key]['layers'][lkey], im_slide_id, action_string, import_slides[im_slider_id][key]['layers']);
+							
+							var has_action = 'off';
+							if(typeof(import_slides[im_slider_id][key]['layers'][lkey]['layer_action']) !== 'undefined' && typeof(import_slides[im_slider_id][key]['layers'][lkey]['layer_action']['action']) !== 'undefined' && import_slides[im_slider_id][key]['layers'][lkey]['layer_action']['action'].length > 0){
+								for(var akey in import_slides[im_slider_id][key]['layers'][lkey]['layer_action']['action']){
+									switch(import_slides[im_slider_id][key]['layers'][lkey]['layer_action']['action'][akey]){
+										case 'start_in':
+										case 'start_out':
+										case 'toggle_layer':
+										case 'start_video':
+										case 'stop_video':
+										case 'toggle_video':
+										case 'mute_video':
+										case 'unmute_video':
+										case 'toggle_mute_video':
+										case 'simulate_click':
+										case 'toggle_class':
+											action_string.push(import_slides[im_slider_id][key]['layers'][lkey]['layer_action']['layer_target'][akey]);
+										break;
+									}
+								}
+								has_action = 'on';
+							}
+							
+							var content = global_layer_import_template({
+								'withaction': has_action,
+								'action_layers': action_string,
+								'type': import_slides[im_slider_id][key]['layers'][lkey]['type'],
+								'alias': import_slides[im_slider_id][key]['layers'][lkey]['alias'],
+								'width': import_slides[im_slider_id][key]['layers'][lkey]['width'],
+								'height': import_slides[im_slider_id][key]['layers'][lkey]['height'],
+								'unique_id': import_slides[im_slider_id][key]['layers'][lkey]['unique_id'],
+								'slider_id': im_slider_id,
+								'slide_id': key
+							});
+							
+							jQuery('#rs-import-layer-holder').append(content);
+						}
+					}
+				}
+			}
+			
+		}
+		
+		
+		t.get_action_string_dependencies = function(layer, slide_id, action_string, layers){
+			
+			if(typeof(layer['layer_action']) !== 'undefined' && typeof(layer['layer_action']['action']) !== 'undefined' && layer['layer_action']['action'].length > 0){
+				for(var akey in layer['layer_action']['action']){
+					switch(layer['layer_action']['action'][akey]){
+						case 'start_in':
+						case 'start_out':
+						case 'toggle_layer':
+						case 'start_video':
+						case 'stop_video':
+						case 'toggle_video':
+						case 'mute_video':
+						case 'unmute_video':
+						case 'toggle_mute_video':
+						case 'simulate_click':
+						case 'toggle_class':
+							if(typeof(layer['layer_action']['layer_target']) !== 'undefined' && typeof(layer['layer_action']['layer_target'][akey]) !== 'undefined' && layer['layer_action']['layer_target'][akey] !== 'backgroundvideo' && layer['layer_action']['layer_target'][akey] !== 'firstvideo' && jQuery.inArray(layer['layer_action']['layer_target'][akey], action_string) == -1){
+								action_string.push(layer['layer_action']['layer_target'][akey]);
+								
+								for(var lkey in layers){
+									if(layers[lkey]['unique_id'] == layer['layer_action']['layer_target'][akey]){
+										
+										var new_action = t.get_action_string_dependencies(layers[lkey], slide_id, action_string, layers);
+										for(var key in new_action){
+											if(jQuery.inArray(new_action[key], action_string) == -1) action_string.push(new_action[key]);
+										}
+										break;
+									}
+								}
+
+							}
+						break;
+					}
+				}
+			}
+			
+			return action_string;
+		}
 		
 		jQuery('body').on('click', '.addbutton-examples-wrapper a.rev-btn', function(){
 			//get values for buttons
@@ -2493,23 +3342,7 @@ var UniteLayersRev = new function(){
 		});
 		
 		
-		//change image source actions
-		jQuery('#button_change_image_source').click(function(){
-			
-			jQuery('#layer-short-toolbar').appendTo(jQuery('#layer-settings-toolbar-bottom'));
-			jQuery('#layer_text_wrapper').appendTo(jQuery('#layer_text_holder'));
-			UniteAdminRev.openAddImageDialog(rev_lang.select_layer_image,function(urlImage){
-				var objData = {};
-				objData.image_url = urlImage;
-
-				updateCurrentLayer(objData);
-				jQuery('#layer-short-toolbar').appendTo(jQuery('#layer-settings-toolbar-bottom'));
-				jQuery('#layer_text_wrapper').appendTo(jQuery('#layer_text_holder'));
-				redrawLayerHtml(selectedLayerSerial);
-				jQuery('#layer-short-toolbar').appendTo('.slide_layer.layer_selected');										
-			});
-			jQuery('#layer-short-toolbar').appendTo('.slide_layer.layer_selected');			
-		});
+		
 		
 
 		//insert button link - open the dialog
@@ -2522,7 +3355,7 @@ var UniteLayersRev = new function(){
 			var buttons = {"Cancel":function(){jQuery("#dialog_template_insert").dialog("close")}}
 			jQuery("#dialog_template_insert").dialog({
 				buttons:buttons,
-				minWidth:500,
+				minWidth:700,
 				dialogClass:"tpdialogs",
 				modal:true
 			});
@@ -2537,27 +3370,14 @@ var UniteLayersRev = new function(){
 			var buttons = {"Cancel":function(){jQuery("#dialog_template_insert").dialog("close")}}
 			jQuery("#dialog_template_insert").dialog({
 				buttons:buttons,
-				minWidth:500,
+				minWidth:700,
 				dialogClass:"tpdialogs",
 				modal:true
 			});
 
 		});
 
-		//delete layer actions:
-		jQuery("#button_delete_layer").click(function(){
-			if(jQuery(this).hasClass("button-disabled")) return(false);
-			//delete selected layer
-			deleteCurrentLayer();
-		});
-
-		//delete layer actions:
-		jQuery("#button_duplicate_layer").click(function(){
-			if(jQuery(this).hasClass("button-disabled")) return(false);
-			//duplicate selected layer			
-			duplicateCurrentLayer();			
-			return false;
-		});
+		
 		
 	}
 
@@ -2575,7 +3395,7 @@ var UniteLayersRev = new function(){
 		if(what == 'start'){
 			customAnim['movex'] = jQuery('input[name="layer_anim_xstart"]').val();
 			customAnim['movey'] = jQuery('input[name="layer_anim_ystart"]').val();
-			customAnim['mask'] = jQuery('input[name="masking-start"]').is(':checked');
+			customAnim['mask'] = jQuery('#masking-start')[0].checked;
 			customAnim['movez'] = jQuery('input[name="layer_anim_zstart"]').val();
 			customAnim['rotationx'] = jQuery('input[name="layer_anim_xrotate"]').val();
 			customAnim['rotationy'] = jQuery('input[name="layer_anim_yrotate"]').val();
@@ -2585,7 +3405,7 @@ var UniteLayersRev = new function(){
 			customAnim['skewx'] = jQuery('input[name="layer_skew_xstart"]').val();
 			customAnim['skewy'] = jQuery('input[name="layer_skew_ystart"]').val();
 			customAnim['captionopacity'] = jQuery('input[name="layer_opacity_start"]').val();
-			customAnim['mask'] = jQuery('input[name="masking-start"]').is(':checked');
+			customAnim['mask'] = jQuery('#masking-start')[0].checked;
 			customAnim['mask_x'] = jQuery('input[name="mask_anim_xstart"]').val();
 			customAnim['mask_y'] = jQuery('input[name="mask_anim_ystart"]').val();
 			customAnim['mask_ease'] = jQuery('input[name="mask_easing"]').val();
@@ -2595,51 +3415,51 @@ var UniteLayersRev = new function(){
 			customAnim['split'] = jQuery('select[name="layer_split"] option:selected').val();
 			customAnim['splitdelay'] = jQuery('input[name="layer_splitdelay"]').val();
 			
-			customAnim['movex_reverse'] = jQuery('input[name="layer_anim_xstart_reverse"]').is(':checked');
-			customAnim['movey_reverse'] = jQuery('input[name="layer_anim_ystart_reverse"]').is(':checked');
-			customAnim['rotationx_reverse'] = jQuery('input[name="layer_anim_xrotate_reverse"]').is(':checked');
-			customAnim['rotationy_reverse'] = jQuery('input[name="layer_anim_yrotate_reverse"]').is(':checked');
-			customAnim['rotationz_reverse'] = jQuery('input[name="layer_anim_zrotate_reverse"]').is(':checked');
-			customAnim['scalex_reverse'] = jQuery('input[name="layer_scale_xstart_reverse"]').is(':checked');
-			customAnim['scaley_reverse'] = jQuery('input[name="layer_scale_ystart_reverse"]').is(':checked');
-			customAnim['skewx_reverse'] = jQuery('input[name="layer_skew_xstart_reverse"]').is(':checked');
-			customAnim['skewy_reverse'] = jQuery('input[name="layer_skew_ystart_reverse"]').is(':checked');
-			customAnim['mask_x_reverse'] = jQuery('input[name="mask_anim_xstart_reverse"]').is(':checked');
-			customAnim['mask_y_reverse'] = jQuery('input[name="mask_anim_ystart_reverse"]').is(':checked');
+			customAnim['movex_reverse'] = jQuery('#layer_anim_xstart_reverse')[0].checked;
+			customAnim['movey_reverse'] = jQuery('#layer_anim_ystart_reverse')[0].checked;
+			customAnim['rotationx_reverse'] = jQuery('#layer_anim_xrotate_reverse')[0].checked;
+			customAnim['rotationy_reverse'] = jQuery('#layer_anim_yrotate_reverse')[0].checked;
+			customAnim['rotationz_reverse'] = jQuery('#layer_anim_zrotate_reverse')[0].checked;
+			customAnim['scalex_reverse'] = jQuery('#layer_scale_xstart_reverse')[0].checked;
+			customAnim['scaley_reverse'] = jQuery('#layer_scale_ystart_reverse')[0].checked;
+			customAnim['skewx_reverse'] = jQuery('#layer_skew_xstart_reverse')[0].checked;
+			customAnim['skewy_reverse'] = jQuery('#layer_skew_ystart_reverse')[0].checked;
+			customAnim['mask_x_reverse'] = jQuery('#mask_anim_xstart_reverse')[0].checked;
+			customAnim['mask_y_reverse'] = jQuery('#mask_anim_ystart_reverse')[0].checked;
 			
 		}else{
-			customAnim['movex'] = jQuery('input[name="layer_anim_xend"]').val();
-			customAnim['movey'] = jQuery('input[name="layer_anim_yend"]').val();
-			customAnim['movez'] = jQuery('input[name="layer_anim_zend"]').val();
-			customAnim['rotationx'] = jQuery('input[name="layer_anim_xrotate_end"]').val();
-			customAnim['rotationy'] = jQuery('input[name="layer_anim_yrotate_end"]').val();
-			customAnim['rotationz'] = jQuery('input[name="layer_anim_zrotate_end"]').val();
-			customAnim['scalex'] = jQuery('input[name="layer_scale_xend"]').val();
-			customAnim['scaley'] = jQuery('input[name="layer_scale_yend"]').val();
-			customAnim['skewx'] = jQuery('input[name="layer_skew_xend"]').val();
-			customAnim['skewy'] = jQuery('input[name="layer_skew_yend"]').val();
-			customAnim['captionopacity'] = jQuery('input[name="layer_opacity_end"]').val();
-			customAnim['mask'] = jQuery('input[name="masking-end"]').is(':checked');
-			customAnim['mask_x'] = jQuery('input[name="mask_anim_xend"]').val();
-			customAnim['mask_y'] = jQuery('input[name="mask_anim_yend"]').val();
-			customAnim['mask_ease'] = jQuery('input[name="mask_easing_end"]').val();
-			customAnim['mask_speed'] = jQuery('input[name="mask_speed_end"]').val();
-			customAnim['easing'] = jQuery('select[name="layer_endeasing"] option:selected').val();
-			customAnim['speed'] = jQuery('input[name="layer_endspeed"]').val();
-			customAnim['split'] = jQuery('select[name="layer_endsplit"] option:selected').val();
-			customAnim['splitdelay'] = jQuery('input[name="layer_endsplitdelay"]').val();
+			customAnim['movex'] = jQuery('#layer_anim_xend').val();
+			customAnim['movey'] = jQuery('#layer_anim_yend').val();
+			customAnim['movez'] = jQuery('#layer_anim_zend').val();
+			customAnim['rotationx'] = jQuery('#layer_anim_xrotate_end').val();
+			customAnim['rotationy'] = jQuery('#layer_anim_yrotate_end').val();
+			customAnim['rotationz'] = jQuery('#layer_anim_zrotate_end').val();
+			customAnim['scalex'] = jQuery('#layer_scale_xend').val();
+			customAnim['scaley'] = jQuery('#layer_scale_yend').val();
+			customAnim['skewx'] = jQuery('#layer_skew_xend').val();
+			customAnim['skewy'] = jQuery('#layer_skew_yend').val();
+			customAnim['captionopacity'] = jQuery('#layer_opacity_end').val();
+			customAnim['mask'] = jQuery('#masking-end')[0].checked;
+			customAnim['mask_x'] = jQuery('#mask_anim_xend').val();
+			customAnim['mask_y'] = jQuery('#mask_anim_yend').val();
+			//customAnim['mask_ease'] = jQuery('input[name="mask_easing_end"]').val();
+			//customAnim['mask_speed'] = jQuery('input[name="mask_speed_end"]').val();
+			customAnim['easing'] = jQuery('#layer_endeasing option:selected').val();
+			customAnim['speed'] = jQuery('#layer_endspeed').val();
+			customAnim['split'] = jQuery('#layer_endsplit option:selected').val();
+			customAnim['splitdelay'] = jQuery('#layer_endsplitdelay').val();
 			
-			customAnim['movex_reverse'] = jQuery('input[name="layer_anim_xend_reverse"]').is(':checked');
-			customAnim['movey_reverse'] = jQuery('input[name="layer_anim_yend_reverse"]').is(':checked');
-			customAnim['rotationx_reverse'] = jQuery('input[name="layer_anim_xrotate_end_reverse"]').is(':checked');
-			customAnim['rotationy_reverse'] = jQuery('input[name="layer_anim_yrotate_end_reverse"]').is(':checked');
-			customAnim['rotationz_reverse'] = jQuery('input[name="layer_anim_zrotate_end_reverse"]').is(':checked');
-			customAnim['scalex_reverse'] = jQuery('input[name="layer_scale_xend_reverse"]').is(':checked');
-			customAnim['scaley_reverse'] = jQuery('input[name="layer_scale_yend_reverse"]').is(':checked');
-			customAnim['skewx_reverse'] = jQuery('input[name="layer_skew_xend_reverse"]').is(':checked');
-			customAnim['skewy_reverse'] = jQuery('input[name="layer_skew_yend_reverse"]').is(':checked');
-			customAnim['mask_x_reverse'] = jQuery('input[name="mask_anim_xend_reverse"]').is(':checked');
-			customAnim['mask_y_reverse'] = jQuery('input[name="mask_anim_xend_reverse"]').is(':checked');
+			customAnim['movex_reverse'] = jQuery('#layer_anim_xend_reverse')[0].checked;
+			customAnim['movey_reverse'] = jQuery('#layer_anim_yend_reverse')[0].checked;
+			customAnim['rotationx_reverse'] = jQuery('#layer_anim_xrotate_end_reverse')[0].checked;
+			customAnim['rotationy_reverse'] = jQuery('#layer_anim_yrotate_end_reverse')[0].checked;
+			customAnim['rotationz_reverse'] = jQuery('#layer_anim_zrotate_end_reverse')[0].checked;
+			customAnim['scalex_reverse'] = jQuery('#layer_scale_xend_reverse')[0].checked;
+			customAnim['scaley_reverse'] = jQuery('#layer_scale_yend_reverse')[0].checked;
+			customAnim['skewx_reverse'] = jQuery('#layer_skew_xend_reverse')[0].checked;
+			customAnim['skewy_reverse'] = jQuery('#layer_skew_yend_reverse')[0].checked;
+			customAnim['mask_x_reverse'] = jQuery('#mask_anim_xend_reverse')[0].checked;
+			customAnim['mask_y_reverse'] = jQuery('#mask_anim_xend_reverse')[0].checked;
 		}
 		return customAnim;
 
@@ -2665,7 +3485,7 @@ var UniteLayersRev = new function(){
 			if(obj_v['skewx'] !== undefined) { jQuery('input[name="layer_skew_xstart"]').val(obj_v['skewx']); }else{ jQuery('input[name="layer_skew_xstart"]').val(0); }
 			if(obj_v['skewy'] !== undefined) { jQuery('input[name="layer_skew_ystart"]').val(obj_v['skewy']); }else{ jQuery('input[name="layer_skew_ystart"]').val(0); }
 			if(obj_v['captionopacity'] !== undefined) { jQuery('input[name="layer_opacity_start"]').val(obj_v['captionopacity']); }else{ jQuery('input[name="layer_opacity_start"]').val(0); }
-			if(obj_v['mask'] !== undefined && (obj_v['mask'] == 'true' || obj_v['mask'] == true)) { jQuery('input[name="masking-start"]').attr('checked', true); }else{ jQuery('input[name="masking-start"]').attr('checked', false); }
+			if(obj_v['mask'] !== undefined && (obj_v['mask'] == 'true' || obj_v['mask'] == true)) { jQuery('#masking-start').attr('checked', true); }else{ jQuery('#masking-start').attr('checked', false); }
 			if(obj_v['mask_x'] !== undefined) { jQuery('input[name="mask_anim_xstart"]').val(obj_v['mask_x']); }else{ jQuery('input[name="mask_anim_xstart"]').val(0); }
 			if(obj_v['mask_y'] !== undefined) { jQuery('input[name="mask_anim_ystart"]').val(obj_v['mask_y']); }else{ jQuery('input[name="mask_anim_ystart"]').val(0); }
 			if(obj_v['mask_ease'] !== undefined) { jQuery('input[name="mask_easing"]').val(obj_v['mask_ease']); }else{ jQuery('input[name="mask_easing"]').val(0); }
@@ -2678,52 +3498,52 @@ var UniteLayersRev = new function(){
 			
 
 
-			if(obj_v['movex_reverse'] !== undefined && (obj_v['movex_reverse'] == 'true' || obj_v['movex_reverse'] == true)) { jQuery('input[name="layer_anim_xstart_reverse"]').attr('checked', true); }else{ jQuery('input[name="layer_anim_xstart_reverse"]').attr('checked', false); }
-			if(obj_v['movey_reverse'] !== undefined && (obj_v['movey_reverse'] == 'true' || obj_v['movey_reverse'] == true)) { jQuery('input[name="layer_anim_ystart_reverse"]').attr('checked', true); }else{ jQuery('input[name="layer_anim_ystart_reverse"]').attr('checked', false); }
+			if(obj_v['movex_reverse'] !== undefined && (obj_v['movex_reverse'] == 'true' || obj_v['movex_reverse'] == true)) { jQuery('#layer_anim_xstart_reverse').attr('checked', true); }else{ jQuery('#layer_anim_xstart_reverse').attr('checked', false); }
+			if(obj_v['movey_reverse'] !== undefined && (obj_v['movey_reverse'] == 'true' || obj_v['movey_reverse'] == true)) { jQuery('#layer_anim_ystart_reverse').attr('checked', true); }else{ jQuery('#layer_anim_ystart_reverse').attr('checked', false); }
 			if(obj_v['rotationx_reverse'] !== undefined && (obj_v['rotationx_reverse'] == 'true' || obj_v['rotationx_reverse'] == true)) { jQuery('input[name="layer_anim_xrotate_start_reverse"]').attr('checked', true); }else{ jQuery('input[name="layer_anim_xrotate_start_reverse"]').attr('checked', false); }
 			if(obj_v['rotationy_reverse'] !== undefined && (obj_v['rotationy_reverse'] == 'true' || obj_v['rotationy_reverse'] == true)) { jQuery('input[name="layer_anim_yrotate_start_reverse"]').attr('checked', true); }else{ jQuery('input[name="layer_anim_yrotate_start_reverse"]').attr('checked', false); }
 			if(obj_v['rotationz_reverse'] !== undefined && (obj_v['rotationz_reverse'] == 'true' || obj_v['rotationz_reverse'] == true)) { jQuery('input[name="layer_anim_zrotate_start_reverse"]').attr('checked', true); }else{ jQuery('input[name="layer_anim_zrotate_start_reverse"]').attr('checked', false); }
-			if(obj_v['scalex_reverse'] !== undefined && (obj_v['scalex_reverse'] == 'true' || obj_v['scalex_reverse'] == true)) { jQuery('input[name="layer_scale_xstart_reverse"]').attr('checked', true); }else{ jQuery('input[name="layer_scale_xstart_reverse"]').attr('checked', false); }
-			if(obj_v['scaley_reverse'] !== undefined && (obj_v['scaley_reverse'] == 'true' || obj_v['scaley_reverse'] == true)) { jQuery('input[name="layer_scale_ystart_reverse"]').attr('checked', true); }else{ jQuery('input[name="layer_scale_ystart_reverse"]').attr('checked', false); }
-			if(obj_v['skewx_reverse'] !== undefined && (obj_v['skewx_reverse'] == 'true' || obj_v['skewx_reverse'] == true)) { jQuery('input[name="layer_skew_xstart_reverse"]').attr('checked', true); }else{ jQuery('input[name="layer_skew_xstart_reverse"]').attr('checked', false); }
-			if(obj_v['skewy_reverse'] !== undefined && (obj_v['skewy_reverse'] == 'true' || obj_v['skewy_reverse'] == true)) { jQuery('input[name="layer_skew_ystart_reverse"]').attr('checked', true); }else{ jQuery('input[name="layer_skew_ystart_reverse"]').attr('checked', false); }
-			if(obj_v['mask_x_reverse'] !== undefined && (obj_v['mask_x_reverse'] == 'true' || obj_v['mask_x_reverse'] == true)) { jQuery('input[name="mask_anim_xstart_reverse"]').attr('checked', true); }else{ jQuery('input[name="mask_anim_xstart_reverse"]').attr('checked', false); }
-			if(obj_v['mask_y_reverse'] !== undefined && (obj_v['mask_y_reverse'] == 'true' || obj_v['mask_y_reverse'] == true)) { jQuery('input[name="mask_anim_ystart_reverse"]').attr('checked', true); }else{ jQuery('input[name="mask_anim_ystart_reverse"]').attr('checked', false); }
+			if(obj_v['scalex_reverse'] !== undefined && (obj_v['scalex_reverse'] == 'true' || obj_v['scalex_reverse'] == true)) { jQuery('#layer_scale_xstart_reverse').attr('checked', true); }else{ jQuery('#layer_scale_xstart_reverse').attr('checked', false); }
+			if(obj_v['scaley_reverse'] !== undefined && (obj_v['scaley_reverse'] == 'true' || obj_v['scaley_reverse'] == true)) { jQuery('#layer_scale_ystart_reverse').attr('checked', true); }else{ jQuery('#layer_scale_ystart_reverse').attr('checked', false); }
+			if(obj_v['skewx_reverse'] !== undefined && (obj_v['skewx_reverse'] == 'true' || obj_v['skewx_reverse'] == true)) { jQuery('#layer_skew_xstart_reverse').attr('checked', true); }else{ jQuery('#layer_skew_xstart_reverse').attr('checked', false); }
+			if(obj_v['skewy_reverse'] !== undefined && (obj_v['skewy_reverse'] == 'true' || obj_v['skewy_reverse'] == true)) { jQuery('#layer_skew_ystart_reverse').attr('checked', true); }else{ jQuery('#layer_skew_ystart_reverse').attr('checked', false); }
+			if(obj_v['mask_x_reverse'] !== undefined && (obj_v['mask_x_reverse'] == 'true' || obj_v['mask_x_reverse'] == true)) { jQuery('#mask_anim_xstart_reverse').attr('checked', true); }else{ jQuery('#mask_anim_xstart_reverse').attr('checked', false); }
+			if(obj_v['mask_y_reverse'] !== undefined && (obj_v['mask_y_reverse'] == 'true' || obj_v['mask_y_reverse'] == true)) { jQuery('#mask_anim_ystart_reverse').attr('checked', true); }else{ jQuery('#mask_anim_ystart_reverse').attr('checked', false); }
 					
 		}else{
-			if(obj_v['movex'] !== undefined) { jQuery('input[name="layer_anim_xend"]').val(obj_v['movex']); }else{ jQuery('input[name="layer_anim_xend"]').val(0); }
-			if(obj_v['movey'] !== undefined) { jQuery('input[name="layer_anim_yend"]').val(obj_v['movey']); }else{ jQuery('input[name="layer_anim_yend"]').val(0); }
-			if(obj_v['movez'] !== undefined) { jQuery('input[name="layer_anim_zend"]').val(obj_v['movez']); }else{ jQuery('input[name="layer_anim_zend"]').val(0); }
-			if(obj_v['rotationx'] !== undefined) { jQuery('input[name="layer_anim_xrotate_end"]').val(obj_v['rotationx']); }else{ jQuery('input[name="layer_anim_xrotate_end"]').val(0); }
-			if(obj_v['rotationy'] !== undefined) { jQuery('input[name="layer_anim_yrotate_end"]').val(obj_v['rotationy']); }else{ jQuery('input[name="layer_anim_yrotate_end"]').val(0); }
-			if(obj_v['rotationz'] !== undefined) { jQuery('input[name="layer_anim_zrotate_end"]').val(obj_v['rotationz']); }else{ jQuery('input[name="layer_anim_zrotate_end"]').val(0); }
-			if(obj_v['scalex'] !== undefined) { jQuery('input[name="layer_scale_xend"]').val(obj_v['scalex']); }else{ jQuery('input[name="layer_scale_xend"]').val(0); }
-			if(obj_v['scaley'] !== undefined) { jQuery('input[name="layer_scale_yend"]').val(obj_v['scaley']); }else{ jQuery('input[name="layer_scale_yend"]').val(0); }
-			if(obj_v['skewx'] !== undefined) { jQuery('input[name="layer_skew_xend"]').val(obj_v['skewx']); }else{ jQuery('input[name="layer_skew_xend"]').val(0); }
-			if(obj_v['skewy'] !== undefined) { jQuery('input[name="layer_skew_yend"]').val(obj_v['skewy']); }else{ jQuery('input[name="layer_skew_yend"]').val(0); }
-			if(obj_v['captionopacity'] !== undefined) { jQuery('input[name="layer_opacity_end"]').val(obj_v['captionopacity']); }else{ jQuery('input[name="layer_opacity_end"]').val(0); }
-			if(obj_v['mask'] !== undefined && (obj_v['mask'] == 'true' || obj_v['mask'] == true)) { jQuery('input[name="masking-end"]').attr('checked', true); }else{ jQuery('input[name="masking-end"]').attr('checked', false); }
-			if(obj_v['mask_x'] !== undefined) { jQuery('input[name="mask_anim_xend"]').val(obj_v['mask_x']); }else{ jQuery('input[name="mask_anim_xend"]').val(0); }
-			if(obj_v['mask_y'] !== undefined) { jQuery('input[name="mask_anim_yend"]').val(obj_v['mask_y']); }else{ jQuery('input[name="mask_anim_yend"]').val(0); }
-			if(obj_v['mask_ease'] !== undefined) { jQuery('input[name="mask_easing_end"]').val(obj_v['mask_ease']); }else{ jQuery('input[name="mask_easing_end"]').val(0); }
-			if(obj_v['mask_speed'] !== undefined) { jQuery('input[name="mask_speed_end"]').val(obj_v['mask_speed']); }else{ jQuery('input[name="mask_speed_end"]').val(0); }
+			if(obj_v['movex'] !== undefined) { jQuery('#layer_anim_xend').val(obj_v['movex']); }else{ jQuery('#layer_anim_xend').val(0); }
+			if(obj_v['movey'] !== undefined) { jQuery('#layer_anim_yend').val(obj_v['movey']); }else{ jQuery('#layer_anim_yend').val(0); }
+			if(obj_v['movez'] !== undefined) { jQuery('#layer_anim_zend').val(obj_v['movez']); }else{ jQuery('#layer_anim_zend').val(0); }
+			if(obj_v['rotationx'] !== undefined) { jQuery('#layer_anim_xrotate_end').val(obj_v['rotationx']); }else{ jQuery('#layer_anim_xrotate_end').val(0); }
+			if(obj_v['rotationy'] !== undefined) { jQuery('#layer_anim_yrotate_end').val(obj_v['rotationy']); }else{ jQuery('#layer_anim_yrotate_end').val(0); }
+			if(obj_v['rotationz'] !== undefined) { jQuery('#layer_anim_zrotate_end').val(obj_v['rotationz']); }else{ jQuery('#layer_anim_zrotate_end').val(0); }
+			if(obj_v['scalex'] !== undefined) { jQuery('#layer_scale_xend').val(obj_v['scalex']); }else{ jQuery('#layer_scale_xend').val(0); }
+			if(obj_v['scaley'] !== undefined) { jQuery('#layer_scale_yend').val(obj_v['scaley']); }else{ jQuery('#layer_scale_yend').val(0); }
+			if(obj_v['skewx'] !== undefined) { jQuery('#layer_skew_xend').val(obj_v['skewx']); }else{ jQuery('#layer_skew_xend').val(0); }
+			if(obj_v['skewy'] !== undefined) { jQuery('#layer_skew_yend').val(obj_v['skewy']); }else{ jQuery('#layer_skew_yend').val(0); }
+			if(obj_v['captionopacity'] !== undefined) { jQuery('#layer_opacity_end').val(obj_v['captionopacity']); }else{ jQuery('#layer_opacity_end').val(0); }
+			if(obj_v['mask'] !== undefined && (obj_v['mask'] == 'true' || obj_v['mask'] == true)) { jQuery('#masking-end').attr('checked', true); }else{ jQuery('#masking-end').attr('checked', false); }
+			if(obj_v['mask_x'] !== undefined) { jQuery('#mask_anim_xend').val(obj_v['mask_x']); }else{ jQuery('#mask_anim_xend').val(0); }
+			if(obj_v['mask_y'] !== undefined) { jQuery('#mask_anim_yend').val(obj_v['mask_y']); }else{ jQuery('#mask_anim_yend').val(0); }
+			//if(obj_v['mask_ease'] !== undefined) { jQuery('input[name="mask_easing_end"]').val(obj_v['mask_ease']); }else{ jQuery('input[name="mask_easing_end"]').val(0); }
+			//if(obj_v['mask_speed'] !== undefined) { jQuery('input[name="mask_speed_end"]').val(obj_v['mask_speed']); }else{ jQuery('input[name="mask_speed_end"]').val(0); }
 			
-			if(obj_v['easing'] !== undefined) { jQuery('select[name="layer_endeasing"] option[value="'+obj_v['easing']+'"]').attr('selected', 'selected'); }
-			if(obj_v['speed'] !== undefined) { jQuery('input[name="layer_endspeed"]').val(obj_v['speed']); }
-			if(obj_v['split'] !== undefined) { jQuery('select[name="layer_endsplit"] option[value="'+obj_v['split']+'"]').attr('selected', 'selected'); }
-			if(obj_v['splitdelay'] !== undefined) { jQuery('input[name="layer_endsplitdelay"]').val(obj_v['splitdelay']); }
+			if(obj_v['easing'] !== undefined) { jQuery('#layer_endeasing option[value="'+obj_v['easing']+'"]').attr('selected', 'selected'); }
+			if(obj_v['speed'] !== undefined) { jQuery('#layer_endspeed').val(obj_v['speed']); }
+			if(obj_v['split'] !== undefined) { jQuery('#layer_endsplit option[value="'+obj_v['split']+'"]').attr('selected', 'selected'); }
+			if(obj_v['splitdelay'] !== undefined) { jQuery('#layer_endsplitdelay').val(obj_v['splitdelay']); }
 			
-			if(obj_v['movex_reverse'] !== undefined && (obj_v['movex_reverse'] == 'true' || obj_v['movex_reverse'] == true)) { jQuery('input[name="layer_anim_xend_reverse"]').attr('checked', true); }else{ jQuery('input[name="layer_anim_xend_reverse"]').attr('checked', false); }
-			if(obj_v['movey_reverse'] !== undefined && (obj_v['movey_reverse'] == 'true' || obj_v['movey_reverse'] == true)) { jQuery('input[name="layer_anim_yend_reverse"]').attr('checked', true); }else{ jQuery('input[name="layer_anim_yend_reverse"]').attr('checked', false); }
-			if(obj_v['rotationx_reverse'] !== undefined && (obj_v['rotationx_reverse'] == 'true' || obj_v['rotationx_reverse'] == true)) { jQuery('input[name="layer_anim_xrotate_end_reverse"]').attr('checked', true); }else{ jQuery('input[name="layer_anim_xrotate_end_reverse"]').attr('checked', false); }
-			if(obj_v['rotationy_reverse'] !== undefined && (obj_v['rotationy_reverse'] == 'true' || obj_v['rotationy_reverse'] == true)) { jQuery('input[name="layer_anim_yrotate_end_reverse"]').attr('checked', true); }else{ jQuery('input[name="layer_anim_yrotate_end_reverse"]').attr('checked', false); }
-			if(obj_v['rotationz_reverse'] !== undefined && (obj_v['rotationz_reverse'] == 'true' || obj_v['rotationz_reverse'] == true)) { jQuery('input[name="layer_anim_zrotate_end_reverse"]').attr('checked', true); }else{ jQuery('input[name="layer_anim_zrotate_end_reverse"]').attr('checked', false); }
-			if(obj_v['scalex_reverse'] !== undefined && (obj_v['scalex_reverse'] == 'true' || obj_v['scalex_reverse'] == true)) { jQuery('input[name="layer_scale_xend_reverse"]').attr('checked', true); }else{ jQuery('input[name="layer_scale_xend_reverse"]').attr('checked', false); }
-			if(obj_v['scaley_reverse'] !== undefined && (obj_v['scaley_reverse'] == 'true' || obj_v['scaley_reverse'] == true)) { jQuery('input[name="layer_scale_yend_reverse"]').attr('checked', true); }else{ jQuery('input[name="layer_scale_yend_reverse"]').attr('checked', false); }
-			if(obj_v['skewx_reverse'] !== undefined && (obj_v['skewx_reverse'] == 'true' || obj_v['skewx_reverse'] == true)) { jQuery('input[name="layer_skew_xend_reverse"]').attr('checked', true); }else{ jQuery('input[name="layer_skew_xend_reverse"]').attr('checked', false); }
-			if(obj_v['skewy_reverse'] !== undefined && (obj_v['skewy_reverse'] == 'true' || obj_v['skewy_reverse'] == true)) { jQuery('input[name="layer_skew_yend_reverse"]').attr('checked', true); }else{ jQuery('input[name="layer_skew_yend_reverse"]').attr('checked', false); }
-			if(obj_v['mask_x_reverse'] !== undefined && (obj_v['mask_x_reverse'] == 'true' || obj_v['mask_x_reverse'] == true)) { jQuery('input[name="mask_anim_xend_reverse"]').attr('checked', true); }else{ jQuery('input[name="mask_anim_xend_reverse"]').attr('checked', false); }
-			if(obj_v['mask_y_reverse'] !== undefined && (obj_v['mask_y_reverse'] == 'true' || obj_v['mask_y_reverse'] == true)) { jQuery('input[name="mask_anim_yend_reverse"]').attr('checked', true); }else{ jQuery('input[name="mask_anim_yend_reverse"]').attr('checked', false); }
+			if(obj_v['movex_reverse'] !== undefined && (obj_v['movex_reverse'] == 'true' || obj_v['movex_reverse'] == true)) { jQuery('#layer_anim_xend_reverse').attr('checked', true); }else{ jQuery('#layer_anim_xend_reverse').attr('checked', false); }
+			if(obj_v['movey_reverse'] !== undefined && (obj_v['movey_reverse'] == 'true' || obj_v['movey_reverse'] == true)) { jQuery('#layer_anim_yend_reverse').attr('checked', true); }else{ jQuery('#layer_anim_yend_reverse').attr('checked', false); }
+			if(obj_v['rotationx_reverse'] !== undefined && (obj_v['rotationx_reverse'] == 'true' || obj_v['rotationx_reverse'] == true)) { jQuery('#layer_anim_xrotate_end_reverse').attr('checked', true); }else{ jQuery('#layer_anim_xrotate_end_reverse').attr('checked', false); }
+			if(obj_v['rotationy_reverse'] !== undefined && (obj_v['rotationy_reverse'] == 'true' || obj_v['rotationy_reverse'] == true)) { jQuery('#layer_anim_yrotate_end_reverse').attr('checked', true); }else{ jQuery('#layer_anim_yrotate_end_reverse').attr('checked', false); }
+			if(obj_v['rotationz_reverse'] !== undefined && (obj_v['rotationz_reverse'] == 'true' || obj_v['rotationz_reverse'] == true)) { jQuery('#layer_anim_zrotate_end_reverse').attr('checked', true); }else{ jQuery('#layer_anim_zrotate_end_reverse').attr('checked', false); }
+			if(obj_v['scalex_reverse'] !== undefined && (obj_v['scalex_reverse'] == 'true' || obj_v['scalex_reverse'] == true)) { jQuery('#layer_scale_xend_reverse').attr('checked', true); }else{ jQuery('#layer_scale_xend_reverse').attr('checked', false); }
+			if(obj_v['scaley_reverse'] !== undefined && (obj_v['scaley_reverse'] == 'true' || obj_v['scaley_reverse'] == true)) { jQuery('#layer_scale_yend_reverse').attr('checked', true); }else{ jQuery('#layer_scale_yend_reverse').attr('checked', false); }
+			if(obj_v['skewx_reverse'] !== undefined && (obj_v['skewx_reverse'] == 'true' || obj_v['skewx_reverse'] == true)) { jQuery('#layer_skew_xend_reverse').attr('checked', true); }else{ jQuery('#layer_skew_xend_reverse').attr('checked', false); }
+			if(obj_v['skewy_reverse'] !== undefined && (obj_v['skewy_reverse'] == 'true' || obj_v['skewy_reverse'] == true)) { jQuery('#layer_skew_yend_reverse').attr('checked', true); }else{ jQuery('#layer_skew_yend_reverse').attr('checked', false); }
+			if(obj_v['mask_x_reverse'] !== undefined && (obj_v['mask_x_reverse'] == 'true' || obj_v['mask_x_reverse'] == true)) { jQuery('#mask_anim_xend_reverse').attr('checked', true); }else{ jQuery('#mask_anim_xend_reverse').attr('checked', false); }
+			if(obj_v['mask_y_reverse'] !== undefined && (obj_v['mask_y_reverse'] == 'true' || obj_v['mask_y_reverse'] == true)) { jQuery('#mask_anim_yend_reverse').attr('checked', true); }else{ jQuery('#mask_anim_yend_reverse').attr('checked', false); }
 			
 		}
 	
@@ -2733,27 +3553,28 @@ var UniteLayersRev = new function(){
 			jQuery('.mask-start-settings').hide();
 		}
 		
-		RevSliderSettings.onoffStatus(jQuery('input[name="masking-start"]'));
-		RevSliderSettings.onoffStatus(jQuery('input[name="masking-end"]'));
+		RevSliderSettings.onoffStatus(jQuery('#masking-start'));
+		RevSliderSettings.onoffStatus(jQuery('#masking-end'));
 		
 		t.updateReverseList();
 		
 	}
 
 
-	var checkMaskingAvailabity = function() {		
+	var checkMaskingAvailabity = function() {	
+	 
 		if (jQuery('#layer__scalex').val()!=1 || jQuery('#layer__scaley').val()!=1 ||
 			parseInt(jQuery('#layer__skewx').val(),0)!=0 || parseInt(jQuery('#layer__skewy').val(),0)!=0 ||
 			parseInt(jQuery('#layer__xrotate').val(),0)!=0 || parseInt(jQuery('#layer__yrotate').val(),0)!=0 || parseInt(jQuery('#layer_2d_rotation').val(),0)!=0) {
 				jQuery('.mask-not-available').show();
 				jQuery('.mask-is-available').hide();
-				jQuery('input[name="masking-start"]').removeAttr("checked");
-				jQuery('input[name="masking-end"]').removeAttr("checked");
+				jQuery('#masking-start').removeAttr("checked");
+				jQuery('#masking-end').removeAttr("checked");
 				jQuery('.mask-start-settings').hide();
 				jQuery('.mask-end-settings').hide();
 				jQuery('.tp-showmask').removeClass('tp-showmask');
-				RevSliderSettings.onoffStatus(jQuery('input[name="masking-start"]'));
-				RevSliderSettings.onoffStatus(jQuery('input[name="masking-end"]'));	
+				RevSliderSettings.onoffStatus(jQuery('#masking-start'));
+				RevSliderSettings.onoffStatus(jQuery('#masking-end'));	
 				u.rebuildLayerIdle(getjQueryLayer());
 				
 				t.updateLayerFromFields();
@@ -2763,6 +3584,7 @@ var UniteLayersRev = new function(){
 			jQuery('.mask-not-available').hide();
 			jQuery('.mask-is-available').show();
 		}
+		
 		
 	}
 
@@ -2806,7 +3628,6 @@ var UniteLayersRev = new function(){
 			var animSelect = (currentAnimationType == 'customin') ? jQuery('#layer_animation option') : jQuery('#layer_endanimation option');
 
 			UniteAdminRev.ajaxRequest("delete_custom_anim",handle,function(response){
-				jQuery("#dialog_success_message").show().html(response.message);
 
 				if(jQuery('#layer_animation option:selected') == handle || jQuery('#layer_animation option:selected') == handle.replace('customout', 'customin')){
 					jQuery('#layer_animation option[value="tp-fade"]').attr('selected', true);
@@ -2856,8 +3677,6 @@ var UniteLayersRev = new function(){
 		if(id === false){ //create new
 			//insert in database
 			UniteAdminRev.ajaxRequest("insert_custom_anim",animObj,function(response){
-				jQuery("#dialog_success_message").show().html(response.message);
-
 				//update html select (got from response)
 				t.updateInitLayerAnim(response.customfull);
 				updateLayerAnimsInput(response.customin, 'customin');
@@ -2870,13 +3689,12 @@ var UniteLayersRev = new function(){
 
 			//update to database
 			UniteAdminRev.ajaxRequest("update_custom_anim",animObj,function(response){
-				jQuery("#dialog_success_message").show().html(response.message);
 
 				//update html select (got from response)
 				t.updateInitLayerAnim(response.customfull);
 				updateLayerAnimsInput(response.customin, 'customin');
 				updateLayerAnimsInput(response.customout, 'customout');
-
+                
 				selectLayerAnim(handle);
 			});
 		}
@@ -2887,13 +3705,14 @@ var UniteLayersRev = new function(){
 	 */
 	var selectLayerAnim = function(handle){
 		
-		var animSelect = (currentAnimationType == 'customin') ? jQuery('#layer_animation option') : jQuery('#layer_endanimation option');
-		animSelect.each(function(){
+		var animSelectOption = (currentAnimationType == 'customin') ? jQuery('#layer_animation option') : jQuery('#layer_endanimation option');
+		animSelectOption.each(function(){
 			if(jQuery(this).text() == handle || jQuery(this).val() == handle)
 				jQuery(this).prop('selected', true);
 			else
 				jQuery(this).prop('selected', false);
 		});
+		var animSelect = (currentAnimationType == 'customin') ? jQuery('#layer_animation option:selected') : jQuery('#layer_endanimation option:selected');
 		animSelect.change();		
 	}
 
@@ -2957,13 +3776,13 @@ var UniteLayersRev = new function(){
 		jQuery(".form_layers")[0].reset();
 		jQuery(".form_layers input, .form_layers select, .form_layers textarea").attr("disabled", "disabled").addClass("setting-disabled");
 
-		jQuery("#button_delete_layer").addClass("button-disabled");
-		jQuery("#button_duplicate_layer").addClass("button-disabled");
+		jQuery("#button_delete_layer").addClass("button-now-disabled");
+		jQuery("#button_duplicate_layer").addClass("button-now-disabled");
 
 		jQuery(".form_layers label, .form_layers .setting_text, .form_layers .setting_unit").addClass("text-disabled");
 
 		jQuery("#layer_captions_down").removeClass("ui-state-active").addClass("ui-state-default");
-		jQuery("#font_family_down").removeClass("ui-state-active").addClass("ui-state-default");
+		jQuery("#css_fonts_down").removeClass("ui-state-active").addClass("ui-state-default");
 
 		
 		jQuery("#linkInsertTemplate").addClass("disabled");
@@ -2984,13 +3803,13 @@ var UniteLayersRev = new function(){
 		
 		jQuery(".form_layers input, .form_layers select, .form_layers textarea").not(".rs_disabled_field").removeAttr("disabled").removeClass("setting-disabled");
 
-		jQuery("#button_delete_layer").removeClass("button-disabled");
-		jQuery("#button_duplicate_layer").removeClass("button-disabled");
+		jQuery("#button_delete_layer").removeClass("button-now-disabled");
+		jQuery("#button_duplicate_layer").removeClass("button-now-disabled");
 
 		jQuery(".form_layers label, .form_layers .setting_text, .form_layers .setting_unit").removeClass("text-disabled");
 
 		jQuery("#layer_captions_down").removeClass("ui-state-default").addClass("ui-state-active");
-		jQuery("#font_family_down").removeClass("ui-state-default").addClass("ui-state-active");
+		jQuery("#css_fonts_down").removeClass("ui-state-default").addClass("ui-state-active");
 
 		
 		jQuery("#linkInsertTemplate").removeClass("disabled");
@@ -3060,8 +3879,8 @@ var UniteLayersRev = new function(){
 		//update layer events.
 		layer.draggable({
 					start:onLayerDragStart,
-					drag: onLayerDrag,				//set ondrag event
-					cancel:"#layer-short-toolbar, textbox, #layer_text, .layer_on_lock",
+					drag: t.onLayerDrag,				//set ondrag event
+					cancel:" textbox, #layer_text, .layer_on_lock",
 					grid: [grid_size,grid_size],
 					stop: onLayerDragEnd	
 				});
@@ -3070,7 +3889,7 @@ var UniteLayersRev = new function(){
 
 
 			//if (!u.isLayerLocked(serial)) {
-				
+				jQuery(':focus').blur();
 				t.setLayerSelected(serial);
 				event.stopPropagation();
 				// IF ANIMATION TAB IS VISIBLE, AND PLAY IS SELECTED, WE CAN ALLOW TO ANIMATE THE SINGLE LAYER
@@ -3198,6 +4017,18 @@ var UniteLayersRev = new function(){
 	}
 	
 	
+	/**
+	 * get unique ID by layer
+	 */
+	t.getUniqueIdByLayer = function(serial){
+		for(var key in arrLayers){
+			if(key == serial) return arrLayers[key]['unique_id'];
+		}
+		
+		return false;
+	}
+	
+	
 	
 	/**
 	 * get layer object by id
@@ -3215,7 +4046,7 @@ var UniteLayersRev = new function(){
 		
 		if(!layer){
 			return false;
-			UniteAdminRev.showErrorMessage("getLayer error, Layer with serial: "+serial+" not found");
+			//UniteAdminRev.showErrorMessage("getLayer error, Layer with serial: "+serial+" not found");
 		}else{
 			//modify some data
 			layer.speed = Number(layer.speed);
@@ -3231,8 +4062,8 @@ var UniteLayersRev = new function(){
 	t.getCurrentLayer = function(){
 		if(selectedLayerSerial == -1){
 			return false;
-			UniteAdminRev.showErrorMessage(rev_lang.sel_layer_not_set);
-			return(null);
+			//UniteAdminRev.showErrorMessage(rev_lang.sel_layer_not_set);
+			//return(null);
 		}
 		return t.getLayer(selectedLayerSerial);
 	}
@@ -3254,7 +4085,7 @@ var UniteLayersRev = new function(){
 			type = objLayer.type;
 
 
-		var zIndex = Number(objLayer.order)+1;
+		var zIndex = Number(objLayer.order)+100;
 
 		var style = "z-index:"+zIndex+";position:absolute;";
 		var stylerot ="";
@@ -3281,7 +4112,7 @@ var UniteLayersRev = new function(){
 		if(type == "image") style += "line-height:0;";
 
 		if(!isDemo){
-			var html = '<div id="slide_layer_' + serial + '" style="' + style + '" class="slide_layer"><div style="'+stylerot+'" class="innerslide_layer tp-caption '+objLayer.style+static_class+internal_class+'" >';
+			var html = '<div id="slide_layer_' + serial + '" data-type="'+type+'" style="' + style + '" class="slide_layer_type_'+type+' slide_layer"><div style="'+stylerot+'" class="innerslide_layer tp-caption '+objLayer.style+static_class+internal_class+'" >';
 		}else{
 			if(rev_adv_resp_sizes === true){
 
@@ -3507,36 +4338,36 @@ var UniteLayersRev = new function(){
 	t.updateReverseList = function() {
 		clearTimeout(updateRevTimer);
 		updateRevTimer =  setTimeout(function() {
-			RevSliderSettings.onoffStatus(jQuery('input[name="layer_anim_xstart_reverse"]'));
-			RevSliderSettings.onoffStatus(jQuery('input[name="layer_anim_ystart_reverse"]'));
-			RevSliderSettings.onoffStatus(jQuery('input[name="layer_anim_xrotate_reverse"]'));
-			RevSliderSettings.onoffStatus(jQuery('input[name="layer_anim_yrotate_reverse"]'));
-			RevSliderSettings.onoffStatus(jQuery('input[name="layer_anim_zrotate_reverse"]'));
-			RevSliderSettings.onoffStatus(jQuery('input[name="layer_scale_xstart_reverse"]'));
-			RevSliderSettings.onoffStatus(jQuery('input[name="layer_scale_ystart_reverse"]'));
-			RevSliderSettings.onoffStatus(jQuery('input[name="layer_skew_xstart_reverse"]'));
-			RevSliderSettings.onoffStatus(jQuery('input[name="layer_skew_ystart_reverse"]'));
-			RevSliderSettings.onoffStatus(jQuery('input[name="mask_anim_xstart_reverse"]'));
-			RevSliderSettings.onoffStatus(jQuery('input[name="mask_anim_ystart_reverse"]'));
+			RevSliderSettings.onoffStatus(jQuery('#layer_anim_xstart_reverse'));
+			RevSliderSettings.onoffStatus(jQuery('#layer_anim_ystart_reverse'));
+			RevSliderSettings.onoffStatus(jQuery('#layer_anim_xrotate_reverse'));
+			RevSliderSettings.onoffStatus(jQuery('#layer_anim_yrotate_reverse'));
+			RevSliderSettings.onoffStatus(jQuery('#layer_anim_zrotate_reverse'));
+			RevSliderSettings.onoffStatus(jQuery('#layer_scale_xstart_reverse'));
+			RevSliderSettings.onoffStatus(jQuery('#layer_scale_ystart_reverse'));
+			RevSliderSettings.onoffStatus(jQuery('#layer_skew_xstart_reverse'));
+			RevSliderSettings.onoffStatus(jQuery('#layer_skew_ystart_reverse'));
+			RevSliderSettings.onoffStatus(jQuery('#mask_anim_xstart_reverse'));
+			RevSliderSettings.onoffStatus(jQuery('#mask_anim_ystart_reverse'));
 
-			RevSliderSettings.onoffStatus(jQuery('input[name="layer_anim_xend_reverse"]'));
-			RevSliderSettings.onoffStatus(jQuery('input[name="layer_anim_yend_reverse"]'));
-			RevSliderSettings.onoffStatus(jQuery('input[name="layer_anim_xrotate_end_reverse"]'));
-			RevSliderSettings.onoffStatus(jQuery('input[name="layer_anim_yrotate_end_reverse"]'));
-			RevSliderSettings.onoffStatus(jQuery('input[name="layer_anim_zrotate_end_reverse"]'));
-			RevSliderSettings.onoffStatus(jQuery('input[name="layer_scale_xend_reverse"]'));
-			RevSliderSettings.onoffStatus(jQuery('input[name="layer_scale_yend_reverse"]'));
-			RevSliderSettings.onoffStatus(jQuery('input[name="layer_skew_xend_reverse"]'));
-			RevSliderSettings.onoffStatus(jQuery('input[name="layer_skew_yend_reverse"]'));
-			RevSliderSettings.onoffStatus(jQuery('input[name="mask_anim_xend_reverse"]'));
-			RevSliderSettings.onoffStatus(jQuery('input[name="mask_anim_yend_reverse"]'));
+			RevSliderSettings.onoffStatus(jQuery('#layer_anim_xend_reverse'));
+			RevSliderSettings.onoffStatus(jQuery('#layer_anim_yend_reverse'));
+			RevSliderSettings.onoffStatus(jQuery('#layer_anim_xrotate_end_reverse'));
+			RevSliderSettings.onoffStatus(jQuery('#layer_anim_yrotate_end_reverse'));
+			RevSliderSettings.onoffStatus(jQuery('#layer_anim_zrotate_end_reverse'));
+			RevSliderSettings.onoffStatus(jQuery('#layer_scale_xend_reverse'));
+			RevSliderSettings.onoffStatus(jQuery('#layer_scale_yend_reverse'));
+			RevSliderSettings.onoffStatus(jQuery('#layer_skew_xend_reverse'));
+			RevSliderSettings.onoffStatus(jQuery('#layer_skew_yend_reverse'));
+			RevSliderSettings.onoffStatus(jQuery('#mask_anim_xend_reverse'));
+			RevSliderSettings.onoffStatus(jQuery('#mask_anim_yend_reverse'));
 		},100);
 	}
 
 	/**
 	 * update current layer
 	 */
-	var updateCurrentLayer = function(objData,del_certain){
+	t.updateCurrentLayer = function(objData,del_certain){
 		
 		if(!arrLayers[selectedLayerSerial]){
 			UniteAdminRev.showErrorMessage("error! the layer with serial: "+selectedLayerSerial+" don't exists");
@@ -3571,7 +4402,7 @@ var UniteLayersRev = new function(){
 
 		addLayer(objLayer);
 
-		//KRIKI jQuery('#layer_text_wrapper').show();
+		
 	}
 
 
@@ -3673,8 +4504,7 @@ var UniteLayersRev = new function(){
 
 		addLayer(objLayer);
 
-		setTimeout(function() {
-				jQuery('#layer_text_wrapper').appendTo(jQuery('.layer_selected.slide_layer'));																	
+		setTimeout(function() {				
 				t.showHideContentEditor(true);				
 				jQuery('#layer_text').data('new_content',true);
 				jQuery('#layer_text').focus();						
@@ -3689,7 +4519,7 @@ var UniteLayersRev = new function(){
 	///////////////////////////
 	// ADD ONE SINGLE LAYER  //
 	///////////////////////////
-	var addLayer = function(objLayer, isInit, isDemo){
+	var addLayer = function(objLayer, isInit, isDemo, skipScroller){
 		
 		isInit = isInit || false;
 		isDemo = isDemo || false;
@@ -3726,6 +4556,8 @@ var UniteLayersRev = new function(){
 			
 		}*/
 		
+		
+
 		if(objLayer['layer_action'] !== undefined){ //check for each action if layer is set to self, if yes, change it to objLayer.unique_id
 			if(objLayer['layer_action'].layer_target !== undefined){
 				for(var key in objLayer['layer_action'].layer_target){
@@ -3759,9 +4591,12 @@ var UniteLayersRev = new function(){
 		objLayer.loop_angle = objLayer.loop_angle 			|| 0;//jQuery("#layer_loop_angle").val();
 		objLayer.loop_radius = objLayer.loop_radius 		|| 10;//jQuery("#layer_loop_radius").val();
 		
+		objLayer.html_tag = objLayer.html_tag 		|| "div";//jQuery("#layer_html_tag").val();
+		objLayer.parallax_layer_ddd_zlevel = objLayer.parallax_layer_ddd_zlevel 		|| "front";//jQuery("#parallax_layer_ddd_zlevel").val();
+		
 		// set Mask Animation
-		objLayer.mask_start = objLayer.mask_start	 		|| false;//jQuery('input[name="masking-start"]').is(':checked');
-		objLayer.mask_end = objLayer.mask_end		 		|| false;//jQuery('input[name="masking-end"]').is(':checked');
+		objLayer.mask_start = objLayer.mask_start	 		|| false;//jQuery('#masking-start')[0].checked;
+		objLayer.mask_end = objLayer.mask_end		 		|| false;//jQuery('#masking-end')[0].checked;
 		
 
 		// Set Reverse Basics					
@@ -3813,15 +4648,16 @@ var UniteLayersRev = new function(){
 		objLayer.endsplitdelay = objLayer.endsplitdelay || 10;
 		
 		objLayer = t.getVal(objLayer, 'max_height') == undefined ? 
-			t.setVal(objLayer, 'max_height', jQuery("#layer_max_height").val(), true) : 
+			t.setVal(objLayer, 'max_height', "auto", true) : 
 			typeof(objLayer.max_height) !== 'object' ? 
 				t.setVal(objLayer, 'max_height', objLayer.max_height, true) : 
 				objLayer;
 				
 		if(t.getVal(objLayer, 'max_width') == undefined){
-			objLayer = t.setVal(objLayer, 'max_width', jQuery("#layer_max_width").val(), true);
+			
+			objLayer = t.setVal(objLayer, 'max_width', "auto", true);
 		}else{
-			if(typeof(objLayer.max_width) !== 'object'){
+			if(typeof(objLayer.max_width) !== 'object'){				
 				objLayer = t.setVal(objLayer, 'max_width', objLayer.max_width, true);
 			}
 		}
@@ -3941,7 +4777,7 @@ var UniteLayersRev = new function(){
 		
 		objLayer.style = jQuery.trim(objLayer.style);
 		if(isInit == false && objLayer.type == "text" && (!objLayer.style || objLayer.style == "")){
-			objLayer.style = getFirstStyle();
+			//objLayer.style = getFirstStyle();
 			do_style_reset = true;
 		}
 
@@ -4027,6 +4863,8 @@ var UniteLayersRev = new function(){
 				objLayer['static_styles'] = t.setVal(objLayer['static_styles'], 'color', objLayer['static_styles']['color'], true);
 			}
 		}
+
+		
 
 		//round position
 		objLayer = t.setVal(objLayer, 'top', Math.round(t.getVal(objLayer, 'top')));
@@ -4132,9 +4970,14 @@ var UniteLayersRev = new function(){
 		if(objLayer.deformation == undefined || jQuery.isEmptyObject(objLayer['deformation']))
 			objLayer.deformation = {};
 
-		if(objLayer['deformation']['font-family'] == undefined)
+		if(objLayer['deformation']['font-family'] == undefined){
 			objLayer['deformation']['font-family'] = "";
-
+		}else{
+			if(objLayer['deformation']['font-family'] !== '' && sgfamilies.indexOf(objLayer['deformation']['font-family']) == -1){
+				sgfamilies.push(objLayer['deformation']['font-family']);
+			}
+		}
+		
 		if(objLayer['deformation']['padding'] == undefined){
 			var cur_pad = [];
 			jQuery('input[name="css_padding[]"]').each(function(){
@@ -4312,13 +5155,13 @@ var UniteLayersRev = new function(){
 			objLayer['deformation-hover']['2d_origin_y'] = 50;
 		
 		if(objLayer['deformation-hover']['speed'] == undefined)
-			objLayer['deformation-hover']['speed'] = jQuery('input[name="hover_speed"]').val();
+			objLayer['deformation-hover']['speed'] = jQuery('#hover_speed').val();
 		
 		if(objLayer['deformation-hover']['easing'] == undefined)
-			objLayer['deformation-hover']['easing'] = jQuery('select[name="hover_easing"] option:selected').val();
+			objLayer['deformation-hover']['easing'] = jQuery('#hover_easing option:selected').val();
 		
 		if(objLayer['deformation-hover']['css_cursor'] == undefined)
-			objLayer['deformation-hover']['css_cursor'] = jQuery('select[name="css_cursor"] option:selected').val();
+			objLayer['deformation-hover']['css_cursor'] = jQuery('#css_cursor option:selected').val();
 		//deformation hover part end
 		
 		if(objLayer['visible'] == undefined) objLayer['visible'] = true;
@@ -4330,6 +5173,8 @@ var UniteLayersRev = new function(){
 			objLayer.trigger_memory = 'keep';
 		
 		objLayer.serial = id_counter;
+
+		
 		
 		if(!isDemo){
 			arrLayers[id_counter] = jQuery.extend({},objLayer);
@@ -4337,19 +5182,33 @@ var UniteLayersRev = new function(){
 			arrLayersDemo[id_counter] = jQuery.extend({},objLayer);
 		}
 		//add html
-		var htmlLayer = t.makeLayerHtml(id_counter,objLayer,isDemo);
-		container.append(htmlLayer);
-		var objHtmlLayer = t.getHtmlLayerFromSerial(id_counter,isDemo);
+
 		
+		
+		var htmlLayer = t.makeLayerHtml(id_counter,objLayer,isDemo);
+		
+		
+		container.append(htmlLayer);
+		
+		
+		var objHtmlLayer = t.getHtmlLayerFromSerial(id_counter,isDemo);
+						
 		//add layer to sortbox
 		if(!isDemo) {
-			u.addToSortbox(id_counter,objLayer);
+			u.addToSortbox(id_counter,objLayer);	
+			if (skipScroller!=true)				
+				t.timeLineTableDimensionUpdate();			
+			
 		}
+		
 		
 		
 		if(objLayer['visible'] == false && !isDemo){
 			u.hideLayer(id_counter);
 		}
+		
+		
+
 		
 		//refresh draggables
 		if(!isDemo)
@@ -4358,11 +5217,9 @@ var UniteLayersRev = new function(){
 		id_counter++;
 
 		//enable "delete all" button, not event, but anyway :)
-		jQuery("#button_delete_all").removeClass("button-disabled");
+		jQuery("#button_delete_all").removeClass("button-now-disabled");
 		
-		
-		u.rebuildLayerIdle(objHtmlLayer,0,isDemo);
-	
+		u.rebuildLayerIdle(objHtmlLayer,0,isDemo);	
 
 		//select the layer
 		if(isInit == false && !isDemo){
@@ -4370,11 +5227,14 @@ var UniteLayersRev = new function(){
 			jQuery("#layer_text").focus();
 		}
 		
+		
+		
 		if(do_style_reset){ //trigger change event so that element gets first styles
 			t.reset_to_default_static_styles(objLayer);
 			// Reset Fields from Style Template
 			updateSubStyleParameters(objLayer, true);
 		}
+		
 	}
 
 
@@ -4415,9 +5275,11 @@ var UniteLayersRev = new function(){
 	 */
 	var deleteLayer = function(serial){
 		
+		t.checkActionsOnLayers(serial);
 		deleteLayerFromObject(serial);
 		deleteLayerFromHtml(serial);
 		u.deleteLayerFromSortbox(serial);
+		
 	}
 
 
@@ -4432,8 +5294,6 @@ var UniteLayersRev = new function(){
 			return(false);
 		}
 
-		jQuery('#layer-short-toolbar').appendTo(jQuery('#layer-settings-toolbar-bottom'));
-		jQuery('#layer_text_wrapper').appendTo(jQuery('#layer_text_holder'));
 		deleteLayer(selectedLayerSerial);
 
 		//set unselected
@@ -4444,20 +5304,23 @@ var UniteLayersRev = new function(){
 	}
 
 
+	
 	/**
-	 * duplicate layer, set it a little aside of the layer position
+	 * call "duplicateLayer" function with selected serial
 	 */
-	var duplicateLayer = function(serial){
-		
-		var obj = arrLayers[serial];
+	var duplicateCurrentLayer = function(){		
+		if(selectedLayerSerial == -1)
+			return(false);
+
+		var obj = arrLayers[selectedLayerSerial];
 		var obj2 = jQuery.extend(true, {}, obj);	//duplicate object
+		
 		t.getVal(objLayer, 'top');
 
 		obj2 = t.setVal(obj2, 'left', t.getVal(obj2, 'left')+5);
 		obj2 = t.setVal(obj2, 'top', t.getVal(obj2, 'top')+5);
 		obj2.order = undefined;
-		obj2.time = undefined;
-
+		obj2.time = undefined;		
 		addLayer(obj2);		
 		initDisallowCaptionsOnClick();
 		var key;
@@ -4465,18 +5328,7 @@ var UniteLayersRev = new function(){
 			key = k;
 		});
 		
-		t.setLayerSelected(key);
-		
-	}
-
-
-	/**
-	 * call "duplicateLayer" function with selected serial
-	 */
-	var duplicateCurrentLayer = function(){		
-		if(selectedLayerSerial == -1)
-			return(false);
-		duplicateLayer(selectedLayerSerial);		
+		t.setLayerSelected(key);		
 	}
 
 	
@@ -4562,7 +5414,9 @@ var UniteLayersRev = new function(){
 		if (selectedLayerSerial!=-1 && jobj.length>0) jobj.find('.innerslide_layer.tp-caption').html(txt);			
 		var li = timerobj.closest("li");
 		txt = u.getSortboxText(txt);
-		li.find('.timer-layer-text').html(txt);				
+		li.find('.timer-layer-text').html(txt);		
+
+		
 	}
 
 	/**
@@ -4640,8 +5494,7 @@ var UniteLayersRev = new function(){
 	 * update html layers from object
 	 */
 	var updateHtmlLayersFromObject = function(serial,posresets,isDemo){
-		
-		
+				
 		if(!serial) serial = selectedLayerSerial;
 
 		var objLayer = t.getLayer(serial, isDemo);
@@ -4691,7 +5544,9 @@ var UniteLayersRev = new function(){
 				
 			break;*/
 		}					
-		u.rebuildLayerIdle(getjQueryLayer());		
+		
+		u.rebuildLayerIdle(getjQueryLayer());	
+				
 	}
 	
 	// MAKE THINGS ROTATABLE
@@ -4784,7 +5639,16 @@ var UniteLayersRev = new function(){
 		}
 	}
 	
-	
+	/** 
+	* IF ONLY X/Y VALUE CHANGED BASED ON KEY UP'S, SHOULD BE A QUICKER MOVEMENT AVAILABLE
+	*/
+	t.updateCurrentLayerPosition = function() {		
+		var objUpdate = {};
+		objUpdate = t.setVal(objUpdate, 'top', Number(parseInt(jQuery("#layer_top").val(),0)));
+		objUpdate = t.setVal(objUpdate, 'left', Number(parseInt(jQuery("#layer_left").val(),0)));
+		t.updateCurrentLayer(objUpdate);
+		u.rebuildLayerIdle(jQuery('.slide_layer.layer_selected'));
+	}
 
 	/**
 	 * update layer from html fields
@@ -4793,32 +5657,39 @@ var UniteLayersRev = new function(){
 	 t.updateLayerFromFields = function() {
 	 	//clearTimeout(t.ulff_core);
 	 	//t.ulff_core = setTimeout(function() {
+	 		
 	 		t.updateLayerFromFields_Core();
+	 		
 	 	//},350);
 	 }
 
 	t.updateLayerFromFields_Core = function(){
-
-		if(selectedLayerSerial == -1) return(false);
+				
 		
+		if(selectedLayerSerial == -1) return(false);		
 		UniteCssEditorRev.compare_to_original(); //compare style changes and mark elements depending on state
-
+		
 		var objUpdate = {};
 
 		objUpdate.style = jQuery("#layer_caption").val();			
-		objUpdate['hover'] = jQuery('input[name="hover_allow"]').is(":checked");
+		objUpdate['hover'] = jQuery('#hover_allow')[0].checked;
+		objUpdate['toggle'] = jQuery('#toggle_allow')[0].checked;
+
+		objUpdate['toggle_use_hover'] = jQuery('#toggle_use_hover')[0].checked;
 		
-		objUpdate['visible-desktop'] = jQuery('input[name="visible-desktop"]').is(":checked");
-		objUpdate['visible-notebook'] = jQuery('input[name="visible-notebook"]').is(":checked");
-		objUpdate['visible-tablet'] = jQuery('input[name="visible-tablet"]').is(":checked");
-		objUpdate['visible-mobile'] = jQuery('input[name="visible-mobile"]').is(":checked");
 		
-		objUpdate['show-on-hover'] = jQuery('input[name="layer_on_slider_hover"]').is(":checked");
+		objUpdate['visible-desktop'] = jQuery('#visible-desktop')[0].checked;
+		objUpdate['visible-notebook'] = jQuery('#visible-notebook')[0].checked;
+		objUpdate['visible-tablet'] = jQuery('#visible-tablet')[0].checked;
+		objUpdate['visible-mobile'] = jQuery('#visible-mobile')[0].checked;
+		
+		objUpdate['show-on-hover'] = jQuery('#layer_on_slider_hover')[0].checked;
 		
 		objUpdate['lazy-load'] = jQuery('#layer-lazy-loading option:selected').val();
 		objUpdate['image-size'] = jQuery('#layer-image-size option:selected').val();
 				
 		objUpdate.text = jQuery("#layer_text").val();
+		objUpdate.texttoggle = jQuery("#layer_text_toggle").val() || "";
 		
 		objUpdate.alias = jQuery('#layer_sort_'+selectedLayerSerial+" .timer-layer-text").val();
 
@@ -4827,8 +5698,11 @@ var UniteLayersRev = new function(){
 			jQuery('#layer_sort_'+selectedLayerSerial+" .timer-layer-text").val(objUpdate.text);
 
 		
-		jQuery('#layer_quicksort_'+selectedLayerSerial+" .add-layer-txt").html(objUpdate.alias);
-		
+		jQuery('#layer_quicksort_'+selectedLayerSerial+" .layer-title-in-list").val(objUpdate.alias);
+		jQuery('#the_current-editing-layer-title').val(objUpdate.alias);		
+		jQuery('#layer-short-toolbar').data('serial',selectedLayerSerial)
+
+
 		objUpdate = t.setVal(objUpdate, 'top', Number(parseInt(jQuery("#layer_top").val(),0)));
 		objUpdate = t.setVal(objUpdate, 'left', Number(parseInt(jQuery("#layer_left").val(),0)));
 		
@@ -4852,8 +5726,7 @@ var UniteLayersRev = new function(){
 		objUpdate['2d_origin_y'] =  parseInt(jQuery("#layer_2d_origin_y").val(),0);
 		objUpdate['static_start'] = jQuery("#layer_static_start option:selected").val();
 		objUpdate['static_end'] = jQuery("#layer_static_end option:selected").val();
-
-
+				
 		//set Loop Animations
 		objUpdate.loop_animation = jQuery("#layer_loop_animation option:selected").val();
 		objUpdate.loop_easing = jQuery("#layer_loop_easing").val();
@@ -4871,17 +5744,19 @@ var UniteLayersRev = new function(){
 		objUpdate.loop_angle = jQuery("#layer_loop_angle").val();
 		objUpdate.loop_radius = jQuery("#layer_loop_radius").val();
 		
+		objUpdate.html_tag = jQuery("#layer_html_tag option:selected").val();
+		objUpdate.parallax_layer_ddd_zlevel = jQuery("#parallax_layer_ddd_zlevel option:selected").val();
 		
 		if (jQuery('#layer__scalex').val()!=1 || jQuery('#layer__scaley').val()!=1 || parseInt(jQuery('#layer__skewx').val(),0)!=0 || parseInt(jQuery('#layer__skewy').val(),0)!=0 || parseInt(jQuery('#layer__xrotate').val(),0)!=0 || parseInt(jQuery('#layer__yrotate').val(),0)!=0 || parseInt(jQuery('#layer_2d_rotation').val(),0)!=0) {
 				jQuery('.mask-not-available').show();
 				jQuery('.mask-is-available').hide();
-				jQuery('input[name="masking-start"]').removeAttr("checked");
-				jQuery('input[name="masking-end"]').removeAttr("checked");
+				jQuery('#masking-start').removeAttr("checked");
+				jQuery('#masking-end').removeAttr("checked");
 				jQuery('.mask-start-settings').hide();
 				jQuery('.mask-end-settings').hide();
 				jQuery('.tp-showmask').removeClass('tp-showmask');
-				RevSliderSettings.onoffStatus(jQuery('input[name="masking-start"]'));
-				RevSliderSettings.onoffStatus(jQuery('input[name="masking-end"]'));			
+				RevSliderSettings.onoffStatus(jQuery('#masking-start'));
+				RevSliderSettings.onoffStatus(jQuery('#masking-end'));			
 				jQuery(t.getHtmlLayerFromSerial(selectedLayerSerial)).find('.tp-mask-wrap').css({overflow:"visible"});
 		} else {
 			jQuery('.mask-not-available').hide();
@@ -4889,36 +5764,34 @@ var UniteLayersRev = new function(){
 		}
 
 		//set Mask Animations
-		objUpdate.mask_start = jQuery('input[name="masking-start"]').is(':checked');
-		objUpdate.mask_end = jQuery('input[name="masking-end"]').is(':checked');
+		objUpdate.mask_start = jQuery('#masking-start')[0].checked;
+		objUpdate.mask_end = jQuery('#masking-end')[0].checked;
 		objUpdate.mask_x_start = jQuery("#mask_anim_xstart").val();
 		objUpdate.mask_y_start =  jQuery("#mask_anim_ystart").val();
 		objUpdate.mask_speed_start =  jQuery("#mask_speed").val();
 		objUpdate.mask_ease_start =  jQuery("#mask_easing").val();
 		objUpdate.mask_x_end =  jQuery("#mask_anim_xend").val();
 		objUpdate.mask_y_end = jQuery("#mask_anim_yend").val();
-		objUpdate.mask_speed_end = jQuery("#mask_speed_end").val();
-		objUpdate.mask_ease_end =  jQuery("#mask_easing_end").val();
+		//objUpdate.mask_speed_end = jQuery("#mask_speed_end").val();
+		//objUpdate.mask_ease_end =  jQuery("#mask_easing_end").val();
 
 
 
 		
 		objUpdate.animation = jQuery("#layer_animation option:selected").val();
 		objUpdate.speed = jQuery("#layer_speed").val();
-		
-		
-		
+						
 		objUpdate = t.setVal(objUpdate, 'align_hor', jQuery("#layer_align_hor").val());
 		objUpdate = t.setVal(objUpdate, 'align_vert', jQuery("#layer_align_vert").val());
 		
-		objUpdate.hiddenunder = jQuery("#layer_hidden").is(":checked");
-		objUpdate.resizeme = jQuery("#layer_resizeme").is(":checked");
-		objUpdate['resize-full'] = jQuery("#layer_resize-full").is(":checked");
+		objUpdate.hiddenunder = jQuery("#layer_hidden")[0].checked;
+		objUpdate.resizeme = jQuery("#layer_resizeme")[0].checked;
+		objUpdate['resize-full'] = jQuery("#layer_resize-full")[0].checked;
 
-		objUpdate['seo-optimized'] = jQuery("#layer-seo-optimized").is(":checked");
+		//objUpdate['seo-optimized'] = jQuery("#layer-seo-optimized")[0].checked;
 		
 		objUpdate.basealign = jQuery("#layer_align_base").val();
-		objUpdate.responsive_offset = jQuery("#layer_resp_offset").is(':checked');
+		objUpdate.responsive_offset = jQuery("#layer_resp_offset")[0].checked;
 		
 		objUpdate.easing = jQuery("#layer_easing").val();
 		objUpdate.split = jQuery("#layer_split").val();
@@ -4953,43 +5826,41 @@ var UniteLayersRev = new function(){
 		objUpdate.skew_y_start = jQuery("#layer_skew_ystart").val();
 		objUpdate.skew_x_end = jQuery("#layer_skew_xend").val();
 		objUpdate.skew_y_end = jQuery("#layer_skew_yend").val();
-		objUpdate.x_origin_start = jQuery('input[name="layer_2d_origin_x"]').val(); //jQuery("#layer_anim_xoriginstart").val();
-		objUpdate.y_origin_start = jQuery('input[name="layer_2d_origin_y"]').val(); //jQuery("#layer_anim_yoriginstart").val();
-		objUpdate.x_origin_end = jQuery('input[name="layer_2d_origin_x"]').val(); //jQuery("#layer_anim_xoriginend").val();
-		objUpdate.y_origin_end = jQuery('input[name="layer_2d_origin_y"]').val(); //jQuery("#layer_anim_yoriginend").val();
+		objUpdate.x_origin_start = jQuery('#layer_2d_origin_x').val(); //jQuery("#layer_anim_xoriginstart").val();
+		objUpdate.y_origin_start = jQuery('#layer_2d_origin_y').val(); //jQuery("#layer_anim_yoriginstart").val();
+		objUpdate.x_origin_end = jQuery('#layer_2d_origin_x').val(); //jQuery("#layer_anim_xoriginend").val();
+		objUpdate.y_origin_end = jQuery('#layer_2d_origin_y').val(); //jQuery("#layer_anim_yoriginend").val();				
+		objUpdate.x_start_reverse =  jQuery('#layer_anim_xstart_reverse')[0].checked || false;
+		objUpdate.y_start_reverse =  jQuery('#layer_anim_ystart_reverse')[0].checked || false;
+		objUpdate.x_end_reverse =  jQuery('#layer_anim_xend_reverse')[0].checked || false;
+		objUpdate.y_end_reverse =  jQuery('#layer_anim_yend_reverse')[0].checked || false;
+		objUpdate.x_rotate_start_reverse =  jQuery('#layer_anim_xrotate_reverse')[0].checked || false;
+		objUpdate.y_rotate_start_reverse =  jQuery('#layer_anim_yrotate_reverse')[0].checked || false;
+		objUpdate.z_rotate_start_reverse =  jQuery('#layer_anim_zrotate_reverse')[0].checked || false;
+		objUpdate.x_rotate_end_reverse =  jQuery('#layer_anim_xrotate_end_reverse')[0].checked || false;
+		objUpdate.y_rotate_end_reverse =  jQuery('#layer_anim_yrotate_end_reverse')[0].checked || false;
+		objUpdate.z_rotate_end_reverse =  jQuery('#layer_anim_zrotate_end_reverse')[0].checked || false;
+		objUpdate.scale_x_start_reverse = jQuery('#layer_scale_xstart_reverse')[0].checked || false;
+		objUpdate.scale_y_start_reverse = jQuery('#layer_scale_ystart_reverse')[0].checked || false;
+		objUpdate.scale_x_end_reverse = jQuery('#layer_scale_xend_reverse')[0].checked || false;
+		objUpdate.scale_y_end_reverse = jQuery('#layer_scale_yend_reverse')[0].checked || false;
+		objUpdate.skew_x_start_reverse = jQuery('#layer_skew_xstart_reverse')[0].checked || false;
+		objUpdate.skew_y_start_reverse = jQuery('#layer_skew_ystart_reverse')[0].checked || false;
+		objUpdate.skew_x_end_reverse = jQuery('#layer_skew_xend_reverse')[0].checked || false;
+		objUpdate.skew_y_end_reverse = jQuery('#layer_skew_yend_reverse')[0].checked || false;
+		objUpdate.mask_x_start_reverse = jQuery('#mask_anim_xstart_reverse')[0].checked || false;
+		objUpdate.mask_y_start_reverse =  jQuery('#mask_anim_ystart_reverse')[0].checked || false;
+		objUpdate.mask_x_end_reverse =  jQuery('#mask_anim_xend_reverse')[0].checked || false;
+		objUpdate.mask_y_end_reverse =  jQuery('#mask_anim_yend_reverse')[0].checked || false;
 		
 		
-		objUpdate.x_start_reverse =  jQuery('input[name="layer_anim_xstart_reverse"]').is(':checked') || false;
-		objUpdate.y_start_reverse =  jQuery('input[name="layer_anim_ystart_reverse"]').is(':checked') || false;
-		objUpdate.x_end_reverse =  jQuery('input[name="layer_anim_xend_reverse"]').is(':checked') || false;
-		objUpdate.y_end_reverse =  jQuery('input[name="layer_anim_yend_reverse"]').is(':checked') || false;
-		objUpdate.x_rotate_start_reverse =  jQuery('input[name="layer_anim_xrotate_reverse"]').is(':checked') || false;
-		objUpdate.y_rotate_start_reverse =  jQuery('input[name="layer_anim_yrotate_reverse"]').is(':checked') || false;
-		objUpdate.z_rotate_start_reverse =  jQuery('input[name="layer_anim_zrotate_reverse"]').is(':checked') || false;
-		objUpdate.x_rotate_end_reverse =  jQuery('input[name="layer_anim_xrotate_end_reverse"]').is(':checked') || false;
-		objUpdate.y_rotate_end_reverse =  jQuery('input[name="layer_anim_yrotate_end_reverse"]').is(':checked') || false;
-		objUpdate.z_rotate_end_reverse =  jQuery('input[name="layer_anim_zrotate_end_reverse"]').is(':checked') || false;
-		objUpdate.scale_x_start_reverse = jQuery('input[name="layer_scale_xstart_reverse"]').is(':checked') || false;
-		objUpdate.scale_y_start_reverse = jQuery('input[name="layer_scale_ystart_reverse"]').is(':checked') || false;
-		objUpdate.scale_x_end_reverse = jQuery('input[name="layer_scale_xend_reverse"]').is(':checked') || false;
-		objUpdate.scale_y_end_reverse = jQuery('input[name="layer_scale_yend_reverse"]').is(':checked') || false;
-		objUpdate.skew_x_start_reverse = jQuery('input[name="layer_skew_xstart_reverse"]').is(':checked') || false;
-		objUpdate.skew_y_start_reverse = jQuery('input[name="layer_skew_ystart_reverse"]').is(':checked') || false;
-		objUpdate.skew_x_end_reverse = jQuery('input[name="layer_skew_xend_reverse"]').is(':checked') || false;
-		objUpdate.skew_y_end_reverse = jQuery('input[name="layer_skew_yend_reverse"]').is(':checked') || false;
-		objUpdate.mask_x_start_reverse = jQuery('input[name="mask_anim_xstart_reverse"]').is(':checked') || false;
-		objUpdate.mask_y_start_reverse =  jQuery('input[name="mask_anim_ystart_reverse"]').is(':checked') || false;
-		objUpdate.mask_x_end_reverse =  jQuery('input[name="mask_anim_xend_reverse"]').is(':checked') || false;
-		objUpdate.mask_y_end_reverse =  jQuery('input[name="mask_anim_yend_reverse"]').is(':checked') || false;
-		
-		
-		objUpdate.autolinebreak = jQuery("#layer_auto_line_break").is(":checked");
+		objUpdate.autolinebreak = jQuery("#layer_auto_line_break")[0].checked;
 
 		objUpdate.pers_start = jQuery("#layer_pers_start").val();
 		objUpdate.pers_end = jQuery("#layer_pers_end").val();
 
-		objUpdate.scaleProportional = jQuery("#layer_proportional_scale").is(":checked");
-
+		objUpdate.scaleProportional = jQuery("#layer_proportional_scale")[0].checked;
+				
 		objUpdate.attrID = jQuery("#layer_id").val();
 		objUpdate.attrClasses = jQuery("#layer_classes").val();
 		objUpdate.attrTitle = jQuery("#layer_title").val();
@@ -5021,68 +5892,74 @@ var UniteLayersRev = new function(){
 		if(objUpdate.deformation == undefined) objUpdate.deformation = {};
 		if (objUpdate["deformation"]["padding"] == undefined) objUpdate["deformation"]["padding"]=["0","0","0","0"];
 		if (objUpdate["deformation"]["border-radius"] == undefined) objUpdate["deformation"]["border-radius"]=["0","0","0","0"];
+		
+		
+		
+		
+		
 
+		objUpdate['layer-selectable'] = jQuery('#css_layer_selectable option:selected').val();
+		
 		//objUpdate = updateSubStyleParameters(objUpdate);
-		objUpdate['deformation']['color-transparency'] = jQuery('input[name="css_font-transparency"]').val();
-		objUpdate['deformation']['font-style'] = (jQuery('input[name="css_font-style"]').is(':checked')) ? 'italic' : 'normal';
-		objUpdate['deformation']['font-family'] = jQuery('input[name="css_font-family"]').val()
+		objUpdate['deformation']['color-transparency'] = jQuery('#css_font-transparency').val();
+		objUpdate['deformation']['font-style'] = (jQuery('#css_font-style')[0].checked) ? 'italic' : 'normal';
+		objUpdate['deformation']['font-family'] = jQuery('#css_font-family').val()
 		jQuery('input[name="css_padding[]"]').each(function(i){ objUpdate['deformation']['padding'][i] = jQuery(this).val();});
-		objUpdate['deformation']['text-decoration'] = jQuery('select[name="css_text-decoration"] option:selected').val();
-		objUpdate['deformation']['text-align'] = jQuery('select[name="css_text-align"] option:selected').val();
-		objUpdate['deformation']['background-color'] = jQuery('input[name="css_background-color"]').val();
-		objUpdate['deformation']['background-transparency'] = jQuery('input[name="css_background-transparency"]').val();
-		objUpdate['deformation']['border-color'] = jQuery('input[name="css_border-color-show"]').val();
-		objUpdate['deformation']['border-transparency'] = jQuery('input[name="css_border-transparency"]').val();
-		objUpdate['deformation']['border-style'] = jQuery('select[name="css_border-style"] option:selected').val();
-		objUpdate['deformation']['border-width'] = jQuery('input[name="css_border-width"]').val();
+		objUpdate['deformation']['text-decoration'] = jQuery('#css_text-decoration option:selected').val();
+		objUpdate['deformation']['text-align'] = jQuery('#css_text-align option:selected').val();
+		objUpdate['deformation']['background-color'] = jQuery('#css_background-color').val();
+		objUpdate['deformation']['background-transparency'] = jQuery('#css_background-transparency').val();
+		objUpdate['deformation']['border-color'] = jQuery('#css_border-color-show').val();
+		objUpdate['deformation']['border-transparency'] = jQuery('#css_border-transparency').val();
+		objUpdate['deformation']['border-style'] = jQuery('#css_border-style option:selected').val();
+		objUpdate['deformation']['border-width'] = jQuery('#css_border-width').val();
 		if(objUpdate.deformation['border-radius'] == undefined) objUpdate.deformation['border-radius'] = new Array();
 		jQuery('input[name="css_border-radius[]"]').each(function(i){ objUpdate['deformation']['border-radius'][i] = jQuery(this).val();});
 		objUpdate['deformation']['x'] = 0; //parseInt(jQuery('input[name="layer__x"]').val(),0);
 		objUpdate['deformation']['y'] = 0; //parseInt(jQuery('input[name="layer__y"]').val(),0);
-		objUpdate['deformation']['z'] = parseInt(jQuery('input[name="layer__z"]').val(),0);
-		objUpdate['deformation']['skewx'] = jQuery('input[name="layer__skewx"]').val();
-		objUpdate['deformation']['skewy'] = jQuery('input[name="layer__skewy"]').val();
-		objUpdate['deformation']['scalex'] = jQuery('input[name="layer__scalex"]').val();
-		objUpdate['deformation']['scaley'] = jQuery('input[name="layer__scaley"]').val();
-		objUpdate['deformation']['opacity'] = jQuery('input[name="layer__opacity"]').val();
-		objUpdate['deformation']['xrotate'] = parseInt(jQuery('input[name="layer__xrotate"]').val(),0);
-		objUpdate['deformation']['yrotate'] = parseInt(jQuery('input[name="layer__yrotate"]').val(),0);
-		objUpdate['2d_rotation'] = parseInt(jQuery('input[name="layer_2d_rotation"]').val(),0);
-		objUpdate['deformation']['2d_origin_x'] = jQuery('input[name="layer_2d_origin_x"]').val();
-		objUpdate['deformation']['2d_origin_y'] = jQuery('input[name="layer_2d_origin_y"]').val();
-		objUpdate['deformation']['pers'] = jQuery('input[name="layer__pers"]').val();
-		objUpdate['deformation']['corner_left'] = jQuery('select[name="layer_cornerleft"] option:selected').val();
-		objUpdate['deformation']['corner_right'] = jQuery('select[name="layer_cornerright"] option:selected').val();
-		objUpdate['deformation']['parallax'] = jQuery('select[name="parallax_level"] option:selected').val();
+		objUpdate['deformation']['z'] = parseInt(jQuery('#layer__z').val(),0);
+		objUpdate['deformation']['skewx'] = jQuery('#layer__skewx').val();
+		objUpdate['deformation']['skewy'] = jQuery('#layer__skewy').val();
+		objUpdate['deformation']['scalex'] = jQuery('#layer__scalex').val();
+		objUpdate['deformation']['scaley'] = jQuery('#layer__scaley').val();
+		objUpdate['deformation']['opacity'] = jQuery('#layer__opacity').val();
+		objUpdate['deformation']['xrotate'] = parseInt(jQuery('#layer__xrotate').val(),0);
+		objUpdate['deformation']['yrotate'] = parseInt(jQuery('#layer__yrotate').val(),0);
+		objUpdate['2d_rotation'] = parseInt(jQuery('#layer_2d_rotation').val(),0);
+		objUpdate['deformation']['2d_origin_x'] = jQuery('#layer_2d_origin_x').val();
+		objUpdate['deformation']['2d_origin_y'] = jQuery('#layer_2d_origin_y').val();
+		objUpdate['deformation']['pers'] = jQuery('#layer__pers').val();
+		objUpdate['deformation']['corner_left'] = jQuery('#layer_cornerleft option:selected').val();
+		objUpdate['deformation']['corner_right'] = jQuery('#layer_cornerleft option:selected').val();
+		objUpdate['deformation']['parallax'] = jQuery('#parallax_level option:selected').val();
 		
 		//deformation hover part start
-		if(objUpdate['deformation-hover'] == undefined || jQuery.isEmptyObject(objUpdate['deformation-hover'])) objUpdate['deformation-hover'] = {};
-		objUpdate['deformation-hover']['color'] = jQuery('input[name="hover_color_static"]').val();
-		objUpdate['deformation-hover']['color-transparency'] = jQuery('input[name="hover_css_font-transparency"]').val();
-		objUpdate['deformation-hover']['text-decoration'] = jQuery('select[name="hover_css_text-decoration"] option:selected').val();
-		objUpdate['deformation-hover']['background-color'] = jQuery('input[name="hover_css_background-color"]').val();
-		objUpdate['deformation-hover']['background-transparency'] = jQuery('input[name="hover_css_background-transparency"]').val();
-		objUpdate['deformation-hover']['border-color'] = jQuery('input[name="hover_css_border-color-show"]').val();
-		objUpdate['deformation-hover']['border-transparency'] = jQuery('input[name="hover_css_border-transparency"]').val();
-		objUpdate['deformation-hover']['border-style'] = jQuery('select[name="hover_css_border-style"] option:selected').val();
-		objUpdate['deformation-hover']['border-width'] = jQuery('input[name="hover_css_border-width"]').val();
+		if(objUpdate['deformation-hover'] == undefined || jQuery.isEmptyObject(objUpdate['deformation-hover'])) objUpdate['deformation-hover'] = {};		
+		objUpdate['deformation-hover']['color'] = jQuery('#hover_layer_color_s').val();
+		objUpdate['deformation-hover']['color-transparency'] = jQuery('#hover_css_font-transparency').val();
+		objUpdate['deformation-hover']['text-decoration'] = jQuery('#hover_css_text-decoration option:selected').val();
+		objUpdate['deformation-hover']['background-color'] = jQuery('#hover_css_background-color').val();
+		objUpdate['deformation-hover']['background-transparency'] = jQuery('#hover_css_background-transparency').val();
+		objUpdate['deformation-hover']['border-color'] = jQuery('#hover_css_border-color-show').val();
+		objUpdate['deformation-hover']['border-transparency'] = jQuery('#hover_css_border-transparency').val();
+		objUpdate['deformation-hover']['border-style'] = jQuery('#hover_css_border-style option:selected').val();
+		objUpdate['deformation-hover']['border-width'] = jQuery('#hover_css_border-width').val();
 		if(objUpdate['deformation-hover']['border-radius'] == undefined) objUpdate['deformation-hover']['border-radius'] = new Array();
 		jQuery('input[name="hover_css_border-radius[]"]').each(function(i){ objUpdate['deformation-hover']['border-radius'][i] = jQuery(this).val(); });
-		objUpdate['deformation-hover']['skewx'] = jQuery('input[name="hover_layer__skewx"]').val();
-		objUpdate['deformation-hover']['skewy'] = jQuery('input[name="hover_layer__skewy"]').val();
-		objUpdate['deformation-hover']['scalex'] = jQuery('input[name="hover_layer__scalex"]').val();
-		objUpdate['deformation-hover']['scaley'] = jQuery('input[name="hover_layer__scaley"]').val();
-		objUpdate['deformation-hover']['opacity'] = jQuery('input[name="hover_layer__opacity"]').val();
-		objUpdate['deformation-hover']['xrotate'] = parseInt(jQuery('input[name="hover_layer__xrotate"]').val(),0);
-		objUpdate['deformation-hover']['yrotate'] = parseInt(jQuery('input[name="hover_layer__yrotate"]').val(),0);
-		objUpdate['deformation-hover']['2d_rotation'] = parseInt(jQuery('input[name="hover_layer_2d_rotation"]').val(),0); //z rotate
+		objUpdate['deformation-hover']['skewx'] = jQuery('#hover_layer__skewx').val();
+		objUpdate['deformation-hover']['skewy'] = jQuery('#hover_layer__skewy').val();
+		objUpdate['deformation-hover']['scalex'] = jQuery('#hover_layer__scalex').val();
+		objUpdate['deformation-hover']['scaley'] = jQuery('#hover_layer__scaley').val();
+		objUpdate['deformation-hover']['opacity'] = jQuery('#hover_layer__opacity').val();
+		objUpdate['deformation-hover']['xrotate'] = parseInt(jQuery('#hover_layer__xrotate').val(),0);
+		objUpdate['deformation-hover']['yrotate'] = parseInt(jQuery('#hover_layer__yrotate').val(),0);
+		objUpdate['deformation-hover']['2d_rotation'] = parseInt(jQuery('#hover_layer_2d_rotation').val(),0); //z rotate
 		
-		objUpdate['deformation-hover']['speed'] = jQuery('input[name="hover_speed"]').val();
-		objUpdate['deformation-hover']['easing'] = jQuery('select[name="hover_easing"] option:selected').val();
-		objUpdate['deformation-hover']['css_cursor'] = jQuery('select[name="css_cursor"] option:selected').val();
+		objUpdate['deformation-hover']['speed'] = jQuery('#hover_speed').val();
+		objUpdate['deformation-hover']['easing'] = jQuery('#hover_easing option:selected').val();
+		objUpdate['deformation-hover']['css_cursor'] = jQuery('#css_cursor option:selected').val();
 		
-		//deformation hover part end
-		
+		//deformation hover part end				
 		if(objUpdate['layer_action'] == undefined || jQuery.isEmptyObject(objUpdate['layer_action'])) objUpdate['layer_action'] = {};
 		
 		objUpdate['layer_action'].tooltip_event = [];
@@ -5147,35 +6024,37 @@ var UniteLayersRev = new function(){
 		
 		objUpdate.animation_overwrite = jQuery('#layer-animation-overwrite option:selected').val();
 		objUpdate.trigger_memory = jQuery('#layer-tigger-memory option:selected').val();
+
+		
 		
 		//ONLY FOR DEBUG!!
 		//objUpdate.internal_class = jQuery('#internal_classes').val();
 		//objUpdate.type = jQuery('#layer_type option:selected').val();
-		
-		
+				
 
 		//update object - Write back changes in ObjArray
-		updateCurrentLayer(objUpdate, ['layer_action']);
-
+		t.updateCurrentLayer(objUpdate, ['layer_action']);	
+		t.showHideToggleContent(objUpdate);			
 
 		//update html layers
 		updateHtmlLayersFromObject();
-
-
+				
 		//update html sortbox
 		updateHtmlSortboxFromObject();
-		
+						
 		//event on element for href
-		initDisallowCaptionsOnClick();
+		initDisallowCaptionsOnClick();				
 
 		var type = objLayer.type || "text";
 		
+		
 		u.rebuildLayerIdle(t.getHtmlLayerFromSerial(selectedLayerSerial));
 
-		//update the timeline with the new data
-		u.updateCurrentLayerTimeline();
 		
-		t.set_cover_mode();		
+		
+		t.set_cover_mode();			
+		
+				
 
 	}
 
@@ -5208,16 +6087,18 @@ var UniteLayersRev = new function(){
 	 *
 	 */
 	var redrawAllLayerHtml = function() {
+		
 		jQuery.each(arrLayers,function(i,obj) {
 			redrawLayerHtml(obj.serial);
 		});
 		jQuery.each(arrLayersDemo,function(i,obj) {
 			redrawLayerHtml(obj.serial, true);
-		})
+		});
 		jQuery('.slide_layer').each(function() {
 			u.rebuildLayerIdle(jQuery(this));
 		});
 		updateLayerFormFields(selectedLayerSerial);
+		
 	}
 
 	/**
@@ -5233,6 +6114,7 @@ var UniteLayersRev = new function(){
 		var htmlLayer = t.getHtmlLayerFromSerial(serial, isDemo);		
 		
 		htmlLayer.html(htmlInner);
+		
 	}
 
 	/**
@@ -5369,52 +6251,64 @@ var UniteLayersRev = new function(){
 
 		if(reset){
 			if(is_hover === 'true' || is_hover === true){
-				jQuery('input[name="hover_allow"]').attr('checked', true);
+				jQuery('#hover_allow').attr('checked', true);
 				jQuery('#idle-hover-swapper').show();
 			}else{
-				jQuery('input[name="hover_allow"]').attr('checked', false);
+				jQuery('#hover_allow').attr('checked', false);
 				jQuery('#idle-hover-swapper').hide();
 			}
 		}
-		RevSliderSettings.onoffStatus(jQuery('input[name="hover_allow"]'));
+		RevSliderSettings.onoffStatus(jQuery('#hover_allow'));
+		RevSliderSettings.onoffStatus(jQuery('#toggle_allow'));
+		RevSliderSettings.onoffStatus(jQuery('#toggle_use_hover'));
+		
+		
+		jQuery('#css_layer_selectable option[value="'+objLayer['layer-selectable']+'"]').attr('selected', true);
 		
 		if(objLayer.deformation != undefined){
-			jQuery('input[name="css_font-family"]').val(objLayer['deformation']['font-family']);
+			jQuery('#css_font-family').val(objLayer['deformation']['font-family']);
 			jQuery('input[name="css_padding[]"]').each(function(i){ jQuery(this).val(objLayer['deformation']['padding'][i]);});
 			if(objLayer['deformation']['font-style'] == 'italic')
-				jQuery('input[name="css_font-style"]').attr('checked', true); // checkbox
+				jQuery('#css_font-style').attr('checked', true); // checkbox
 			else
-				jQuery('input[name="css_font-style"]').attr('checked', false); // checkbox
+				jQuery('#css_font-style').attr('checked', false); // checkbox						
+			RevSliderSettings.onoffStatus(jQuery('#css_font-style'));
 			
-			RevSliderSettings.onoffStatus(jQuery('input[name="css_font-style"]'));
 			
-			jQuery('input[name="css_font-transparency"]').val(objLayer['deformation']['color-transparency']);
-			jQuery('select[name="css_text-decoration"] option[value="'+objLayer['deformation']['text-decoration']+'"]').attr('selected', true);
-			jQuery('select[name="css_text-align"] option[value="'+objLayer['deformation']['text-align']+'"]').attr('selected', true);
-			jQuery('input[name="css_background-color"]').val(objLayer['deformation']['background-color']);
-			jQuery('input[name="css_background-transparency"]').val(objLayer['deformation']['background-transparency']);
-			jQuery('input[name="css_border-color-show"]').val(objLayer['deformation']['border-color']);
-			jQuery('input[name="css_border-transparency"]').val(objLayer['deformation']['border-transparency']);
-			jQuery('select[name="css_border-style"] option[value="'+objLayer['deformation']['border-style']+'"]').attr('selected', true);
-			jQuery('input[name="css_border-width"]').val(objLayer['deformation']['border-width']);
+			
+			/*if(objLayer['layer-selectable'] == 'on')
+				jQuery('#css_layer_selectable').attr('checked', true); // checkbox
+			else
+				jQuery('#css_layer_selectable').attr('checked', false); // checkbox
+			RevSliderSettings.onoffStatus(jQuery('#css_layer_selectable'));*/
+			
+			jQuery('#css_font-transparency').val(objLayer['deformation']['color-transparency']);
+			jQuery('#css_text-decoration option[value="'+objLayer['deformation']['text-decoration']+'"]').attr('selected', true);
+			jQuery('#css_text-align option[value="'+objLayer['deformation']['text-align']+'"]').attr('selected', true);
+			jQuery('#css_background-color').val(objLayer['deformation']['background-color']);
+			jQuery('#css_background-transparency').val(objLayer['deformation']['background-transparency']);
+			jQuery('#css_border-color-show').val(objLayer['deformation']['border-color']);
+			jQuery('#css_border-transparency').val(objLayer['deformation']['border-transparency']);
+			jQuery('#css_border-style option[value="'+objLayer['deformation']['border-style']+'"]').attr('selected', true);
+			jQuery('#css_border-width').val(objLayer['deformation']['border-width']);
 			jQuery('input[name="css_border-radius[]"]').each(function(i){ jQuery(this).val(objLayer['deformation']['border-radius'][i]);});
 			jQuery('input[name="layer__x"]').val(objLayer['deformation']['x']);
 			jQuery('input[name="layer__y"]').val(objLayer['deformation']['y']);
-			jQuery('input[name="layer__z"]').val(objLayer['deformation']['z']);
-			jQuery('input[name="layer__skewx"]').val(objLayer['deformation']['skewx']);
-			jQuery('input[name="layer__skewy"]').val(objLayer['deformation']['skewy']);
-			jQuery('input[name="layer__scalex"]').val(objLayer['deformation']['scalex']);
-			jQuery('input[name="layer__scaley"]').val(objLayer['deformation']['scaley']);
-			jQuery('input[name="layer__opacity"]').val(objLayer['deformation']['opacity']);
-			jQuery('input[name="layer__xrotate"]').val(objLayer['deformation']['xrotate']);
-			jQuery('input[name="layer__yrotate"]').val(objLayer['deformation']['yrotate']);
-			jQuery('input[name="layer_2d_rotation"]').val(objLayer['2d_rotation']);
-			jQuery('input[name="layer_2d_origin_x"]').val(objLayer['deformation']['2d_origin_x']);//
-			jQuery('input[name="layer_2d_origin_y"]').val(objLayer['deformation']['2d_origin_y']);//
-			jQuery('input[name="layer__pers"]').val(objLayer['deformation']['pers']);
-			jQuery('select[name="layer_cornerleft"] option[value="'+objLayer['deformation']['corner_left']+'"]').attr('selected', true);
-			jQuery('select[name="layer_cornerright"] option[value="'+objLayer['deformation']['corner_right']+'"]').attr('selected', true);
-			jQuery('select[name="parallax_level"] option[value="'+objLayer['deformation']['parallax']+'"]').attr('selected', true);
+			jQuery('#layer__z').val(objLayer['deformation']['z']);
+			jQuery('#layer__skewx').val(objLayer['deformation']['skewx']);
+			jQuery('#layer__skewy').val(objLayer['deformation']['skewy']);
+			jQuery('#layer__scalex').val(objLayer['deformation']['scalex']);
+			jQuery('#layer__scaley').val(objLayer['deformation']['scaley']);
+			jQuery('#layer__opacity').val(objLayer['deformation']['opacity']);
+			jQuery('#layer__xrotate').val(objLayer['deformation']['xrotate']);
+			jQuery('#layer__yrotate').val(objLayer['deformation']['yrotate']);
+			jQuery('#layer_2d_rotation').val(objLayer['2d_rotation']);
+			jQuery('#layer_2d_origin_x').val(objLayer['deformation']['2d_origin_x']);//
+			jQuery('#layer_2d_origin_y').val(objLayer['deformation']['2d_origin_y']);//
+			jQuery('#layer__pers').val(objLayer['deformation']['pers']);
+			jQuery('#layer_cornerleft option[value="'+objLayer['deformation']['corner_left']+'"]').attr('selected', true);
+			jQuery('#layer_cornerleft option[value="'+objLayer['deformation']['corner_right']+'"]').attr('selected', true);
+			jQuery('#parallax_level option[value="'+objLayer['deformation']['parallax']+'"]').attr('selected', true);
 			
 			
 			
@@ -5486,29 +6380,28 @@ var UniteLayersRev = new function(){
 			/* ENDE not included yet, missing values */
 			
 			if(objLayer['deformation-hover'] != undefined){
-				jQuery('input[name="hover_layer_color_s"]').val(objLayer['deformation-hover']['color']);
-				jQuery('input[name="hover_css_font-transparency"]').val(objLayer['deformation-hover']['color-transparency']);
-				jQuery('input[name="hover_color_static"]').val(objLayer['deformation-hover']['color']);
-				jQuery('select[name="hover_css_text-decoration"] option[value="'+objLayer['deformation-hover']['text-decoration']+'"]').attr('selected', true);
-				jQuery('input[name="hover_css_background-color"]').val(objLayer['deformation-hover']['background-color']);
-				jQuery('input[name="hover_css_background-transparency"]').val(objLayer['deformation-hover']['background-transparency']);
-				jQuery('input[name="hover_css_border-color-show"]').val(objLayer['deformation-hover']['border-color']);
-				jQuery('input[name="hover_css_border-transparency"]').val(objLayer['deformation-hover']['border-transparency']);
-				jQuery('select[name="hover_css_border-style"] option[value="'+objLayer['deformation-hover']['border-style']+'"]').attr('selected', true);
-				jQuery('input[name="hover_css_border-width"]').val(objLayer['deformation-hover']['border-width']);
+				jQuery('#hover_layer_color_s').val(objLayer['deformation-hover']['color']);
+				jQuery('#hover_css_font-transparency').val(objLayer['deformation-hover']['color-transparency']);				
+				jQuery('#hover_css_text-decoration option[value="'+objLayer['deformation-hover']['text-decoration']+'"]').attr('selected', true);
+				jQuery('#hover_css_background-color').val(objLayer['deformation-hover']['background-color']);
+				jQuery('#hover_css_background-transparency').val(objLayer['deformation-hover']['background-transparency']);
+				jQuery('#hover_css_border-color-show').val(objLayer['deformation-hover']['border-color']);
+				jQuery('#hover_css_border-transparency').val(objLayer['deformation-hover']['border-transparency']);
+				jQuery('#hover_css_border-style option[value="'+objLayer['deformation-hover']['border-style']+'"]').attr('selected', true);
+				jQuery('#hover_css_border-width').val(objLayer['deformation-hover']['border-width']);
 				jQuery('input[name="hover_css_border-radius[]"]').each(function(i){ jQuery(this).val(objLayer['deformation-hover']['border-radius'][i]); });
-				jQuery('input[name="hover_layer__skewx"]').val(objLayer['deformation-hover']['skewx']);
-				jQuery('input[name="hover_layer__skewy"]').val(objLayer['deformation-hover']['skewy']);
-				jQuery('input[name="hover_layer__scalex"]').val(objLayer['deformation-hover']['scalex']);
-				jQuery('input[name="hover_layer__scaley"]').val(objLayer['deformation-hover']['scaley']);
-				jQuery('input[name="hover_layer__opacity"]').val(objLayer['deformation-hover']['opacity']);
-				jQuery('input[name="hover_layer__xrotate"]').val(objLayer['deformation-hover']['xrotate']);
-				jQuery('input[name="hover_layer__yrotate"]').val(objLayer['deformation-hover']['yrotate']);
-				jQuery('input[name="hover_layer_2d_rotation"]').val(objLayer['deformation-hover']['2d_rotation']); //z rotate
-				jQuery('select[name="css_cursor"] option[value="'+objLayer['deformation-hover']['css_cursor']+'"]').attr('selected', true);
+				jQuery('#hover_layer__skewx').val(objLayer['deformation-hover']['skewx']);
+				jQuery('#hover_layer__skewy').val(objLayer['deformation-hover']['skewy']);
+				jQuery('#hover_layer__scalex').val(objLayer['deformation-hover']['scalex']);
+				jQuery('#hover_layer__scaley').val(objLayer['deformation-hover']['scaley']);
+				jQuery('#hover_layer__opacity').val(objLayer['deformation-hover']['opacity']);
+				jQuery('#hover_layer__xrotate').val(objLayer['deformation-hover']['xrotate']);
+				jQuery('#hover_layer__yrotate').val(objLayer['deformation-hover']['yrotate']);
+				jQuery('#hover_layer_2d_rotation').val(objLayer['deformation-hover']['2d_rotation']); //z rotate
+				jQuery('#css_cursor option[value="'+objLayer['deformation-hover']['css_cursor']+'"]').attr('selected', true);
 				
-				jQuery('input[name="hover_speed"]').val(objLayer['deformation-hover']['speed']);
-				jQuery('select[name="hover_easing"] option[value="'+objLayer['deformation-hover']['easing']+'"]').attr('selected', true);
+				jQuery('#hover_speed').val(objLayer['deformation-hover']['speed']);
+				jQuery('#hover_easing option[value="'+objLayer['deformation-hover']['easing']+'"]').attr('selected', true);
 				
 			}
 		}
@@ -5516,6 +6409,8 @@ var UniteLayersRev = new function(){
 		jQuery('.wp-color-result').each(function(){
 			jQuery(this).css('backgroundColor', jQuery(this).parent().find('.my-color-field').val());
 		});
+
+		
 		return objLayer;
 
 	}
@@ -5527,7 +6422,7 @@ var UniteLayersRev = new function(){
 	 * update layer parameters from the object
 	 */
 	var updateLayerFormFields = function(serial){
-
+		
 		var objLayer = arrLayers[serial];
 		
 		if(typeof(objLayer) == 'undefined') return true;
@@ -5541,7 +6436,15 @@ var UniteLayersRev = new function(){
 		
 		jQuery('#layer_caption').val(objLayer.style);
 
-		jQuery('#layer_text').val(UniteAdminRev.stripslashes(objLayer.text));				
+		jQuery('#layer_text').val(UniteAdminRev.stripslashes(objLayer.text));	
+		
+		if (objLayer.texttoggle!=undefined) 
+			jQuery('#layer_text_toggle').val(UniteAdminRev.stripslashes(objLayer.texttoggle));		
+		else 			
+			jQuery('#layer_text_toggle').val("");
+		
+
+		
 		jQuery('#layer_text').data('new_content',false)
 		jQuery('#layer_alt_option option[value="'+objLayer.alt_option+'"]').attr('selected', 'selected');
 		jQuery('#layer_alt').val(objLayer.alt);
@@ -5549,47 +6452,63 @@ var UniteLayersRev = new function(){
 		jQuery('#layer_alias_name').val(objLayer.alias);
 		
 		if(objLayer['hover'] == 'true' || objLayer['hover'] == true){
-			jQuery('input[name="hover_allow"]').prop("checked", true);
+			jQuery('#hover_allow').prop("checked", true);
 			jQuery('#idle-hover-swapper').show();
 		}else{
-			jQuery('input[name="hover_allow"]').prop("checked", false);
+			jQuery('#hover_allow').prop("checked", false);
 			jQuery('#idle-hover-swapper').hide();
 		}
+
+		if(objLayer['toggle'] == 'true' || objLayer['toggle'] == true){
+			jQuery('#toggle_allow').prop("checked", true);			
+		}else{
+			jQuery('#toggle_allow').prop("checked", false);			
+		}
+
+		if(objLayer['toggle_use_hover'] == 'true' || objLayer['toggle_use_hover'] == true){
+			jQuery('#toggle_use_hover').prop("checked", true);			
+		}else{
+			jQuery('#toggle_use_hover').prop("checked", false);			
+		}
+
+
 		
 		if(objLayer['visible-notebook'] == 'true' || objLayer['visible-notebook'] == true)
-			jQuery('input[name="visible-notebook"]').prop('checked',true);
+			jQuery('#visible-notebook').prop('checked',true);
 		else
-			jQuery('input[name="visible-notebook"]').prop('checked',false);
+			jQuery('#visible-notebook').prop('checked',false);
 
 		if(objLayer['visible-desktop'] == "true" || objLayer['visible-desktop'] == true)
-			jQuery('input[name="visible-desktop"]').prop('checked',true);
+			jQuery('#visible-desktop').prop('checked',true);
 		else
-			jQuery('input[name="visible-desktop"]').prop('checked',false);
+			jQuery('#visible-desktop').prop('checked',false);
 
 		if(objLayer['visible-tablet'] == "true" || objLayer['visible-tablet'] == true)
-			jQuery('input[name="visible-tablet"]').prop('checked',true);
+			jQuery('#visible-tablet').prop('checked',true);
 		else
-			jQuery('input[name="visible-tablet"]').prop('checked',false);
+			jQuery('#visible-tablet').prop('checked',false);
 
 		if(objLayer['visible-mobile'] == "true" || objLayer['visible-mobile'] == true)
-			jQuery('input[name="visible-mobile"]').prop('checked',true);
+			jQuery('#visible-mobile').prop('checked',true);
 		else
-			jQuery('input[name="visible-mobile"]').prop('checked',false);
+			jQuery('#visible-mobile').prop('checked',false);
 		
 		if(objLayer['show-on-hover'] == "true" || objLayer['show-on-hover'] == true)
-			jQuery('input[name="layer_on_slider_hover"]').prop('checked',true);
+			jQuery('#layer_on_slider_hover').prop('checked',true);
 		else
-			jQuery('input[name="layer_on_slider_hover"]').prop('checked',false);
+			jQuery('#layer_on_slider_hover').prop('checked',false);
 		
 		jQuery('#layer-lazy-loading option[value="'+objLayer['lazy-load']+'"]').attr('selected', 'selected');
 		jQuery('#layer-image-size option[value="'+objLayer['image-size']+'"]').attr('selected', 'selected');
 		
-		RevSliderSettings.onoffStatus(jQuery('input[name="hover_allow"]'));
-		RevSliderSettings.onoffStatus(jQuery('input[name="visible-desktop"]'));
-		RevSliderSettings.onoffStatus(jQuery('input[name="visible-notebook"]'));
-		RevSliderSettings.onoffStatus(jQuery('input[name="visible-tablet"]'));
-		RevSliderSettings.onoffStatus(jQuery('input[name="visible-mobile"]'));
-		RevSliderSettings.onoffStatus(jQuery('input[name="layer_on_slider_hover"]'));
+		RevSliderSettings.onoffStatus(jQuery('#hover_allow'));
+		RevSliderSettings.onoffStatus(jQuery('#toggle_allow'));
+		RevSliderSettings.onoffStatus(jQuery('#toggle_use_hover'));
+		RevSliderSettings.onoffStatus(jQuery('#visible-desktop'));
+		RevSliderSettings.onoffStatus(jQuery('#visible-notebook'));
+		RevSliderSettings.onoffStatus(jQuery('#visible-tablet'));
+		RevSliderSettings.onoffStatus(jQuery('#visible-mobile'));
+		RevSliderSettings.onoffStatus(jQuery('#layer_on_slider_hover'));
 		
 		jQuery("#layer_scaleX").val(specOrVal(t.getVal(objLayer,'scaleX'),["auto"],"px"));
 		jQuery("#layer_scaleY").val(specOrVal(t.getVal(objLayer,'scaleY'),["auto"],"px"));
@@ -5652,33 +6571,30 @@ var UniteLayersRev = new function(){
 		jQuery("#layer_loop_angle").val(objLayer.loop_angle);
 		jQuery("#layer_loop_radius").val(objLayer.loop_radius);
 		
+		jQuery("#layer_html_tag option[value='"+objLayer.html_tag+"']").attr('selected', 'selected');
+		jQuery("#parallax_layer_ddd_zlevel option[value='"+objLayer.parallax_layer_ddd_zlevel+"']").attr('selected', 'selected');
+		
 		if(objLayer.mask_start == "true" || objLayer.mask_start == true) {
-			jQuery('input[name="masking-start"]').attr("checked", true);
+			jQuery('#masking-start').attr("checked", true);
 			jQuery('.mask-start-settings').show();						 	
 		}
 		else {
-			jQuery('input[name="masking-start"]').removeAttr("checked");
+			jQuery('#masking-start').removeAttr("checked");
 			jQuery('.mask-start-settings').hide();
 		}
-		
-		
 
 		if(objLayer.mask_end == "true" || objLayer.mask_end == true) {
-			jQuery('input[name="masking-end"]').attr("checked", true);
+			jQuery('#masking-end').attr("checked", true);
 			jQuery('.mask-end-settings').show();
 		}
 		else {
-			jQuery('input[name="masking-end"]').removeAttr("checked");
+			jQuery('#masking-end').removeAttr("checked");
 			jQuery('.mask-end-settings').hide();
 		}
 	
+		RevSliderSettings.onoffStatus(jQuery('#masking-start'));		
+		RevSliderSettings.onoffStatus(jQuery('#masking-end'));
 		
-
-		RevSliderSettings.onoffStatus(jQuery('input[name="masking-start"]'));		
-		RevSliderSettings.onoffStatus(jQuery('input[name="masking-end"]'));
-		
-
-
 		jQuery("#mask_anim_xstart").val(objLayer.mask_x_start);
 		jQuery("#mask_anim_ystart").val(objLayer.mask_y_start);
 		jQuery("#mask_speed").val(objLayer.mask_speed_start);
@@ -5686,8 +6602,8 @@ var UniteLayersRev = new function(){
 		
 		jQuery("#mask_anim_xend").val(objLayer.mask_x_end);
 		jQuery("#mask_anim_yend").val(objLayer.mask_y_end);
-		jQuery("#mask_speed_end").val(objLayer.mask_speed_end);
-		jQuery("#mask_easing_end").val(objLayer.mask_ease_end);
+		//jQuery("#mask_speed_end").val(objLayer.mask_speed_end);
+		//jQuery("#mask_easing_end").val(objLayer.mask_ease_end);
 		
 		jQuery("#layer_animation option[value='"+objLayer.animation+"']").attr('selected', 'selected');
 
@@ -5782,29 +6698,35 @@ var UniteLayersRev = new function(){
 
 		jQuery("#layer_pers_start").val(objLayer.pers_start);
 		jQuery("#layer_pers_end").val(objLayer.pers_end);
-				
-		if(typeof(objLayer.x_start_reverse) !== 'undefined' && (objLayer.x_start_reverse == "true" || objLayer.x_start_reverse == true)) { jQuery('input[name="layer_anim_xstart_reverse"]').attr('checked',true); }else{ jQuery('input[name="layer_anim_xstart_reverse"]').removeAttr('checked'); }
-		if(typeof(objLayer.y_start_reverse) !== 'undefined' && (objLayer.y_start_reverse == "true" || objLayer.y_start_reverse == true)) { jQuery('input[name="layer_anim_ystart_reverse"]').attr('checked',true); }else{ jQuery('input[name="layer_anim_ystart_reverse"]').removeAttr('checked'); }
-		if(typeof(objLayer.x_end_reverse) !== 'undefined' && (objLayer.x_end_reverse == "true" || objLayer.x_end_reverse == true)) { jQuery('input[name="layer_anim_xend_reverse"]').attr('checked',true); }else{ jQuery('input[name="layer_anim_xend_reverse"]').removeAttr('checked'); }
-		if(typeof(objLayer.y_end_reverse) !== 'undefined' && (objLayer.y_end_reverse == "true" || objLayer.y_end_reverse == true)) { jQuery('input[name="layer_anim_yend_reverse"]').attr('checked',true); }else{ jQuery('input[name="layer_anim_yend_reverse"]').removeAttr('checked'); }
-		if(typeof(objLayer.x_rotate_start_reverse) !== 'undefined' && (objLayer.x_rotate_start_reverse == "true" || objLayer.x_rotate_start_reverse == true)) { jQuery('input[name="layer_anim_xrotate_reverse"]').attr('checked',true); }else{ jQuery('input[name="layer_anim_xrotate_reverse"]').removeAttr('checked'); }
-		if(typeof(objLayer.y_rotate_start_reverse) !== 'undefined' && (objLayer.y_rotate_start_reverse == "true" || objLayer.y_rotate_start_reverse == true)) { jQuery('input[name="layer_anim_yrotate_reverse"]').attr('checked',true); }else{ jQuery('input[name="layer_anim_yrotate_reverse"]').removeAttr('checked'); }
-		if(typeof(objLayer.z_rotate_start_reverse) !== 'undefined' && (objLayer.z_rotate_start_reverse == "true" || objLayer.z_rotate_start_reverse == true)) { jQuery('input[name="layer_anim_zrotate_reverse"]').attr('checked',true); }else{ jQuery('input[name="layer_anim_zrotate_reverse"]').removeAttr('checked'); }
-		if(typeof(objLayer.x_rotate_end_reverse) !== 'undefined' && (objLayer.x_rotate_end_reverse == "true" || objLayer.x_rotate_end_reverse == true)) { jQuery('input[name="layer_anim_xrotate_end_reverse"]').attr('checked',true); }else{ jQuery('input[name="layer_anim_xrotate_end_reverse"]').removeAttr('checked'); }
-		if(typeof(objLayer.y_rotate_end_reverse) !== 'undefined' && (objLayer.y_rotate_end_reverse == "true" || objLayer.y_rotate_end_reverse == true)) { jQuery('input[name="layer_anim_yrotate_end_reverse"]').attr('checked',true); }else{ jQuery('input[name="layer_anim_yrotate_end_reverse"]').removeAttr('checked'); }
-		if(typeof(objLayer.z_rotate_end_reverse) !== 'undefined' && (objLayer.z_rotate_end_reverse == "true" || objLayer.z_rotate_end_reverse == true)) { jQuery('input[name="layer_anim_zrotate_end_reverse"]').attr('checked',true); }else{ jQuery('input[name="layer_anim_zrotate_end_reverse"]').removeAttr('checked'); }
-		if(typeof(objLayer.scale_x_start_reverse) !== 'undefined' && (objLayer.scale_x_start_reverse == "true" || objLayer.scale_x_start_reverse == true)) { jQuery('input[name="layer_scale_xstart_reverse"]').attr('checked',true); }else{ jQuery('input[name="layer_scale_xstart_reverse"]').removeAttr('checked'); }
-		if(typeof(objLayer.scale_y_start_reverse) !== 'undefined' && (objLayer.scale_y_start_reverse == "true" || objLayer.scale_y_start_reverse == true)) { jQuery('input[name="layer_scale_ystart_reverse"]').attr('checked',true); }else{ jQuery('input[name="layer_scale_ystart_reverse"]').removeAttr('checked'); }
-		if(typeof(objLayer.scale_x_end_reverse) !== 'undefined' && (objLayer.scale_x_end_reverse == "true" || objLayer.scale_x_end_reverse == true)) { jQuery('input[name="layer_scale_xend_reverse"]').attr('checked',true); }else{ jQuery('input[name="layer_scale_xend_reverse"]').removeAttr('checked'); }
-		if(typeof(objLayer.scale_y_end_reverse) !== 'undefined' && (objLayer.scale_y_end_reverse == "true" || objLayer.scale_y_end_reverse == true)) { jQuery('input[name="layer_scale_yend_reverse"]').attr('checked',true); }else{ jQuery('input[name="layer_scale_yend_reverse"]').removeAttr('checked'); }
-		if(typeof(objLayer.skew_x_start_reverse) !== 'undefined' && (objLayer.skew_x_start_reverse == "true" || objLayer.skew_x_start_reverse == true)) { jQuery('input[name="layer_skew_xstart_reverse"]').attr('checked',true); }else{ jQuery('input[name="layer_skew_xstart_reverse"]').removeAttr('checked'); }
-		if(typeof(objLayer.skew_y_start_reverse) !== 'undefined' && (objLayer.skew_y_start_reverse == "true" || objLayer.skew_y_start_reverse == true)) { jQuery('input[name="layer_skew_ystart_reverse"]').attr('checked',true); }else{ jQuery('input[name="layer_skew_ystart_reverse"]').removeAttr('checked'); }
-		if(typeof(objLayer.skew_x_end_reverse) !== 'undefined' && (objLayer.skew_x_end_reverse == "true" || objLayer.skew_x_end_reverse == true)) { jQuery('input[name="layer_skew_xend_reverse"]').attr('checked',true); }else{ jQuery('input[name="layer_skew_xend_reverse"]').removeAttr('checked'); }
-		if(typeof(objLayer.skew_y_end_reverse) !== 'undefined' && (objLayer.skew_y_end_reverse == "true" || objLayer.skew_y_end_reverse == true)) { jQuery('input[name="layer_skew_yend_reverse"]').attr('checked',true); }else{ jQuery('input[name="layer_skew_yend_reverse"]').removeAttr('checked'); }
-		if(typeof(objLayer.mask_x_start_reverse) !== 'undefined' && (objLayer.mask_x_start_reverse == "true" || objLayer.mask_x_start_reverse == true)) { jQuery('input[name="mask_anim_xstart_reverse"]').attr('checked',true); }else{ jQuery('input[name="mask_anim_xstart_reverse"]').removeAttr('checked'); }
-		if(typeof(objLayer.mask_y_start_reverse) !== 'undefined' && (objLayer.mask_y_start_reverse == "true" || objLayer.mask_y_start_reverse == true)) { jQuery('input[name="mask_anim_ystart_reverse"]').attr('checked',true); }else{ jQuery('input[name="mask_anim_ystart_reverse"]').removeAttr('checked'); }
-		if(typeof(objLayer.mask_x_end_reverse) !== 'undefined' && (objLayer.mask_x_end_reverse == "true" || objLayer.mask_x_end_reverse == true)) { jQuery('input[name="mask_anim_xend_reverse"]').attr('checked',true); }else{ jQuery('input[name="mask_anim_xend_reverse"]').removeAttr('checked'); }
-		if(typeof(objLayer.mask_y_end_reverse) !== 'undefined' && (objLayer.mask_y_end_reverse == "true" || objLayer.mask_y_end_reverse == true)) { jQuery('input[name="mask_anim_yend_reverse"]').attr('checked',true); }else{ jQuery('input[name="mask_anim_yend_reverse"]').removeAttr('checked'); }
+		
+		if(typeof(objLayer['layer-selectable']) !== 'undefined'){
+			jQuery('#css_layer_selectable option[value="'+objLayer['layer-selectable']+'"]').attr('selected', true);
+		}else{
+			jQuery('#css_layer_selectable option[value="default"]').attr('selected', true);
+		}
+		
+		if(typeof(objLayer.x_start_reverse) !== 'undefined' && (objLayer.x_start_reverse == "true" || objLayer.x_start_reverse == true)) { jQuery('#layer_anim_xstart_reverse').attr('checked',true); }else{ jQuery('#layer_anim_xstart_reverse').removeAttr('checked'); }
+		if(typeof(objLayer.y_start_reverse) !== 'undefined' && (objLayer.y_start_reverse == "true" || objLayer.y_start_reverse == true)) { jQuery('#layer_anim_ystart_reverse').attr('checked',true); }else{ jQuery('#layer_anim_ystart_reverse').removeAttr('checked'); }
+		if(typeof(objLayer.x_end_reverse) !== 'undefined' && (objLayer.x_end_reverse == "true" || objLayer.x_end_reverse == true)) { jQuery('#layer_anim_xend_reverse').attr('checked',true); }else{ jQuery('#layer_anim_xend_reverse').removeAttr('checked'); }
+		if(typeof(objLayer.y_end_reverse) !== 'undefined' && (objLayer.y_end_reverse == "true" || objLayer.y_end_reverse == true)) { jQuery('#layer_anim_yend_reverse').attr('checked',true); }else{ jQuery('#layer_anim_yend_reverse').removeAttr('checked'); }
+		if(typeof(objLayer.x_rotate_start_reverse) !== 'undefined' && (objLayer.x_rotate_start_reverse == "true" || objLayer.x_rotate_start_reverse == true)) { jQuery('#layer_anim_xrotate_reverse').attr('checked',true); }else{ jQuery('#layer_anim_xrotate_reverse').removeAttr('checked'); }
+		if(typeof(objLayer.y_rotate_start_reverse) !== 'undefined' && (objLayer.y_rotate_start_reverse == "true" || objLayer.y_rotate_start_reverse == true)) { jQuery('#layer_anim_yrotate_reverse').attr('checked',true); }else{ jQuery('#layer_anim_yrotate_reverse').removeAttr('checked'); }
+		if(typeof(objLayer.z_rotate_start_reverse) !== 'undefined' && (objLayer.z_rotate_start_reverse == "true" || objLayer.z_rotate_start_reverse == true)) { jQuery('#layer_anim_zrotate_reverse').attr('checked',true); }else{ jQuery('#layer_anim_zrotate_reverse').removeAttr('checked'); }
+		if(typeof(objLayer.x_rotate_end_reverse) !== 'undefined' && (objLayer.x_rotate_end_reverse == "true" || objLayer.x_rotate_end_reverse == true)) { jQuery('#layer_anim_xrotate_end_reverse').attr('checked',true); }else{ jQuery('#layer_anim_xrotate_end_reverse').removeAttr('checked'); }
+		if(typeof(objLayer.y_rotate_end_reverse) !== 'undefined' && (objLayer.y_rotate_end_reverse == "true" || objLayer.y_rotate_end_reverse == true)) { jQuery('#layer_anim_yrotate_end_reverse').attr('checked',true); }else{ jQuery('#layer_anim_yrotate_end_reverse').removeAttr('checked'); }
+		if(typeof(objLayer.z_rotate_end_reverse) !== 'undefined' && (objLayer.z_rotate_end_reverse == "true" || objLayer.z_rotate_end_reverse == true)) { jQuery('#layer_anim_zrotate_end_reverse').attr('checked',true); }else{ jQuery('#layer_anim_zrotate_end_reverse').removeAttr('checked'); }
+		if(typeof(objLayer.scale_x_start_reverse) !== 'undefined' && (objLayer.scale_x_start_reverse == "true" || objLayer.scale_x_start_reverse == true)) { jQuery('#layer_scale_xstart_reverse').attr('checked',true); }else{ jQuery('#layer_scale_xstart_reverse').removeAttr('checked'); }
+		if(typeof(objLayer.scale_y_start_reverse) !== 'undefined' && (objLayer.scale_y_start_reverse == "true" || objLayer.scale_y_start_reverse == true)) { jQuery('#layer_scale_ystart_reverse').attr('checked',true); }else{ jQuery('#layer_scale_ystart_reverse').removeAttr('checked'); }
+		if(typeof(objLayer.scale_x_end_reverse) !== 'undefined' && (objLayer.scale_x_end_reverse == "true" || objLayer.scale_x_end_reverse == true)) { jQuery('#layer_scale_xend_reverse').attr('checked',true); }else{ jQuery('#layer_scale_xend_reverse').removeAttr('checked'); }
+		if(typeof(objLayer.scale_y_end_reverse) !== 'undefined' && (objLayer.scale_y_end_reverse == "true" || objLayer.scale_y_end_reverse == true)) { jQuery('#layer_scale_yend_reverse').attr('checked',true); }else{ jQuery('#layer_scale_yend_reverse').removeAttr('checked'); }
+		if(typeof(objLayer.skew_x_start_reverse) !== 'undefined' && (objLayer.skew_x_start_reverse == "true" || objLayer.skew_x_start_reverse == true)) { jQuery('#layer_skew_xstart_reverse').attr('checked',true); }else{ jQuery('#layer_skew_xstart_reverse').removeAttr('checked'); }
+		if(typeof(objLayer.skew_y_start_reverse) !== 'undefined' && (objLayer.skew_y_start_reverse == "true" || objLayer.skew_y_start_reverse == true)) { jQuery('#layer_skew_ystart_reverse').attr('checked',true); }else{ jQuery('#layer_skew_ystart_reverse').removeAttr('checked'); }
+		if(typeof(objLayer.skew_x_end_reverse) !== 'undefined' && (objLayer.skew_x_end_reverse == "true" || objLayer.skew_x_end_reverse == true)) { jQuery('#layer_skew_xend_reverse').attr('checked',true); }else{ jQuery('#layer_skew_xend_reverse').removeAttr('checked'); }
+		if(typeof(objLayer.skew_y_end_reverse) !== 'undefined' && (objLayer.skew_y_end_reverse == "true" || objLayer.skew_y_end_reverse == true)) { jQuery('#layer_skew_yend_reverse').attr('checked',true); }else{ jQuery('#layer_skew_yend_reverse').removeAttr('checked'); }
+		if(typeof(objLayer.mask_x_start_reverse) !== 'undefined' && (objLayer.mask_x_start_reverse == "true" || objLayer.mask_x_start_reverse == true)) { jQuery('#mask_anim_xstart_reverse').attr('checked',true); }else{ jQuery('#mask_anim_xstart_reverse').removeAttr('checked'); }
+		if(typeof(objLayer.mask_y_start_reverse) !== 'undefined' && (objLayer.mask_y_start_reverse == "true" || objLayer.mask_y_start_reverse == true)) { jQuery('#mask_anim_ystart_reverse').attr('checked',true); }else{ jQuery('#mask_anim_ystart_reverse').removeAttr('checked'); }
+		if(typeof(objLayer.mask_x_end_reverse) !== 'undefined' && (objLayer.mask_x_end_reverse == "true" || objLayer.mask_x_end_reverse == true)) { jQuery('#mask_anim_xend_reverse').attr('checked',true); }else{ jQuery('#mask_anim_xend_reverse').removeAttr('checked'); }
+		if(typeof(objLayer.mask_y_end_reverse) !== 'undefined' && (objLayer.mask_y_end_reverse == "true" || objLayer.mask_y_end_reverse == true)) { jQuery('#mask_anim_yend_reverse').attr('checked',true); }else{ jQuery('#mask_anim_yend_reverse').removeAttr('checked'); }
 		
 		t.updateReverseList();
 
@@ -5873,6 +6795,7 @@ var UniteLayersRev = new function(){
 		});
 		showHideToolTip();
 		showHideLoopFunctions(); //has to be the last thing done to not interrupt settings
+		
 	}
 
 
@@ -5890,6 +6813,8 @@ var UniteLayersRev = new function(){
 
 		jQuery(containerID + " .slide_layer").removeClass("layer_selected");
 		
+		jQuery('.edit_slide_wrapper').attr('class', '').addClass('edit_slide_wrapper');
+		
 	}
 
 
@@ -5898,13 +6823,13 @@ var UniteLayersRev = new function(){
 	 */
 	var unselectLayers = function(){
 		
+
 		unselectHtmlLayers();
+		jQuery('.quicksortlayer.selected').removeClass("selected");
 		u.unselectSortboxItems();
 		selectedLayerSerial = -1;
 		disableFormFields();
-		jQuery('#layer-short-toolbar').appendTo(jQuery('#layer-settings-toolbar-bottom'));
-		jQuery('#layer_text_wrapper').appendTo(jQuery('#layer_text_holder'));
-
+				
 		//reset elements
 		jQuery("#layer_alt_row").hide();
 		jQuery("#layer_scale_title_row").hide();
@@ -5928,11 +6853,15 @@ var UniteLayersRev = new function(){
 		
 		jQuery('.form_layers').addClass('notselected');
 		
-		jQuery('#toggle-idle-hover .icon-styleidle').trigger("click");
+		//jQuery('#toggle-idle-hover .icon-styleidle').trigger("click");
+		u.resetIdleSelector();
 		
 		jQuery('#idle-hover-swapper').hide();
 
 		u.allLayerToIdle();
+
+		jQuery('#the_current-editing-layer-title').addClass("nolayerselectednow").val("No Layers Selected").attr("disabled","disabled");
+		jQuery('#layer-short-toolbar').data('serial',"");
 		
 	}
 
@@ -5944,6 +6873,8 @@ var UniteLayersRev = new function(){
 					jQuery('#button_edit_layer').hide();
 					jQuery('#button_reset_size').show();
 					jQuery('#button_change_video_settings').hide();
+					jQuery('#layer-short-tool-placeholder-a').hide();
+					jQuery('#layer-short-tool-placeholder-b').hide();
 				break;
 				case "text":
 				case "button":
@@ -5955,21 +6886,26 @@ var UniteLayersRev = new function(){
 						jQuery('#button_edit_layer').hide();
 						jQuery('#button_reset_size').hide();
 					}
-					jQuery('#button_change_image_source').hide();
-					
+					jQuery('#button_change_image_source').hide();					
 					jQuery('#button_change_video_settings').hide();
+					jQuery('#layer-short-tool-placeholder-a').hide();
+					jQuery('#layer-short-tool-placeholder-b').hide();
 				break;
-				case "video":
+				case "video":					
 					jQuery('#button_edit_layer').hide();
 					jQuery('#button_change_image_source').hide();
 					jQuery('#button_reset_size').hide();
-					jQuery('#button_change_video_settings').show();					
+					jQuery('#button_change_video_settings').show();	
+					jQuery('#layer-short-tool-placeholder-a').show();
+					jQuery('#layer-short-tool-placeholder-b').hide();				
 				break;
 				case 'shape':
 					jQuery('#button_change_image_source').hide();
 					jQuery('#button_change_video_settings').hide();
 					jQuery('#button_edit_layer').hide();
 					jQuery('#button_reset_size').hide();
+					jQuery('#layer-short-tool-placeholder-a').show();
+					jQuery('#layer-short-tool-placeholder-b').show();
 				break;
 				/*case 'no_edit':
 					jQuery('#button_change_image_source').hide();
@@ -5983,59 +6919,7 @@ var UniteLayersRev = new function(){
 				break;
 			}
 
-		setTimeout(function() {
-			var layer = jQuery('.slide_layer.layer_selected');
-			
-			if (layer!==undefined && layer.length>0) {
-				var pos = layer.position();	
-
-
-				if (pos.top<35)
-					jQuery('#layer-short-toolbar').addClass("tobottom")
-				else
-					jQuery('#layer-short-toolbar').removeClass("tobottom")
-				
-				
-
-				var dw = jQuery('#divLayers').width(),
-					dh = jQuery('#divLayers').height(),
-					lw = layer.width(),
-					lwc = lw<115 ? 115 : lw,
-					rl = pos.left+lwc-jQuery('#divLayers').position().left;
-
-				
-				
-			
-
-				if (rl>dw) {
-					jQuery('#layer-short-toolbar').addClass("toleft")
-					if (lw<115)
-						jQuery('#layer-short-toolbar').css({right:(115-lw)+"px",left:"auto"});
-					else
-						jQuery('#layer-short-toolbar').css({right:"auto",left:"0px"});
-				}
-				else {
-					jQuery('#layer-short-toolbar').removeClass("toleft")
-					jQuery('#layer-short-toolbar').css({right:"0px",left:"auto"})
-				}
-
-				if (lw>dw) {
-					jQuery('#layer-short-toolbar').removeClass("toleft");
-					jQuery('#layer-short-toolbar').css({right:"50%",left:"auto"})
-				}
-
-				if (layer.height()>=dh-30) {
-					jQuery('#layer-short-toolbar').removeClass("tobottom");					
-					if (pos.top<0)
-						jQuery('#layer-short-toolbar').removeClass("toinside").addClass("tobottominside");
-					else
-						jQuery('#layer-short-toolbar').removeClass("tobottominside").addClass("toinside");
-				} else {
-					jQuery('#layer-short-toolbar').removeClass("toinside").removeClass("tobottominside");
-				}
-			}
-
-		},50);
+		
 
 	}
 	
@@ -6047,6 +6931,55 @@ var UniteLayersRev = new function(){
 		});
 		
 	}
+	
+	/**
+	 * check if the layer that is deleted, needs to be removed from any actions as well
+	 **/
+	t.checkActionsOnLayers = function(layerserial){
+		var clayers = t.getSimpleLayers();
+		
+		var unique_id = t.getUniqueIdByLayer(layerserial); 
+		
+		for(var key in clayers){
+			if(clayers[key]['layer_action'] !== undefined){
+				for(var a in clayers[key]['layer_action']['action']){
+					switch(clayers[key]['layer_action']['action'][a]){
+						case 'start_in':
+						case 'start_out':
+						case 'start_video':
+						case 'stop_video':
+						case 'toggle_layer':
+						case 'toggle_video':
+						case 'mute_video':
+						case 'unmute_video':
+						case 'toggle_mute_video':
+						case 'simulate_click':
+						case 'toggle_class':
+							
+							var target_layer = clayers[key]['layer_action']['layer_target'][a];
+							
+							if(unique_id == target_layer){
+								//remove that action from the layer
+								if(clayers[key]['layer_action']['action'] && clayers[key]['layer_action']['action'][a]) delete clayers[key]['layer_action']['action'][a];
+								if(clayers[key]['layer_action']['tooltip_event'] && clayers[key]['layer_action']['tooltip_event'][a]) delete clayers[key]['layer_action']['tooltip_event'][a];
+								if(clayers[key]['layer_action']['image_link'] && clayers[key]['layer_action']['image_link'][a]) delete clayers[key]['layer_action']['image_link'][a];
+								if(clayers[key]['layer_action']['link_open_in'] && clayers[key]['layer_action']['link_open_in'][a]) delete clayers[key]['layer_action']['link_open_in'][a];
+								if(clayers[key]['layer_action']['jump_to_slide'] && clayers[key]['layer_action']['jump_to_slide'][a]) delete clayers[key]['layer_action']['jump_to_slide'][a];
+								if(clayers[key]['layer_action']['scrolloffset'] && clayers[key]['layer_action']['scrolloffset'][a]) delete clayers[key]['layer_action']['scrolloffset'][a];
+								if(clayers[key]['layer_action']['actioncallback'] && clayers[key]['layer_action']['actioncallback'][a]) delete clayers[key]['layer_action']['actioncallback'][a];
+								if(clayers[key]['layer_action']['layer_target'] && clayers[key]['layer_action']['layer_target'][a]) delete clayers[key]['layer_action']['layer_target'][a];
+								if(clayers[key]['layer_action']['action_delay'] && clayers[key]['layer_action']['action_delay'][a]) delete clayers[key]['layer_action']['action_delay'][a];
+								if(clayers[key]['layer_action']['link_type'] && clayers[key]['layer_action']['link_type'][a]) delete clayers[key]['layer_action']['link_type'][a];
+								if(clayers[key]['layer_action']['toggle_layer_type'] && clayers[key]['layer_action']['toggle_layer_type'][a]) delete clayers[key]['layer_action']['toggle_layer_type'][a];
+								if(clayers[key]['layer_action']['toggle_class'] && clayers[key]['layer_action']['toggle_class'][a]) delete clayers[key]['layer_action']['toggle_class'][a];
+							}
+						break;
+					}
+				}
+			}
+		}
+	}
+	
 	
 	t.remove_action = function(o){
 		if(confirm(rev_lang.remove_this_action)){
@@ -6202,6 +7135,10 @@ var UniteLayersRev = new function(){
 		
 		jQuery('select[name="layer_target[]"], select[name="no_layer_target[]"]').each(function(k){
 			jQuery(this).html('');
+			
+			jQuery(this).append(jQuery('<option data-mytype="video-special"></option>').val('backgroundvideo').text(rev_lang.background_video));
+			jQuery(this).append(jQuery('<option data-mytype="video-special"></option>').val('firstvideo').text(rev_lang.active_video));
+			
 			for(var key in clayers){
 				jQuery(this).append(jQuery('<option data-mytype="'+clayers[key].type+'"></option>').val(clayers[key]['unique_id']).text(clayers[key].alias));
 			}
@@ -6246,32 +7183,71 @@ var UniteLayersRev = new function(){
 	/**
 	 * set layer selected representation
 	 */
-	t.setLayerSelected = function(serial){
+	t.setLayerSelected = function(serial,videoRefresh){
 		
-		if(selectedLayerSerial == serial)
+		if(selectedLayerSerial == serial && !videoRefresh)
 			return(false);
-			
-		jQuery('#toggle-idle-hover .icon-styleidle').trigger("click");
-		if (selectedLayerSerial!=-1) 
-			u.rebuildLayerIdle(t.getHtmlLayerFromSerial(selectedLayerSerial),0);
+		
+		u.resetIdleSelector();
 
+		jQuery('.quicksortlayer.selected').removeClass("selected");
+		jQuery('#layer_quicksort_'+serial).addClass("selected");
+		
 		jQuery('.timer-layer-text:focus').blur();
 
 		t.remove_layer_actions();
 		
 		objLayer = t.getLayer(serial);
 		
+		//add the correct bolds into the selectfield
+		if(typeof(objLayer['deformation']) !== 'undefined' && typeof(objLayer['deformation']['font-family']) !== 'undefined'){
+			t.check_the_font_bold(objLayer['deformation']['font-family']);
+		}else{
+			t.check_the_font_bold('');
+		}
+		
+		
 		t.showHideContentEditor(false);
 		t.toolbarInPos(objLayer);
 		
-		var layer = t.getHtmlLayerFromSerial(serial);
-		
-		
+		// SOME TOOLBAR ACTION FOR SELECTED LAYER
+		var layer = t.getHtmlLayerFromSerial(serial),
+			tbar = jQuery('#layer-short-toolbar');
+
+		jQuery('#the_current-editing-layer-title').val(objLayer.alias).removeAttr('disabled');		
+		jQuery('#layer-short-toolbar').data('serial',serial);
+
+		if(u.isLayerLocked(serial)) {
+			var b=tbar.find('.quick-layer-lock'),
+				i=b.find('i');
+			b.addClass("in-off").removeClass("in-on");
+			i.removeClass("eg-icon-lock-open").addClass("eg-icon-lock");				
+		} else {
+			var b=tbar.find('.quick-layer-lock'),
+				i=b.find('i');
+			b.addClass("in-on").removeClass("in-off");
+			i.removeClass("eg-icon-lock").addClass("eg-icon-lock-open");							
+		}
+
+		if(u.isLayerVisible(serial)){
+			var b=tbar.find('.quick-layer-view'),
+				i=b.find('i');
+			b.addClass("in-on").removeClass("in-off");				
+			i.removeClass("eg-icon-eye-off").addClass("eg-icon-eye");				
+		}else{
+			var b=tbar.find('.quick-layer-view'),
+				i=b.find('i');
+			b.addClass("in-off").removeClass("in-on");
+			i.removeClass("eg-icon-eye").addClass("eg-icon-eye-off");					
+		}
+
+		jQuery('#the_current-editing-layer-title').removeClass("nolayerselectednow");
+
 		/*if(objLayer.type == 'no_edit'){
 			
 		}*/
 		
-		jQuery('#layer-short-toolbar').appendTo(layer);
+		//jQuery('#layer-short-toolbar').appendTo(layer);
 
 		//unselect all other layers
 		unselectHtmlLayers();
@@ -6310,6 +7286,27 @@ var UniteLayersRev = new function(){
 		
 		jQuery("#layer-covermode-wrapper").hide();
 		
+		jQuery('.edit_slide_wrapper').attr('class', '').addClass('edit_slide_wrapper');
+		
+		switch(objLayer.type){
+			case "text":
+				jQuery('.edit_slide_wrapper').addClass('main-textlayer-wrapper');
+			break;
+			case "image":
+				jQuery('.edit_slide_wrapper').addClass('main-imagelayer-wrapper');
+			break;
+			case "shape":
+				jQuery('.edit_slide_wrapper').addClass('main-shapelayer-wrapper');
+			break;
+			case "video":
+				jQuery('.edit_slide_wrapper').addClass('main-videolayer-wrapper');
+			break;
+			case "button":
+				jQuery('.edit_slide_wrapper').addClass('main-buttonlayer-wrapper');
+			break;
+		}
+		
+
 		//do specific operations depends on type
 		switch(objLayer.type){
 			case "video":	//show edit video button
@@ -6326,7 +7323,7 @@ var UniteLayersRev = new function(){
 					aspectRatio:aspectratio,
 					handles:"all",
 					start:function(event,ui) {
-						if(jQuery("#layer_proportional_scale").is(":checked")) {
+						if(jQuery("#layer_proportional_scale")[0].checked) {
 							punchgs.TweenLite.set(ui.element,{width:ui.originalSize.width,height:ui.originalSize.height})
 							punchgs.TweenLite.set(ui.element.find('img'),{width:"100%",height:"auto"})
 							punchgs.TweenLite.set(ui.element.find('.innerslide_layer'),{width:"100%",height:"auto"})
@@ -6339,7 +7336,7 @@ var UniteLayersRev = new function(){
 					resize:function(event,ui) {						
 						jQuery('#layer_video_width').val(ui.size.width);
 						jQuery('#layer_video_height').val(ui.size.height);
-						if(jQuery("#layer_proportional_scale").is(":checked")) {
+						if(jQuery("#layer_proportional_scale")[0].checked) {
 							punchgs.TweenLite.set(ui.element.find('img'),{width:"100%",height:"auto"})
 							punchgs.TweenLite.set(ui.element.find('.innerslide_layer'),{maxWidth:"none",maxHeight:"none",width:"100%",height:"auto"});							
 						} else {
@@ -6395,7 +7392,7 @@ var UniteLayersRev = new function(){
 				
 				jQuery('.rs-lazy-load-images-wrap').show();
 
-				if(jQuery("#layer_proportional_scale").is(":checked"))
+				if(jQuery("#layer_proportional_scale")[0].checked)
 					var aspectratio = true;
 				else
 					var aspectratio = false;
@@ -6405,7 +7402,7 @@ var UniteLayersRev = new function(){
 					handles:"all",
 					start:function(event,ui) {
 						// IF IMAGE IS IN ASPECT RATIO MODE
-						if(jQuery("#layer_proportional_scale").is(":checked")) {
+						if(jQuery("#layer_proportional_scale")[0].checked) {
 							punchgs.TweenLite.set(ui.element,{width:ui.originalSize.width,height:ui.originalSize.height})
 							punchgs.TweenLite.set(ui.element.find('img'),{width:"100%",height:"auto"})
 							punchgs.TweenLite.set(ui.element.find('.innerslide_layer'),{width:"100%",height:"auto"})
@@ -6418,7 +7415,7 @@ var UniteLayersRev = new function(){
 					resize:function(event,ui) {
 						jQuery('#layer_scaleX').val(ui.size.width);
 						jQuery('#layer_scaleY').val(ui.size.height);
-						if(jQuery("#layer_proportional_scale").is(":checked")) {
+						if(jQuery("#layer_proportional_scale")[0].checked) {
 							punchgs.TweenLite.set(ui.element.find('img'),{width:"100%",height:"auto"})
 							punchgs.TweenLite.set(ui.element.find('.innerslide_layer'),{width:"100%",height:"auto"})
 						} else {
@@ -6439,10 +7436,10 @@ var UniteLayersRev = new function(){
 
 				t.makeCurrentLayerRotatable();
 
-
 			break;
 			case 'shape':
 				jQuery("#layer-covermode-wrapper").show();
+				
 			//case 'no_edit':
 			case 'typeA':
 			case 'typeB':
@@ -6546,19 +7543,22 @@ var UniteLayersRev = new function(){
 			jQuery("#reset-scale").show();			
 		}
 		
-		if(jQuery('input[name="hover_allow"]').is(':checked')){
+		if(jQuery('#hover_allow')[0].checked){
 			jQuery('#idle-hover-swapper').show();
 		}else{
 			jQuery('#idle-hover-swapper').hide();
 		}
-		RevSliderSettings.onoffStatus(jQuery('input[name="hover_allow"]'));
+		RevSliderSettings.onoffStatus(jQuery('#hover_allow'));
+		RevSliderSettings.onoffStatus(jQuery('#toggle_allow'));
+		RevSliderSettings.onoffStatus(jQuery('#toggle_use_hover'));
 
 		//hide autocomplete
 		jQuery("#layer_caption").catcomplete("close");
 
 
 		//update timeline of the layer
-		u.updateCurrentLayerTimeline();
+		//u.updateCurrentLayerTimeline();
+
 		
 		reAlignAndrePosition();
 
@@ -6570,7 +7570,8 @@ var UniteLayersRev = new function(){
 		var objHtmlLayer = t.getHtmlLayerFromSerial(serial);
 		
 		checkMaskingAvailabity();
-						
+		
+		
 		u.rebuildLayerIdle(objHtmlLayer);
 		
 		jQuery('.form_layers').removeClass('notselected');
@@ -6582,6 +7583,9 @@ var UniteLayersRev = new function(){
 		UniteCssEditorRev.updateCaptionsInput(initArrCaptionClasses);
 
 		t.updateReverseList();
+		
+		jQuery('#parallax_level').change();
+		
 	}
 
 
@@ -6716,7 +7720,7 @@ var UniteLayersRev = new function(){
 				objCss["bottom"] = top+"px";
 			break;
 		}
-
+		
 		punchgs.TweenLite.set(htmlLayer,objCss);
 		
 	}
@@ -6751,10 +7755,12 @@ var UniteLayersRev = new function(){
 	var onLayerDragEnd = function() {
 		var layerSerial = t.getSerialFromID(this.id),
 			htmlLayer = jQuery(this);
-		onLayerDrag("ende",layerSerial,htmlLayer)
+		t.onLayerDrag("ende",layerSerial,htmlLayer)
 	}
 
-	var onLayerDrag = function(end,layerSerial,htmlLayer){
+
+
+	t.onLayerDrag = function(end,layerSerial,htmlLayer){
 		htmlLayer = htmlLayer || jQuery(this);
 		
 		var position = htmlLayer.position(),
@@ -6876,14 +7882,14 @@ var UniteLayersRev = new function(){
 		var scaleImage = function(){
 
 			jQuery("#layer_scaleX").change(function(){
-				if(jQuery("#layer_proportional_scale").is(":checked"))
+				if(jQuery("#layer_proportional_scale")[0].checked)
 					scaleProportional(true);
 				else
 					scaleNormal();
 			});
 
 			jQuery("#layer_scaleY").change(function(){
-				if(jQuery("#layer_proportional_scale").is(":checked"))
+				if(jQuery("#layer_proportional_scale")[0].checked)
 					scaleProportional(false);
 				else
 					scaleNormal();
@@ -6891,14 +7897,14 @@ var UniteLayersRev = new function(){
 			
 			jQuery("#layer_video_width").change(function(){
 
-				if(jQuery("#layer_proportional_scale").is(":checked"))
+				if(jQuery("#layer_proportional_scale")[0].checked)
 					scaleProportionalVideo(true);
 				else
 					scaleNormalVideo();
 			});
 
 			jQuery("#layer_video_height").change(function(){
-				if(jQuery("#layer_proportional_scale").is(":checked"))
+				if(jQuery("#layer_proportional_scale")[0].checked)
 					scaleProportionalVideo(false);
 				else
 					scaleNormalVideo();
@@ -6909,7 +7915,7 @@ var UniteLayersRev = new function(){
 				var layer = jQuery("#slide_layer_" + serial);
 				var objLayer = t.getLayer(selectedLayerSerial);
 
-				if(jQuery(this).is(":checked")){
+				if(jQuery(this)[0].checked){
 					jQuery('#layer_cover_mode option[value="custom"]').attr('selected', true);
 					jQuery('.rs-proportion-check').removeClass('notselected');
 					scaleProportional(true);
@@ -6926,7 +7932,7 @@ var UniteLayersRev = new function(){
 						aspectRatio:aspectratio,
 						start:function(event,ui) {
 							// IF IMAGE IS IN ASPECT RATIO MODE
-							if(jQuery("#layer_proportional_scale").is(":checked")) {								
+							if(jQuery("#layer_proportional_scale")[0].checked) {								
 								punchgs.TweenLite.set(ui.element,{width:ui.originalSize.width,height:ui.originalSize.height})
 								punchgs.TweenLite.set(ui.element.find('img'),{width:"100%",height:"auto"})
 								punchgs.TweenLite.set(ui.element.find('.innerslide_layer'),{width:"100%",height:"auto"})
@@ -6939,7 +7945,7 @@ var UniteLayersRev = new function(){
 						resize:function(event,ui) {
 							jQuery('#layer_scaleX').val(ui.size.width);
 							jQuery('#layer_scaleY').val(ui.size.height);	
-							if(jQuery("#layer_proportional_scale").is(":checked")) {									
+							if(jQuery("#layer_proportional_scale")[0].checked) {									
 								punchgs.TweenLite.set(ui.element.find('img'),{width:"100%",height:"auto"})
 								punchgs.TweenLite.set(ui.element.find('.innerslide_layer'),{width:"100%",height:"auto"})
 							} else {								
@@ -6961,7 +7967,7 @@ var UniteLayersRev = new function(){
 				var layer = jQuery("#slide_layer_" + serial);
 				var objLayer = t.getLayer(selectedLayerSerial);
 
-				if(jQuery(this).is(":checked")){
+				if(jQuery(this)[0].checked){
 					jQuery('.rs-linebreak-check').removeClass('notselected');					
 					jQuery("#layer_whitespace option[value='normal']").attr('selected', 'selected');
 					
@@ -6987,9 +7993,14 @@ var UniteLayersRev = new function(){
 				t.set_cover_mode();
 			});
 
-			jQuery("#reset-scale, #button_reset_size").click(function(){
+			jQuery("#reset-scale, #button_reset_size").click(resetCurrentElementSize);
 
-				var objLayer = t.getLayer(selectedLayerSerial);
+				
+
+		}
+
+		var resetCurrentElementSize = function() {
+			var objLayer = t.getLayer(selectedLayerSerial);
 				
 				if (objLayer.type == "shape") {
 					return false;
@@ -7028,9 +8039,7 @@ var UniteLayersRev = new function(){
 					jQuery("#slide_layer_" + selectedLayerSerial + " img").css("width", mwidth);
 					jQuery("#slide_layer_" + selectedLayerSerial + " img").css("height", mheight);					
 				}
-				t.updateLayerFromFields();
-			});
-
+				t.updateLayerFromFields();			
 		}
 
 		var scaleProportional = function(useX){
@@ -7261,7 +8270,7 @@ var UniteLayersRev = new function(){
 
 		jQuery('input[name="kenburn_effect"]').change(function(){
 			
-			if(jQuery(this).is(':checked')){
+			if(jQuery(this)[0].checked){
 				jQuery('#kenburn_wrapper').show();
 				//jQuery('#bg-position-lbl').hide();
 				//jQuery('#bg-start-position-wrapper').children().appendTo(jQuery('#bg-start-position-wrapper-kb'));
@@ -7316,9 +8325,9 @@ var UniteLayersRev = new function(){
 			}
 
 			var urlImage = '';
-			if(jQuery('#radio_back_image').is(':checked'))
+			if(jQuery('#radio_back_image')[0].checked)
 				urlImage = jQuery("#image_url").val();
-			else if(jQuery('#radio_back_external').is(':checked'))
+			else if(jQuery('#radio_back_external')[0].checked)
 				urlImage = jQuery("#slide_bg_external").val();
 
 			if(urlImage != ''){
@@ -7354,14 +8363,14 @@ var UniteLayersRev = new function(){
 		}
 
 		jQuery("#layer_resize-full").change(function(){
-			if(!jQuery(this).is(':checked')){
+			if(!jQuery(this)[0].checked){
 				jQuery('#layer_resizeme').prop('checked', false);
 				RevSliderSettings.onoffStatus(jQuery("#layer_resizeme"));
 			}
 		});
 		
 		jQuery("#layer_resizeme").change(function(){
-			if(jQuery(this).is(':checked')){
+			if(jQuery(this)[0].checked){
 				jQuery('#layer_resize-full').prop('checked', true);
 				RevSliderSettings.onoffStatus(jQuery("#layer_resize-full"));
 			}
@@ -7377,9 +8386,9 @@ var UniteLayersRev = new function(){
 				}
 
 				var urlImage = '';
-				if(jQuery('#radio_back_image').is(':checked'))
+				if(jQuery('#radio_back_image')[0].checked)
 					urlImage = jQuery("#image_url").val();
-				else if(jQuery('#radio_back_external').is(':checked'))
+				else if(jQuery('#radio_back_external')[0].checked)
 					urlImage = jQuery("#slide_bg_external").val();
 
 				if(urlImage != ''){

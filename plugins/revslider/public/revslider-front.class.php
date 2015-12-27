@@ -39,6 +39,8 @@ class RevSliderFront extends RevSliderBaseFront{
 	public static function onAddScripts(){
 		global $wp_version;
 		
+		$slver = apply_filters('revslider_remove_version', RevSliderGlobals::SLIDER_REVISION);
+		
 		$style_pre = '';
 		$style_post = '';
 		if($wp_version < 3.7){
@@ -64,7 +66,7 @@ class RevSliderFront extends RevSliderBaseFront{
 				return(false);
 		}
 		
-		wp_enqueue_style('rs-plugin-settings', RS_PLUGIN_URL .'public/assets/css/settings.css', array(), RevSliderGlobals::SLIDER_REVISION);
+		wp_enqueue_style('rs-plugin-settings', RS_PLUGIN_URL .'public/assets/css/settings.css', array(), $slver);
 		
 		$custom_css = RevSliderOperations::getStaticCss();
 		$custom_css = RevSliderCssParser::compress_css($custom_css);
@@ -78,8 +80,8 @@ class RevSliderFront extends RevSliderBaseFront{
 		wp_enqueue_script(array('jquery'));
 		
 		//add icon sets
-		//wp_register_style('rs-icon-set-fa-icon-', RS_PLUGIN_URL .'public/assets/fonts/font-awesome/css/font-awesome.css', array(), RevSliderGlobals::SLIDER_REVISION);
-		//wp_register_style('rs-icon-set-pe-7s-', RS_PLUGIN_URL .'public/assets/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css', array(), RevSliderGlobals::SLIDER_REVISION);
+		//wp_register_style('rs-icon-set-fa-icon-', RS_PLUGIN_URL .'public/assets/fonts/font-awesome/css/font-awesome.css', array(), $slver);
+		//wp_register_style('rs-icon-set-pe-7s-', RS_PLUGIN_URL .'public/assets/fonts/pe-icon-7-stroke/css/pe-icon-7-stroke.css', array(), $slver);
 
 
 		if($includesFooter == "off"){
@@ -89,12 +91,12 @@ class RevSliderFront extends RevSliderBaseFront{
 			$enable_logs = RevSliderFunctions::getVal($arrValues, "enable_logs",'off');
 			
 			if($enable_logs == 'on'){
-				wp_enqueue_script('enable-logs', RS_PLUGIN_URL .'public/assets/js/jquery.themepunch.enablelog.js', $waitfor, RevSliderGlobals::SLIDER_REVISION);
+				wp_enqueue_script('enable-logs', RS_PLUGIN_URL .'public/assets/js/jquery.themepunch.enablelog.js', $waitfor, $slver);
 				$waitfor[] = 'enable-logs';
 			}
 			
-			wp_enqueue_script('tp-tools', RS_PLUGIN_URL .'public/assets/js/jquery.themepunch.tools.min.js', $waitfor, RevSliderGlobals::SLIDER_REVISION);
-			wp_enqueue_script('revmin', RS_PLUGIN_URL .'public/assets/js/jquery.themepunch.revolution.min.js', 'tp-tools', RevSliderGlobals::SLIDER_REVISION);
+			wp_enqueue_script('tp-tools', RS_PLUGIN_URL .'public/assets/js/jquery.themepunch.tools.min.js', $waitfor, $slver);
+			wp_enqueue_script('revmin', RS_PLUGIN_URL .'public/assets/js/jquery.themepunch.revolution.min.js', 'tp-tools', $slver);
 			
 		}else{
 			//put javascript to footer
@@ -112,6 +114,7 @@ class RevSliderFront extends RevSliderBaseFront{
 		
 		add_action('wp_before_admin_bar_render', array('RevSliderFront', 'add_admin_menu_nodes'));
 		add_action('wp_footer', array('RevSliderFront', 'putAdminBarMenus'));
+		
 	}
 	
 	/**
@@ -125,7 +128,7 @@ class RevSliderFront extends RevSliderBaseFront{
 		<script>	
 			jQuery(document).ready(function() {			
 				
-				if (jQuery('#wp-admin-bar-revslider-default').length>0 && jQuery('.rev_slider_wrapper').length>0) {									
+				if (jQuery('#wp-admin-bar-revslider-default').length>0 && jQuery('.rev_slider_wrapper').length>0) {
 					var aliases = new Array();
 					jQuery('.rev_slider_wrapper').each(function() {
 						aliases.push(jQuery(this).data('alias'));
@@ -135,11 +138,11 @@ class RevSliderFront extends RevSliderBaseFront{
 							var li = jQuery(this),
 								t = jQuery.trim(li.find('.ab-item .rs-label').data('alias')); //text()
 								
-							if (jQuery.inArray(t,aliases)!=-1) {							
+							if (jQuery.inArray(t,aliases)!=-1) {
 							} else {
-								li.remove();							
+								li.remove();
 							}
-						});																				
+						});
 				} else {
 					jQuery('#wp-admin-bar-revslider').remove();
 				}
@@ -317,7 +320,7 @@ class RevSliderFront extends RevSliderBaseFront{
 			require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 			
 			$sql = "CREATE TABLE " .self::$table_prefix.RevSliderGlobals::TABLE_SLIDERS_NAME ." (
-					  type VARCHAR(191) NOT NULL
+					  type VARCHAR(191) NOT NULL,
 					  params MEDIUMTEXT NOT NULL
 					);";
 			dbDelta($sql);
@@ -478,6 +481,8 @@ class RevSliderFront extends RevSliderBaseFront{
 	 * javascript output to footer
 	 */
 	public static function putJavascript(){
+		$slver = apply_filters('revslider_remove_version', RevSliderGlobals::SLIDER_REVISION);
+		
 		$urlPlugin = RS_PLUGIN_URL."public/assets/";
 		
 		$operations = new RevSliderOperations();
@@ -487,8 +492,8 @@ class RevSliderFront extends RevSliderBaseFront{
 		if($js_defer!='off') $js_defer = 'defer="defer"';
 		else $js_defer = '';
 		?>
-		<script type='text/javascript' <?php echo $js_defer;?> src='<?php echo $urlPlugin; ?>js/jquery.themepunch.tools.min.js?rev=<?php echo RevSliderGlobals::SLIDER_REVISION; ?>'></script>
-		<script type='text/javascript' <?php echo $js_defer;?> src='<?php echo $urlPlugin; ?>js/jquery.themepunch.revolution.min.js?rev=<?php echo  RevSliderGlobals::SLIDER_REVISION; ?>'></script>
+		<script type='text/javascript' <?php echo $js_defer;?> src='<?php echo $urlPlugin; ?>js/jquery.themepunch.tools.min.js?rev=<?php echo $slver; ?>'></script>
+		<script type='text/javascript' <?php echo $js_defer;?> src='<?php echo $urlPlugin; ?>js/jquery.themepunch.revolution.min.js?rev=<?php echo  $slver; ?>'></script>
 		<?php
 	}
 	
@@ -499,7 +504,7 @@ class RevSliderFront extends RevSliderBaseFront{
 	public static function add_meta_generator(){
 		global $revSliderVersion;
 		
-		echo '<meta name="generator" content="Powered by Slider Revolution '.$revSliderVersion.' - responsive, Mobile-Friendly Slider Plugin for WordPress with comfortable drag and drop interface." />'."\n";
+		echo apply_filters('revslider_meta_generator', '<meta name="generator" content="Powered by Slider Revolution '.$revSliderVersion.' - responsive, Mobile-Friendly Slider Plugin for WordPress with comfortable drag and drop interface." />'."\n");
 	}
 
 	/**

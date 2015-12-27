@@ -10,7 +10,8 @@
 $page_heading = dt_get_post_meta('page_heading',get_the_ID(),'heading');
 $is_sticky_menu = dt_get_theme_option('sticky_menu','yes') == 'yes' ? ' is_sticky_menu' : '';
 
-?><!DOCTYPE html>
+?>
+<!DOCTYPE html>
 <!--[if IE 7]>
 <html class="ie ie7" <?php language_attributes(); ?>>
 <![endif]-->
@@ -26,15 +27,11 @@ $is_sticky_menu = dt_get_theme_option('sticky_menu','yes') == 'yes' ? ' is_stick
 	<title><?php wp_title( '|', true, 'right' ); ?></title>
 	<link rel="profile" href="http://gmpg.org/xfn/11">
 	<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>">
-	<!--[if lt IE 9]>
-	<script src="<?php echo get_template_directory_uri(); ?>/js/html5.js"></script>
-	<![endif]-->
 	<?php wp_head(); ?>
 </head>
 
 <body <?php body_class(); ?>>
-<div id="page" class="hfeed site">
-	<div id="sidebar-offcanvas" class="sidebar-offcanvas">
+<div id="sidebar-offcanvas" class="sidebar-offcanvas">
           <!-- BEGIN: Sidebar Offcanvas Header -->
           <div class="sidebar-offcanvas-header">
             <!-- BEGIN: User Panel -->
@@ -90,7 +87,9 @@ $is_sticky_menu = dt_get_theme_option('sticky_menu','yes') == 'yes' ? ' is_stick
               <li><a href="#">Exhibitions <i class="fa fa-angle-right menu-item-arrow"></i></a></li>
             </ul>
           </div><!-- END: Categories -->
-    </div>
+</div>
+
+<div id="page" class="hfeed site">
 	<header id="header" class="site-header <?php echo esc_attr( $is_sticky_menu );?>" role="banner">
 		<div class="container">
 				<div class="header-main">
@@ -115,4 +114,5 @@ $is_sticky_menu = dt_get_theme_option('sticky_menu','yes') == 'yes' ? ' is_stick
 		<?php echo do_shortcode('[rev_slider '.$rev_alias.']')?>
 	</div>
 	<?php endif; ?>
-	<div id="main" class="site-main">
+	<?php $no_padding = dt_get_post_meta('no_padding'); ?>
+	<div id="main" class="site-main <?php echo (!empty($no_padding) ? ' no-padding':'') ?>">

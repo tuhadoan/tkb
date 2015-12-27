@@ -11,7 +11,7 @@
 
 		<footer id="footer" class="site-footer" role="contentinfo">
 			<?php if(dt_get_theme_option('back-to-top',1)): ?>
-			<a href="#header" class="back-to-top"><i class="fa fa-arrow-up"></i></a>
+			<a id="scroll-to-top" href="" class="back-to-top"><i class="fa fa-arrow-up"></i></a>
 			<?php endif;?>
 			<?php 
 			if(is_active_sidebar('footer-sidebar')): ?>

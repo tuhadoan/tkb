@@ -9,7 +9,6 @@
 		.back-to-top{
 			width: 48px;
 			height: 48px;
-			line-height: 50px;
 			text-align: center;
 			background: #f08818;
 			position: absolute;
@@ -20,34 +19,35 @@
 			-webkit-border-radius: 50%;
 			-moz-border-radius: 50%;
 			border-radius: 50%;
-			font-size: 16px;
-			-webkit-transition: all 0.3s ease-in-out;
-			-moz-transition: all 0.3s ease-in-out;
-			-o-transition: all 0.3s ease-in-out;
-			transition: all 0.3s ease-in-out;
+			.fa{
+				font-size: 16px;
+				line-height: 48px;
+				color: #fff;
+				@include transition(all 0.3s ease-in-out);
+			}
 
 			&:before{
 				content: '';
-			    position: absolute;
-			    top: -8px;
-			    left: -8px;
-			    width: 64px;
-			    height: 32px;
-			    background: rgba(0,0,0,0.2);
-			    background: -moz-linear-gradient(top, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 100%);
-			    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0.2)), color-stop(100%,rgba(0,0,0,0)));
-			    background: -webkit-linear-gradient(top, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0) 100%);
-			    background: -o-linear-gradient(top, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0) 100%);
-			    background: -ms-linear-gradient(top, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0) 100%);
-			    background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%,rgba(0,0,0,0) 100%);
-			    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#33000000', endColorstr='#00000000',GradientType=0 );
-			    -webkit-border-top-left-radius: 64px;
-			    -webkit-border-top-right-radius: 64px;
-			    -moz-border-radius-topleft: 64px;
-			    -moz-border-radius-topright: 64px;
-			    border-top-left-radius: 64px;
-			    border-top-right-radius: 64px;
-			    z-index: -1;
+				position: absolute;
+				top: -8px;
+				left: -8px;
+				width: 64px;
+				height: 32px;
+				background: rgba(0,0,0,0.2);
+				background: -moz-linear-gradient(top,  rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 100%);
+				background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0.2)), color-stop(100%,rgba(0,0,0,0)));
+				background: -webkit-linear-gradient(top,  rgba(0,0,0,0.2) 0%,rgba(0,0,0,0) 100%);
+				background: -o-linear-gradient(top,  rgba(0,0,0,0.2) 0%,rgba(0,0,0,0) 100%);
+				background: -ms-linear-gradient(top,  rgba(0,0,0,0.2) 0%,rgba(0,0,0,0) 100%);
+				background: linear-gradient(to bottom,  rgba(0,0,0,0.2) 0%,rgba(0,0,0,0) 100%);
+				filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#33000000', endColorstr='#00000000',GradientType=0 );
+				-webkit-border-top-left-radius: 64px;
+				-webkit-border-top-right-radius: 64px;
+				-moz-border-radius-topleft: 64px;
+				-moz-border-radius-topright: 64px;
+				border-top-left-radius: 64px;
+				border-top-right-radius: 64px;
+				//z-index: -1;
 			}
 			&:after{
 				content: '';
@@ -63,14 +63,11 @@
 				border-top-left-radius: 48px;
 				border-top-right-radius: 48px;
 				background: rgba(255,255,255,0.15);
-				-webkit-transition: all 0.3s ease-in-out;
-				-moz-transition: all 0.3s ease-in-out;
-				-o-transition: all 0.3s ease-in-out;
-				transition: all 0.3s ease-in-out;
+				@include transition(all 0.3s ease-in-out);
 			}
 
 			&:hover{
-				line-height: 43px !important;
+				.fa{ line-height: 43px !important; }
 				&:after{
 					width: 48px;
 					height: 48px;

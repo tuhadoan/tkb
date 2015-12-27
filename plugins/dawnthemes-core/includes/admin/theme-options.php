@@ -1032,7 +1032,7 @@ if ( ! class_exists( 'DTThemeOptions' ) ) :
 								'center' => esc_html__( 'Center', 'dawnthemes' ), 
 								'below' => esc_html__( 'Below', 'dawnthemes' ) ), 
 							'value' => 'below' ), 
-						array( 
+						/*array( 
 							'name' => 'topbar_setting', 
 							'type' => 'heading', 
 							'text' => esc_html__( 'Topbar Settings', 'dawnthemes' ) ), 
@@ -1148,7 +1148,7 @@ if ( ! class_exists( 'DTThemeOptions' ) ) :
 							'type' => 'textarea', 
 							'dependency' => array( 'element' => 'right-topbar-content', 'value' => array( 'custom' ) ), 
 							'label' => esc_html__( 'Right Topbar Content Custom HTML', 'dawnthemes' ) ), 
-						
+						*/
 						array( 
 							'name' => 'main_navbar_setting', 
 							'type' => 'heading', 

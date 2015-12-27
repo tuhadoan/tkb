@@ -160,13 +160,19 @@ class RevSliderCssParser{
 			$styles = json_decode(str_replace("'", '"', $attr['params']), true);
 			$styles_adv = $attr['advanced']['idle'];
 			
+			if($stripped == '.News-Title'){
+				/*echo '<pre>';
+				print_r($attr);
+				echo '</pre>';
+				exit;*/
+			}
 			$css.= $attr['handle'];
 			if(!empty($stripped)) $css.= ', '.$stripped;
 			$css.= " {".$nl;
 			if(is_array($styles) || is_array($styles_adv)){
 				if(is_array($styles)){
 					foreach($styles as $name => $style){
-						if(in_array($name, $deformations)) continue;
+						if(in_array($name, $deformations) && $name !== 'css_cursor') continue;
 						
 						if(!is_array($name) && isset($transparency[$name])){ //the style can have transparency!
 							if(isset($styles[$transparency[$name]]) && $style !== 'transparent'){
@@ -176,17 +182,22 @@ class RevSliderCssParser{
 						if(!is_array($name) && isset($check_parameters[$name])){
 							$style = RevSliderFunctions::add_missing_val($style, $check_parameters[$name]);
 						}
-						
-						
 						if(is_array($style)) $style = implode(' ', $style);
-						$css.= $name.':'.$style.";".$nl;
+						
+						$ret = self::check_for_modifications($name, $style);
+						if($ret['name'] == 'cursor' && $ret['style'] == 'auto') continue;
+						
+						$css.= $ret['name'].':'.$ret['style'].";".$nl;
 					}
 				}
 				if(is_array($styles_adv)){
 					foreach($styles_adv as $name => $style){
-						if(in_array($name, $deformations)) continue;
+						if(in_array($name, $deformations) && $name !== 'css_cursor') continue;
+						
 						if(is_array($style)) $style = implode(' ', $style);
-						$css.= $name.':'.$style.";".$nl;
+						$ret = self::check_for_modifications($name, $style);
+						if($ret['name'] == 'cursor' && $ret['style'] == 'auto') continue;
+						$css.= $ret['name'].':'.$ret['style'].";".$nl;
 					}
 				}
 			}
@@ -204,7 +215,7 @@ class RevSliderCssParser{
 					$css.= " {".$nl;
 					if(is_array($hover)){
 						foreach($hover as $name => $style){
-							if(in_array($name, $deformations)) continue;
+							if(in_array($name, $deformations) && $name !== 'css_cursor') continue;
 							
 							if(!is_array($name) && isset($transparency[$name])){ //the style can have transparency!
 								if(isset($hover[$transparency[$name]]) && $style !== 'transparent'){
@@ -214,16 +225,22 @@ class RevSliderCssParser{
 							if(!is_array($name) && isset($check_parameters[$name])){
 								$style = RevSliderFunctions::add_missing_val($style, $check_parameters[$name]);
 							}
-							
 							if(is_array($style)) $style = implode(' ', $style);
-							$css.= $name.':'.$style.";".$nl;
+							
+							$ret = self::check_for_modifications($name, $style);
+							if($ret['name'] == 'cursor' && $ret['style'] == 'auto') continue;
+								
+							$css.= $ret['name'].':'.$ret['style'].";".$nl;
 						}
 					}
 					if(is_array($hover_adv)){
 						foreach($hover_adv as $name => $style){
-							if(in_array($name, $deformations)) continue;
+							
+							if(in_array($name, $deformations) && $name !== 'css_cursor') continue;
 							if(is_array($style)) $style = implode(' ', $style);
-							$css.= $name.':'.$style.";".$nl;
+							$ret = self::check_for_modifications($name, $style);
+							if($ret['name'] == 'cursor' && $ret['style'] == 'auto') continue;
+							$css.= $ret['name'].':'.$ret['style'].";".$nl;
 						}
 					}
 					$css.= "}".$nl.$nl;
@@ -234,9 +251,25 @@ class RevSliderCssParser{
 	}
 	
 	
+	/**
+	 * Check for Modifications like with css_cursor
+	 * @since: 5.1.3
+	 **/
+	public static function check_for_modifications($name, $style){
+		if($name == 'css_cursor'){
+			if($style == 'zoom-in') $style = 'zoom-in; -webkit-zoom-in; cursor: -moz-zoom-in';
+			if($style == 'zoom-out') $style = 'zoom-out; -webkit-zoom-out; cursor: -moz-zoom-out';
+			$name = 'cursor';
+		}
+		
+		return array('name' => $name, 'style' => $style);
+	}
+	
 	public static function parseArrayToCss($cssArray, $nl = "\n\r", $adv = false){
 		$css = '';
 		foreach($cssArray as $id => $attr){
+			$setting = (array)$attr['settings'];
+			
 			$advanced = (array)$attr['advanced'];
 			$stripped = '';
 			if(strpos($attr['handle'], '.tp-caption') !== false){
@@ -249,6 +282,9 @@ class RevSliderCssParser{
 			
 			if($adv && isset($advanced['idle'])){
 				$styles = array_merge($styles, (array)$advanced['idle']);
+				if(isset($setting['type'])){
+					$styles['type'] = $setting['type'];
+				}
 			}
 			
 			if(is_array($styles) && !empty($styles)){
@@ -267,7 +303,6 @@ class RevSliderCssParser{
 			$css.= "}".$nl.$nl;
 			
 			//add hover
-			$setting = (array)$attr['settings'];
 			if(isset($setting['hover']) && $setting['hover'] == 'true'){
 				$hover = (array)$attr['hover'];
 				if($adv && isset($advanced['hover'])){
@@ -511,7 +546,8 @@ class RevSliderCssParser{
 			'easing',
 			'corner_left',
 			'corner_right',
-			'parallax'
+			'parallax',
+			'type'
 			
 		);
 		

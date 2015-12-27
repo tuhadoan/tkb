@@ -30,26 +30,21 @@ class RevSliderTemplate {
 		
 		$uid = esc_attr($uid);
 		
-		$api_key = get_option('revslider-api-key', '');
-		$username = get_option('revslider-username', '');
 		$code = get_option('revslider-code', '');
 		$shop_version = self::SHOP_VERSION;
 		
 		$validated = get_option('revslider-valid', 'false');
 		if($validated == 'false'){
-			$api_key = '';
-			$username = '';
 			$code = '';
 		}
 
 		
 		$rattr = array(
-			'api' => urlencode($api_key),
-			'username' => urlencode($username),
 			'code' => urlencode($code),
 			'shop_version' => urlencode($shop_version),
 			'version' => urlencode(RevSliderGlobals::SLIDER_REVISION),
-			'uid' => urlencode($uid)
+			'uid' => urlencode($uid),
+			'product' => urlencode('revslider')
 		);
 		
 		$upload_dir = wp_upload_dir(); // Set upload folder
@@ -72,13 +67,13 @@ class RevSliderTemplate {
 							//return $file so it can be processed. We have now downloaded it into a zip file
 							return $file;
 						}else{//else, print that file could not be written
-							return array('error' => __('Can\'t write the file into the uploads folder of WordPress, please change permissions and try again!', REVSLIDER_TEXTDOMAIN));
+							return array('error' => __('Can\'t write the file into the uploads folder of WordPress, please change permissions and try again!', 'revslider'));
 						}
 					}
 				}
 			}//else, check for error and print it to customer
 		}else{
-			return array('error' => __('Can\'t write into the uploads folder of WordPress, please change permissions and try again!', REVSLIDER_TEXTDOMAIN));
+			return array('error' => __('Can\'t write into the uploads folder of WordPress, please change permissions and try again!', 'revslider'));
 		}
 		
 		return false;
@@ -129,24 +124,19 @@ class RevSliderTemplate {
 			
 			$validated = get_option('revslider-valid', 'false');
 			
-			$api_key = get_option('revslider-api-key', '');
-			$username = get_option('revslider-username', '');
 			$code = get_option('revslider-code', '');
 			$shop_version = self::SHOP_VERSION;
 			
 			if($validated == 'false'){
-				$api_key = '';
-				$username = '';
 				$code = '';
 			}
 			
 			
 			$rattr = array(
-				'api' => urlencode($api_key),
-				'username' => urlencode($username),
 				'code' => urlencode($code),
 				'shop_version' => urlencode($shop_version),
-				'version' => urlencode(RevSliderGlobals::SLIDER_REVISION)
+				'version' => urlencode(RevSliderGlobals::SLIDER_REVISION),
+				'product' => urlencode('revslider')
 			);
 			
 			$request = wp_remote_post($this->templates_url.$this->templates_list, array(
@@ -570,6 +560,8 @@ class RevSliderTemplate {
 			}
 		}
 		
+		krsort($defaults);
+		
 		return $defaults;
 		
 	}
@@ -616,19 +608,45 @@ class RevSliderTemplate {
 		if($template['img'] == ''){
 			//set default image
 		}
+		
+		//check for version and compare, only allow download if version is high enough
+		$deny = '';
+		if(isset($template['required'])){
+			if(version_compare(RevSliderGlobals::SLIDER_REVISION, $template['required'], '<')){
+				$deny = ' deny_download';
+			}
+		}
 		?>
-		<div data-src="<?php echo $template['img']; ?>" class="template_slider_item_import"
+		<div data-src="<?php echo $template['img']; ?>" class="template_slider_item_import<?php echo $deny; ?>"
 			data-gridwidth="<?php echo $template['width']; ?>"
 			data-gridheight="<?php echo $template['height']; ?>"
 			data-zipname="<?php echo $template['zip']; ?>"
 			data-uid="<?php echo $template['uid']; ?>"
+			<?php
+			if($deny !== ''){ //add needed version number here
+				?>
+				data-versionneed="<?php echo $template['required']; ?>"
+				<?php
+			}
+			?>
 			>
-			<!--div class="template_title"><?php echo (isset($template['title'])) ? $template['title'] : ''; ?></div-->
+			<?php /* <!--div class="template_title"><?php echo (isset($template['title'])) ? $template['title'] : ''; ?></div-->*/ ?>
 			<div class="not-imported-overlay"></div>
-			<div style="position:absolute;top:10px;right:10px;width:35px;text-align:right;z-index:2">				
-				<div class="icon-install_slider"></div>
-			</div>
-			
+			<?php
+			if($deny == ''){
+				?>
+				<div style="position:absolute;top:10px;right:10px;width:35px;text-align:right;z-index:2">
+					<div class="icon-install_slider"></div>
+				</div>
+				<?php
+			}else{
+				?>
+				<div class="rs-required-to-dl">
+					<?php _e('V', 'revslider'); ?> <?php echo $template['required']; ?>+
+				</div>
+				<?php
+			}
+			?>
 		</div>
 		<div style="position:absolute;top:10px;right:50px;width:35px;text-align:right;z-index:2">
 			<?php if(isset($template['preview']) && $template['preview'] !== ''){ ?>
@@ -650,22 +668,47 @@ class RevSliderTemplate {
 		if($template['img'] == ''){
 			//set default image
 		}
-		
+		//check for version and compare, only allow download if version is high enough
+		$deny = '';
+		if(isset($template['required'])){
+			if(version_compare(RevSliderGlobals::SLIDER_REVISION, $template['required'], '<')){
+				$deny = ' deny_download';
+			}
+		}
 		?>
 		<div class="template_slide_item_import">
-			<div class="template_slide_item_img" 
+			<div class="template_slide_item_img<?php echo $deny; ?>" 
 				data-src="<?php echo $template['img']; ?>" 
 				data-gridwidth="<?php echo $template['width']; ?>"
 				data-gridheight="<?php echo $template['height']; ?>"
 				data-zipname="<?php echo $template['zip']; ?>"
 				data-uid="<?php echo $template['uid']; ?>"
 				data-slidenumber="<?php echo $template['number']; ?>"
+				<?php
+				if($deny !== ''){ //add needed version number here
+					?>
+					data-versionneed="<?php echo $template['required']; ?>"
+					<?php
+				}
+				?>
 			>
 				<div class="not-imported-overlay"></div>
 			</div>
-			<div style="position:absolute;top:10px;right:10px;width:100%;text-align:right;z-index:2">
-				<div class="icon-install_slider"></div>
-			</div>
+			<?php
+			if($deny == ''){ //add needed version number here
+				?>
+				<div style="position:absolute;top:10px;right:10px;width:100%;text-align:right;z-index:2">
+					<div class="icon-install_slider"></div>
+				</div>
+				<?php
+			}else{
+				?>
+				<div class="rs-required-to-dl" style="bottom: 65px;">
+					<?php _e('V', 'revslider'); ?> <?php echo $template['required']; ?>+
+				</div>
+				<?php
+			}
+			?>
 			<div class="template_title"><?php echo (isset($template['title'])) ? $template['title'] : ''; ?></div>
 		</div>
 
