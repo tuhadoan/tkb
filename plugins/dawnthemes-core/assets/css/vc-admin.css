@@ -140,9 +140,9 @@ select.dt-chosen-select-nostd ~ .chosen-container,
 	text-align: center;
 	-webkit-font-smoothing: antialiased;
 	color: #fff;
-	background-color: #1e8cbe;
+	background-color: #f7cd2e;
 	speak: none;
-	border: 1px solid #1e8cbe;
+	border: 1px solid #f7cd2e;
 }
 
 [class*="dt-vc-icon-"],
@@ -286,6 +286,10 @@ select.dt-chosen-select-nostd ~ .chosen-container,
 [data-element_type="dt_box_feature"] .wpb_element_wrapper .wpb_element_title .dt-vc-icon-dt_box_feature{
 	display: none;
 }
+[data-element_type="dt_custom_box"] .wpb_element_wrapper .wpb_element_title .dt-vc-icon-dt_box_feature{
+	display: none;
+}
+
 /* dt_video */
 .dt-vc-element.dt-vc-element-dt_video:before,
 .dt-vc-icon-dt_video:before {

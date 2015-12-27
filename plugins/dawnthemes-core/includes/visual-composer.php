@@ -368,8 +368,8 @@ if ( ! class_exists( 'DT_VisualComposer' ) && defined( 'WPB_VC_VERSION' ) ) :
 	// Shortcode
 	class WPBakeryShortCode_DT_Button extends DTWPBakeryShortcode {
 	}
-
-	class WPBakeryShortCode_DT_Instagram extends DTWPBakeryShortcode {
+	
+	class WPBakeryShortCode_DT_Custom_Box extends DTWPBakeryShortcode {
 	}
 
 	class WPBakeryShortCode_DT_Post extends DTWPBakeryShortcode {
@@ -488,11 +488,21 @@ if ( ! class_exists( 'DT_VisualComposer' ) && defined( 'WPB_VC_VERSION' ) ) :
 			vc_map( 
 				array( 
 					'base' => 'dt_button', 
-					'name' => __( 'Button', 'dawnthemes' ), 
+					'name' => __( 'DT Button', 'dawnthemes' ), 
 					'description' => __( 'Eye catching button.', 'dawnthemes' ), 
 					"category" => __( "DawnThemes", 'dawnthemes' ), 
 					'class' => 'dt-vc-element dt-vc-element-dt_button', 
 					'icon' => 'dt-vc-icon-dt_button', 
+					'show_settings_on_create' => true, 
+					'params' => array() ) );
+			vc_map( 
+				array( 
+					'base' => 'dt_custom_box', 
+					'name' => __( 'DT Custom Box', 'dawnthemes' ), 
+					'description' => __( 'A box contain: Icon, Title, Description', 'dawnthemes' ), 
+					"category" => __( "DawnThemes", 'dawnthemes' ), 
+					'class' => 'dt-vc-element dt-vc-element-dt_box_feature', 
+					'icon' => 'dt-vc-icon-dt_box_feature', 
 					'show_settings_on_create' => true, 
 					'params' => array() ) );
 			vc_map( 
@@ -534,27 +544,6 @@ if ( ! class_exists( 'DT_VisualComposer' ) && defined( 'WPB_VC_VERSION' ) ) :
 					'description' => __( 'Widget Mailchimp Subscribe.', 'dawnthemes' ), 
 					'class' => 'dt-vc-element dt-vc-element-dt_mailchimp', 
 					'icon' => 'dt-vc-icon-dt_mailchimp', 
-					'show_settings_on_create' => true, 
-					'params' => array() ) );
-			vc_map( 
-				array( 
-					'base' => 'dt_box_feature', 
-					"category" => __( "DawnThemes", 'dawnthemes' ), 
-					'name' => __( 'Box Feature', 'dawnthemes' ), 
-					'description' => __( 'Box Feature.', 'dawnthemes' ), 
-					'class' => 'dt-vc-element dt-vc-element-dt_box_feature', 
-					'icon' => 'dt-vc-icon-dt_box_feature', 
-					'show_settings_on_create' => true, 
-					'params' => array() ) );
-			
-			vc_map( 
-				array( 
-					'base' => 'dt_instagram', 
-					"category" => __( "DawnThemes", 'dawnthemes' ), 
-					'name' => __( 'Instagram', 'dawnthemes' ), 
-					'description' => __( 'Instagram.', 'dawnthemes' ), 
-					'class' => 'dt-vc-element dt-vc-element-dt_instagram', 
-					'icon' => 'dt-vc-icon-dt_instagram', 
 					'show_settings_on_create' => true, 
 					'params' => array() ) );
 			
@@ -2070,24 +2059,7 @@ if ( ! class_exists( 'DT_VisualComposer' ) && defined( 'WPB_VC_VERSION' ) ) :
 						__( "Full Width", 'dawnthemes' ) => "full_width", 
 						__( "In Container", 'dawnthemes' ) => "in_container" ) ) );
 			
-			$params = array( 
-				'dt_instagram' => array( 
-					array( 
-						'param_name' => 'username', 
-						'heading' => __( 'Instagram Username', 'dawnthemes' ), 
-						'description' => '', 
-						'type' => 'textfield', 
-						'admin_label' => true ), 
-					array( 
-						'param_name' => 'images_number', 
-						'heading' => __( 'Number of Images to Show', 'dawnthemes' ), 
-						'type' => 'textfield', 
-						'value' => '12' ), 
-					array( 
-						'param_name' => 'refresh_hour', 
-						'heading' => __( 'Check for new images on every (hours)', 'dawnthemes' ), 
-						'type' => 'textfield', 
-						'value' => '5' ) ), 
+			$params = array(
 				'dt_button' => array( 
 					array( 
 						'type' => 'textfield', 
@@ -2270,7 +2242,7 @@ if ( ! class_exists( 'DT_VisualComposer' ) && defined( 'WPB_VC_VERSION' ) ) :
 							__( 'Left', 'dawnthemes' ) => 'left', 
 							__( 'Right', 'dawnthemes' ) => 'right' ), 
 						'dependency' => array( 'element' => "tooltip", 'value' => array( 'tooltip', 'popover' ) ), 
-						'description' => __( 'Choose the display position.', 'dawnthemes' ) ), 
+						'description' => __( 'Choose the display position.', 'dawnthemes' ) ),
 					array( 
 						'type' => 'textfield', 
 						'heading' => __( 'Popover Title', 'dawnthemes' ), 
@@ -2288,7 +2260,153 @@ if ( ! class_exists( 'DT_VisualComposer' ) && defined( 'WPB_VC_VERSION' ) ) :
 						'std' => 'hover', 
 						'value' => array( __( 'Hover', 'dawnthemes' ) => 'hover', __( 'Click', 'dawnthemes' ) => 'click' ), 
 						'dependency' => array( 'element' => "tooltip", 'value' => array( 'tooltip', 'popover' ) ), 
-						'description' => __( 'Choose action to trigger the tooltip.', 'dawnthemes' ) ) ), 
+						'description' => __( 'Choose action to trigger the tooltip.', 'dawnthemes' ) ) ),
+				 
+				'dt_custom_box' => array(
+					array(
+						'type' => 'dropdown',
+						'heading' => esc_html__( 'Icon library', 'js_composer' ),
+						'value' => array(
+							esc_html__( 'Font Awesome', 'js_composer' ) => 'fontawesome',
+							// esc_html__( 'Open Iconic', 'js_composer' ) => 'openiconic',
+							// esc_html__( 'Typicons', 'js_composer' ) => 'typicons',
+							// esc_html__( 'Entypo', 'js_composer' ) => 'entypo',
+							esc_html__( 'Linecons', 'js_composer' ) => 'linecons',
+						),
+						'param_name' => 'icon_type',
+						'description' => esc_html__( 'Select icon library.', 'js_composer' ),
+					),
+					array(
+						'type' => 'iconpicker',
+						'heading' => esc_html__( 'Icon', 'js_composer' ),
+						'param_name' => 'icon_fontawesome',
+						'value' => 'fa fa-adjust', // default value to backend editor admin_label
+						'settings' => array(
+							'emptyIcon' => false,
+							// default true, display an "EMPTY" icon?
+							'iconsPerPage' => 4000,
+							// default 100, how many icons per/page to display, we use (big number) to display all icons in single page
+						),
+						'dependency' => array(
+							'element' => 'icon_type',
+							'value' => 'fontawesome',
+						),
+						'description' => esc_html__( 'Select icon from library.', 'js_composer' ),
+					),
+					array(
+						'type' => 'iconpicker',
+						'heading' => esc_html__( 'Icon', 'js_composer' ),
+						'param_name' => 'icon_openiconic',
+						'value' => 'vc-oi vc-oi-dial', // default value to backend editor admin_label
+						'settings' => array(
+							'emptyIcon' => false, // default true, display an "EMPTY" icon?
+							'type' => 'openiconic',
+							'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+						),
+						'dependency' => array(
+							'element' => 'icon_type',
+							'value' => 'openiconic',
+						),
+						'description' => esc_html__( 'Select icon from library.', 'js_composer' ),
+					),
+					array(
+						'type' => 'iconpicker',
+						'heading' => esc_html__( 'Icon', 'js_composer' ),
+						'param_name' => 'icon_typicons',
+						'value' => 'typcn typcn-adjust-brightness', // default value to backend editor admin_label
+						'settings' => array(
+							'emptyIcon' => false, // default true, display an "EMPTY" icon?
+							'type' => 'typicons',
+							'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+						),
+						'dependency' => array(
+							'element' => 'icon_type',
+							'value' => 'typicons',
+						),
+						'description' => esc_html__( 'Select icon from library.', 'js_composer' ),
+					),
+					array(
+						'type' => 'iconpicker',
+						'heading' => esc_html__( 'Icon', 'js_composer' ),
+						'param_name' => 'icon_entypo',
+						'value' => 'entypo-icon entypo-icon-note', // default value to backend editor admin_label
+						'settings' => array(
+							'emptyIcon' => false, // default true, display an "EMPTY" icon?
+							'type' => 'entypo',
+							'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+						),
+						'dependency' => array(
+							'element' => 'icon_type',
+							'value' => 'entypo',
+						),
+					),
+					array(
+						'type' => 'iconpicker',
+						'heading' => esc_html__( 'Icon', 'js_composer' ),
+						'param_name' => 'icon_linecons',
+						'value' => 'vc_li vc_li-heart', // default value to backend editor admin_label
+						'settings' => array(
+							'emptyIcon' => false, // default true, display an "EMPTY" icon?
+							'type' => 'linecons',
+							'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+						),
+						'dependency' => array(
+							'element' => 'icon_type',
+							'value' => 'linecons',
+						),
+						'description' => esc_html__( 'Select icon from library.', 'js_composer' ),
+					),
+					array(
+						"type" => "colorpicker",
+						"value" => "#73bb67",
+						"heading" => esc_html__("Color for icon", 'dawnthemes'),
+						"param_name" => "icon_color"
+					),
+					array(
+						"type" => "textfield",
+						"heading" => esc_html__("Font size for icon (px)", 'dawnthemes'),
+						"param_name" => "icon_font_size",
+					),
+					array(
+						"type" => "textfield",
+						"heading" => esc_html__("Custom Link", 'dawnthemes'),
+						"param_name" => "link" ,
+						"description" => esc_html__("Enter the  link. Do't forget to include http:// ", 'dawnthemes')
+					),
+					array(
+						'type' => 'dropdown',
+						'heading' => __( 'Target', 'dawnthemes' ),
+						'param_name' => 'target',
+						'std' => '_self',
+						'value' => array(
+							__( 'Same window', 'dawnthemes' ) => '_self',
+							__( 'New window', 'dawnthemes' ) => "_blank" ),
+					),
+					array(
+						"type" => "textfield",
+						"heading" => esc_html__("Title", 'dawnthemes'),
+						"param_name" => "title",
+						"value" => esc_html__("Your Title Here ...",'dawnthemes'),
+						"admin_label" => true
+					),
+					array(
+						"type" => "textarea",
+						"heading" => esc_html__("Description", 'dawnthemes'),
+						"param_name" => "desc"
+					),
+					array(
+						"type" => "dropdown",
+						"value" => Array(
+							"Sellect text align" => "" ,
+							"left" => "left" ,
+							"right" => "right" ,
+							"center" => "center"
+						),
+						"heading" => esc_html__("Text align for box", 'dawnthemes'),
+						"param_name" => "text_align"
+					),
+				),
+				
 				'dt_menu_anchor' => array( 
 					array( 
 						'param_name' => 'name', 
@@ -2879,94 +2997,7 @@ if ( ! class_exists( 'DT_VisualComposer' ) && defined( 'WPB_VC_VERSION' ) ) :
 						'heading' => __( 'Countdown end', 'dawnthemes' ), 
 						'param_name' => 'end', 
 						'description' => __( 'Please select day to end.', 'dawnthemes' ), 
-						'value' => '' ) ), 
-				'dt_box_feature' => array( 
-					array( 
-						'type' => 'dropdown', 
-						'heading' => __( 'Style', 'dawnthemes' ), 
-						'param_name' => 'style', 
-						'std' => '1', 
-						'value' => array( 
-							__( 'Style 1', 'dawnthemes' ) => '1', 
-							__( 'Style 2', 'dawnthemes' ) => "2", 
-							__( 'Style 3', 'dawnthemes' ) => "3",
-							__( 'Style 4', 'dawnthemes' ) => "4",
-							__( 'Style 5', 'dawnthemes' ) => "5" ) ), 
-					array(
-						'type' => 'dropdown',
-						'heading' => __( 'Content Position', 'dawnthemes' ),
-						'param_name' => 'content_position',
-						'std' => 'default',
-						'dependency' => array(
-							'element' => 'style',
-							'value' => array('4'),  ),
-						'value' => array(
-							__( 'Default', 'dawnthemes' ) => 'default',
-							__( 'Top', 'dawnthemes' ) => "top",
-							__( 'Bottom', 'dawnthemes' ) => "bottom",
-							__( 'Left', 'dawnthemes' ) => "left",
-							__( 'Right', 'dawnthemes' ) => "right",
-							__( 'Full Box', 'dawnthemes' ) => "full-box", ) ),
-					array(
-						'type' => 'checkbox',
-						'heading' => __( 'Full Box with Primary Soild Background ?', 'dawnthemes' ),
-						'param_name' => 'primary_background',
-						'dependency' => array( 'element' => 'content_position', 'value' => array( 'full-box' ) ),
-						'value' => array( __( 'Yes,please', 'dawnthemes' ) => 'yes' ) ),
-					array( 
-						'type' => 'dropdown', 
-						'heading' => __( 'Text color', 'dawnthemes' ), 
-						'param_name' => 'text_color', 
-						'dependency' => array(
-							'element' => 'style',
-							'value' => array('5'),  ),
-						'std' => 'white', 
-						'value' => array(
-							__( 'White', 'dawnthemes' ) => "white",
-							__( 'Black', 'dawnthemes' ) => "black" ) ), 
-					array( 
-						'type' => 'attach_image', 
-						'heading' => __( 'Image Background', 'dawnthemes' ), 
-						'param_name' => 'bg', 
-						'description' => __( 'Image Background.', 'dawnthemes' ) ), 
-					array( 
-						'type' => 'href', 
-						'heading' => __( 'Image URL (Link)', 'dawnthemes' ), 
-						'param_name' => 'href', 
-						'description' => __( 'Image Link.', 'dawnthemes' ) ), 
-					array( 
-						'type' => 'dropdown', 
-						'heading' => __( 'Target', 'dawnthemes' ), 
-						'param_name' => 'target', 
-						'std' => '_self', 
-						'value' => array( 
-							__( 'Same window', 'dawnthemes' ) => '_self', 
-							__( 'New window', 'dawnthemes' ) => "_blank" ), 
-						'dependency' => array( 
-							'element' => 'href', 
-							'not_empty' => true,  ) ), 
-					array(
-						'param_name' => 'link_title',
-						'heading' => __( 'Button Text', 'dawnthemes' ),
-						'type' => 'textfield',
-						'value' => '',
-						'dependency' => array(
-							'element' => 'style',
-							'value' => array('4'),  ),
-						'description' => __( 'Button link text', 'dawnthemes' ) ),
-					array(
-						'param_name' => 'title',
-						'heading' => __( 'Title', 'dawnthemes' ),
-						'admin_label'=>true,
-						'type' => 'textfield',
-						'value' => '',
-						'description' => __( 'Box Title', 'dawnthemes' ) ),
-					array( 
-						'param_name' => 'sub_title', 
-						'heading' => __( 'Sub Title', 'dawnthemes' ), 
-						'type' => 'textfield', 
-						'value' => '', 
-						'description' => __( 'Box Sub Title', 'dawnthemes' ) ),  ), 
+						'value' => '' ) ),
 				'dt_client' => array( 
 					array( 
 						'type' => 'attach_images', 
@@ -3011,14 +3042,14 @@ if ( ! class_exists( 'DT_VisualComposer' ) && defined( 'WPB_VC_VERSION' ) ) :
 			
 			$shortcode_optional_param = array( 
 				'dt_button', 
+				'dt_custom_box', 
 				'dt_animation', 
 				'dt_post', 
-				'dt_post_grid', 
-				'dt_instagram',
+				'dt_post_grid',
 				'dt_carousel', 
 				'dt_testimonial', 
 				'dt_client', 
-				'dt_counter', 
+				//'dt_counter', 
 				'dt_countdown' );
 			foreach ( $params as $shortcode => $param ) {
 				foreach ( $param as $attr ) {

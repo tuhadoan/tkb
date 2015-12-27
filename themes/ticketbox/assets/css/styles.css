@@ -1797,13 +1797,18 @@ body.sticky-menu #dt-slides {
  * 6.0 Content
  * -----------------------------------------------------------------------------
  */
+#main.site-main {
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+#main.site-main.no-padding {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
 .dawn-posts-list .site-content .entry-content {
   position: relative;
   overflow: hidden;
-}
-
-.content-area {
-  padding-top: 48px;
 }
 
 .hentry {
@@ -4204,10 +4209,6 @@ body.sticky-menu #dt-slides {
     font-size: 19pt;
   }
 
-  .content-area {
-    padding-top: 0;
-  }
-
   .list-view .site-content .hentry {
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     margin-bottom: 48px;
@@ -4250,6 +4251,79 @@ body.sticky-menu #dt-slides {
  * 12.0 Shortcodes
  * -----------------------------------------------------------------------------
  */
+.dt-custom-box.feature-item {
+  padding: 40px 0;
+  text-align: center;
+  position: relative;
+  -webkit-transition: all 0.1s ease-in-out;
+  -o-transition: all 0.1s ease-in-out;
+  transition: all 0.1s ease-in-out;
+  		/*&:before{
+  			content: '';
+  			width: 1px;
+  			height: 100%;
+  			position: absolute;
+  			right: -15px;
+  			top: 0;
+  			background: rgba(0,0,0,0.2);
+  			background: -moz-linear-gradient(top,  rgba(0,0,0,0.2) 0%, rgba(0,0,0,0) 100%);
+  			background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(0,0,0,0.2)), color-stop(100%,rgba(0,0,0,0)));
+  			background: -webkit-linear-gradient(top,  rgba(0,0,0,0.2) 0%,rgba(0,0,0,0) 100%);
+  			background: -o-linear-gradient(top,  rgba(0,0,0,0.2) 0%,rgba(0,0,0,0) 100%);
+  			background: -ms-linear-gradient(top,  rgba(0,0,0,0.2) 0%,rgba(0,0,0,0) 100%);
+  			background: linear-gradient(to bottom,  rgba(0,0,0,0.2) 0%,rgba(0,0,0,0) 100%);
+  			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#33000000', endColorstr='#00000000',GradientType=0 );
+  
+  		}*/
+}
+.dt-custom-box.feature-item:after {
+  content: '';
+  width: 16px;
+  height: 16px;
+  background: #e2e2e2;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  position: absolute;
+  left: 50%;
+  margin-left: -8px;
+  bottom: -8px;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+.dt-custom-box.feature-item .dt-custom-link {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  bottom: 0;
+}
+.dt-custom-box.feature-item .icon {
+  font-size: 32px;
+  color: #73bb67;
+  margin-bottom: 6px;
+}
+.dt-custom-box.feature-item .feature-item-title {
+  font-size: 1em;
+  text-transform: uppercase;
+  margin: 0;
+  line-height: 1.3;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+.dt-custom-box.feature-item .feature-item-desc {
+  color: #b5b5b5;
+}
+.dt-custom-box.feature-item:hover {
+  padding: 30px 0 50px;
+}
+.dt-custom-box.feature-item:hover:after {
+  background: #666;
+}
+
 /**
  * 13.0 Other
  * -----------------------------------------------------------------------------

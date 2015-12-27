@@ -68,6 +68,14 @@ class RevSliderPluginUpdate {
 			self::change_general_settings_5_0_7();
 			self::set_version($version);
 		}
+		
+		
+		if(version_compare($version, '5.1.1', '<')){
+			$version = '5.1.1';
+			
+			self::change_slide_settings_5_1_1();
+			self::set_version($version);
+		}
 	}
 	
 	
@@ -145,7 +153,7 @@ class RevSliderPluginUpdate {
 		$db = new RevSliderDB();
 		
 		foreach($v5 as $v5class){
-			$result = $db->fetch(RevSliderGlobals::$table_css, "handle = '".$v5class['handle']."'");
+			$result = $db->fetch(RevSliderGlobals::$table_css, $db->prepare("handle = %s", array($v5class['handle'])));
 			if(empty($result)){
 				//add v5 style
 				$db->insert(RevSliderGlobals::$table_css, $v5class);
@@ -232,8 +240,12 @@ class RevSliderPluginUpdate {
 			$idle = json_decode($attr['params'], true);
 			$hover = json_decode($attr['hover'], true);
 			
+			//check if in styles, there is type, then change the type text to something else
+			$the_type = 'text';
+			
 			if(!empty($idle)){
 				foreach($idle as $style => $value){
+					if($style == 'type') $the_type = $value;
 					if(!isset($cs[$style])){
 						$adv['idle'][$style] = $value;
 						unset($idle[$style]);
@@ -251,7 +263,9 @@ class RevSliderPluginUpdate {
 			}
 			
 			$settings['translated'] = 5.0; //set the style version to 5.0
-			$settings['type'] = 'text'; //set the type version to text, since 5.0 we also have buttons and shapes, so we need to differentiate from now on
+			$settings['type'] = $the_type; //set the type version to text, since 5.0 we also have buttons and shapes, so we need to differentiate from now on
+			
+			
 			
 			if(!isset($settings['version'])){
 				if(isset($default_classes[$styles[$key]['handle']])){
@@ -332,7 +346,7 @@ class RevSliderPluginUpdate {
 							
 							$static_id = $sl->getStaticSlideID($template_id);
 							if($static_id !== false){
-								$record = $db->fetchSingle(RevSliderGlobals::$table_static_slides,"id=$static_id");
+								$record = $db->fetchSingle(RevSliderGlobals::$table_static_slides, $db->prepare("id = %s", array($static_id)));
 								unset($record['id']);
 								$record['slider_id'] = $slider_id;
 								
@@ -957,6 +971,63 @@ class RevSliderPluginUpdate {
 					
 					$settings['version'] = '5.0.7';
 					$slider->updateSetting(array('version' => '5.0.7'));
+				}
+
+			}
+		}
+	}
+	
+	
+	/**
+	 * change image id of all slides to 5.1.1
+	 * @since 5.1.1
+	 */
+	public static function change_slide_settings_5_1_1($sliders = false){
+		$sr = new RevSlider();
+		$sl = new RevSliderSlide();
+		//$operations = new RevSliderOperations();
+		if($sliders === false){ //do it on all Sliders
+			$sliders = $sr->getArrSliders(false);
+		}else{
+			$sliders = array($sliders);
+		}
+		
+		if(!empty($sliders) && is_array($sliders)){
+			foreach($sliders as $slider){
+				$slides = $slider->getSlides();
+				$staticID = $sl->getStaticSlideID($slider->getID());
+				if($staticID !== false){
+					$msl = new RevSliderSlide();
+					if(strpos($staticID, 'static_') === false){
+						$staticID = 'static_'.$slider->getID();
+					}
+					$msl->initByID($staticID);
+					if($msl->getID() !== ''){
+						$slides = array_merge($slides, array($msl));
+					}
+				}
+				
+				if(!empty($slides) && is_array($slides)){
+					foreach($slides as $slide){
+						//get image url, then get the image id and save it in image_id
+						
+						$image_id = $slide->getParam('image_id', '');
+						$image = $slide->getParam('image', '');
+						
+						$ml_id = '';
+						if($image !== ''){
+							$ml_id = RevSliderFunctionsWP::get_image_id_by_url($image);
+						}
+						if($image == '' && $image_id == '') continue; //if we are a video and have no cover image, do nothing
+						
+						if($ml_id !== false && $ml_id !== $image_id){
+							$urlImage = wp_get_attachment_image_src($ml_id, 'full');
+
+							$slide->setParam('image_id', $ml_id);
+							$slide->saveParams();
+						}
+						
+					}
 				}
 
 			}

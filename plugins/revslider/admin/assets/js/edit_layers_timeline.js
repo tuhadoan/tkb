@@ -13,6 +13,7 @@
 var tpLayerTimelinesRev = new function(){
 	var t = this,
 		u = new Object(),
+		mainMaxTimeLeft,
 		sortMode = "time";				//can be "depth" or "time"
 
 
@@ -26,6 +27,8 @@ var tpLayerTimelinesRev = new function(){
 		g_slideTime = u.getMaintime();
 		g_keyTimer = 0;
 		
+		 mainMaxTimeLeft = jQuery('#mastertimer-maxtime').position().left;
+		
 		initSlideDuration();
 		initSortbox();
 		initMasterTimer();
@@ -36,8 +39,10 @@ var tpLayerTimelinesRev = new function(){
 		addIconFunction();
 
 		t.addToSortbox();
+		jQuery('.master-rightcell .layers-wrapper, .master-leftcell .layers-wrapper, #divLayers-wrapper').perfectScrollbar("update");
 		
 		jQuery('#slide_transition, #slot_amount, #transition_rotation').change(function() {
+			
 			setFakeAnim();
 		});
 		
@@ -90,6 +95,7 @@ var tpLayerTimelinesRev = new function(){
 				jQuery('.justaddedtrans').data('animval',choosen_slide_transition[key]);
 				jQuery('.justaddedtrans').removeClass("justaddedtrans");
 			}
+			
 			setFakeAnim();
 		};
 		
@@ -146,7 +152,7 @@ var tpLayerTimelinesRev = new function(){
 				punchgs.TweenLite.set(a.find('.defaultimg'),{clearProps:"transform",autoAlpha:1});
 				punchgs.TweenLite.set(b.find('.defaultimg'),{clearProps:"transform",autoAlpha:1});
 				
-				etl = slideAnimation(a, b,inp.val(),etl);
+				etl = slideAnimation(a, b,inp.val(),etl,true);
 				etl.pause(0.001);
 				punchgs.TweenLite.to(examp,0.2,{top:(e.pageY - sto.top),overwrite:"all",autoAlpha:1,ease:punchgs.Power3.easeInOut,onComplete:function() {
 					setTimeout(function() {
@@ -188,6 +194,7 @@ var tpLayerTimelinesRev = new function(){
 				}
 				
 			}
+			
 			setFakeAnim();
 		});
 		
@@ -215,6 +222,7 @@ var tpLayerTimelinesRev = new function(){
 		});
 		jQuery('input[name="transition_duration"]').change(function(){
 			jQuery('.slide-trans-cur-ul li.selected').data('duration', jQuery(this).val());
+			setSlideTransitionTimerBar();
 		});
 		jQuery('select[name="transition_ease_in"]').change(function(){
 			jQuery('.slide-trans-cur-ul li.selected').data('ease_in', jQuery(this).val());
@@ -226,7 +234,7 @@ var tpLayerTimelinesRev = new function(){
 		jQuery('.slide-trans-cur-ul').sortable({
 			containment: ".slide-trans-cur-selected",
 			stop:function() {
-				setTimeout(function() {
+				setTimeout(function() {					
 					setFakeAnim();
 				},200);
 			}
@@ -236,11 +244,25 @@ var tpLayerTimelinesRev = new function(){
 			
 
 		// END OF MAIN TRANSITION SELECTOR 
-		
+		jQuery(document).on('keydown', function(event) {
+			 if (event.ctrlKey || event.metaKey) {
+		        switch (String.fromCharCode(event.which).toLowerCase()) {
+		        	case 's':
+		           		event.preventDefault();
+		            	jQuery('#button_save_slide-tb').click();
+		            break;		        
+		    	}
+		    }
+		    switch (event) {
+				
+			}
+		});
+
 		jQuery("body").on("keydown keyup",function(e) {
 			
 			
 			if (jQuery('#layer_text').is(":focus")) return true;
+			if (jQuery('#layer_text_toggle').is(":focus")) return true;
 			
 			var code = (e.keyCode ? e.keyCode : e.which),
 			dist = jQuery(document.activeElement).data('steps')!=undefined ? parseFloat(jQuery(document.activeElement).data('steps')):1,
@@ -248,7 +270,9 @@ var tpLayerTimelinesRev = new function(){
 			y = Number(parseInt(jQuery('#layer_top').val(),0));
 			
 			if (e.shiftKey) dist = dist*10; 
-			switch (jQuery(document.activeElement).get(0).tagName) {
+
+			
+			switch (jQuery(document.activeElement).get(0).tagName.toLowerCase()) {
 				case "INPUT":
 				case "input":				
 					var cv = parseFloat(jQuery(document.activeElement).val());
@@ -268,23 +292,38 @@ var tpLayerTimelinesRev = new function(){
 							}
 					}							
 				break;
-				case "textarea":
+				case "textarea":				
 					return true;
 				break;
 				default:
-					if (keyboardallowed && !jQuery('#layer_left').hasClass('setting-disabled')) 	
-						
+					
 					switch(code) {
+						case 8:
+						case 46:
+							e.preventDefault();
+							if (e.type=="keydown") {								
+								jQuery('#button_delete_layer').click();
+								window.deletecalled = true;
+							}
+						break;
+					}
+
+					if (keyboardallowed && !jQuery('#layer_left').hasClass('setting-disabled')) 	
+
+					switch(code) {						
+						
 					    case 40: 
 							if (e.type=="keyup") {
 								if (jQuery('#align_bottom').hasClass("selected"))
 									y = y -dist;
 								else
 									y = y +dist;
-								jQuery('#layer_left').val(x);	
-								jQuery('#layer_top').val(y).blur();
+								
+								jQuery('#layer_top').val(y+"px");
 								g_rebuildTimer = 0;
+								u.updateCurrentLayerPosition();
 							}
+
 							return false;
 					    break;
 					    case 38:
@@ -293,9 +332,10 @@ var tpLayerTimelinesRev = new function(){
 						    		y = y + dist;
 						    	else
 							 		y = y - dist;
-							 	jQuery('#layer_left').val(x);
-								jQuery('#layer_top').val(y).blur();
-								g_rebuildTimer = 0;																
+							 	
+								jQuery('#layer_top').val(y+"px");
+								g_rebuildTimer = 0;	
+								u.updateCurrentLayerPosition();															
 							}
 							return false;
 					    break;
@@ -305,9 +345,9 @@ var tpLayerTimelinesRev = new function(){
 						    		x = x + dist;
 						    	else
 						    		x = x - dist;
-						    	jQuery('#layer_left').val(x);
-								jQuery('#layer_top').val(y).blur();
-								g_rebuildTimer = 0;								
+						    	jQuery('#layer_left').val(x+"px");								
+								g_rebuildTimer = 0;			
+								u.updateCurrentLayerPosition();					
 							}
 							return false;
 					    break;
@@ -317,13 +357,14 @@ var tpLayerTimelinesRev = new function(){
 						    		x = x - dist;
 						    	else
 						    		x = x + dist;
-						    	jQuery('#layer_left').val(x);
-								jQuery('#layer_top').val(y).blur();
-								g_rebuildTimer = 0;								
+						    	jQuery('#layer_left').val(x+"px");								
+								g_rebuildTimer = 0;	
+								u.updateCurrentLayerPosition();							
 							}
 							return false;
 					    break;
 					}
+
 				break;
 			}
 		});
@@ -465,11 +506,17 @@ var tpLayerTimelinesRev = new function(){
 								jQuery("#dialog_insert_icon").dialog("close");
 								setExampleButtons();
 							} else {
-								jQuery('#layer_text').val(jQuery('#layer_text').val()+jQuery(this).html()).blur().focus();	
+								if (jQuery('.lasteditedlayertext').length>0)
+									jQuery('.lasteditedlayertext').val(jQuery('.lasteditedlayertext').val()+jQuery(this).html()).blur().focus();	
+								else
+									jQuery('#layer_text').val(jQuery('#layer_text').val()+jQuery(this).html()).blur().focus();										
 								jQuery("#dialog_insert_icon").dialog("close");
 							}																												
 						} else {
-							jQuery('#layer_text').val(jQuery('#layer_text').val()+jQuery(this).html()).blur().focus();
+							if (jQuery('.lasteditedlayertext').length>0)
+								jQuery('.lasteditedlayertext').val(jQuery('.lasteditedlayertext').val()+jQuery(this).html()).blur().focus();
+							else
+								jQuery('.layer_text').val(jQuery('#layer_text').val()+jQuery(this).html()).blur().focus();
 							jQuery("#dialog_insert_icon").dialog("close");
 						}
 						
@@ -488,7 +535,8 @@ var tpLayerTimelinesRev = new function(){
 			cv=Math.round(cv*100)/100;		
 			el.val(cv);	
 			/*  PUT THIS IN EDIT_LAYERS.js */
-			jQuery('#layer_top').focus();
+			jQuery(':focus').blur();
+			
 			el.focus();
 		}
 	}
@@ -503,6 +551,7 @@ var tpLayerTimelinesRev = new function(){
 		jQuery('.rs-staticcustomstylechange').change(function() {
 
 			//setTimeout(function() {
+					
 					t.rebuildLayerIdle(jQuery('.slide_layer.layer_selected'));
 			//	},20);
 		})
@@ -517,9 +566,8 @@ var tpLayerTimelinesRev = new function(){
 
 						t.stopAllLayerAnimation();
 						setTimeout(function() {
-							u.removeCurrentLayerRotatable();												
+							u.removeCurrentLayerRotatable();
 							u.makeCurrentLayerRotatable();
-							jQuery('#layer-short-toolbar').show();
 							jQuery('#hide_layer_content_editor').click();
 						},19);
 				} else
@@ -527,14 +575,12 @@ var tpLayerTimelinesRev = new function(){
 					t.stopAllLayerAnimation();
 					if (li.attr('id') == '#rs-animation-tab-button' || li.closest('#rs-animation-tab-button').length!=0) {
 						t.animateCurrentSelectedLayer(3);
-						u.removeCurrentLayerRotatable();						
-						jQuery('#layer-short-toolbar').hide();
-						jQuery('#hide_layer_content_editor').click();						
+						u.removeCurrentLayerRotatable();
+						jQuery('#hide_layer_content_editor').click();
 					} else {
 						t.callCaptionLoops();
-						u.removeCurrentLayerRotatable();						
-						jQuery('#layer-short-toolbar').hide();	
-						jQuery('#hide_layer_content_editor').click();					
+						u.removeCurrentLayerRotatable();
+						jQuery('#hide_layer_content_editor').click();
 					}
 				}
 		});
@@ -595,6 +641,7 @@ var tpLayerTimelinesRev = new function(){
 		jQuery('#rs-style-tab-button').click(function() {
 			setTimeout(function() {
 					jQuery('.slide_layer').each(function() {
+						
 						t.rebuildLayerIdle(jQuery(this));	
 						var inlayer = jQuery(this).find('.innerslide_layer');
 						if (inlayer.length>0 && inlayer.data('hoveranim')!=undefined) {
@@ -606,17 +653,24 @@ var tpLayerTimelinesRev = new function(){
 		});
 		
 		jQuery('#toggle-idle-hover').click(function() {
-			setTimeout(function() {
+			setTimeout(function() {					
 					t.rebuildLayerIdle(jQuery('.slide_layer.layer_selected'));
 			},19);
 		})
 		
+
 		
-		jQuery('#style_form_wrapper').on("colorchanged",function() {
-						t.rebuildLayerIdle(jQuery('.slide_layer.layer_selected'));				
+		jQuery('#style_form_wrapper').on("colorchanged",function() {			
+			t.rebuildLayerIdle(jQuery('.slide_layer.layer_selected'));				
 		})
 	}
 
+	t.resetIdleSelector = function() {
+		var bt = jQuery('#toggle-idle-hover');
+		bt.addClass("idleisselected").removeClass("hoverisselected");
+		jQuery('#tp-idle-state-advanced-style').show();
+		jQuery('#tp-hover-state-advanced-style').hide();
+	}
 
 	/************************************************************************************************************************
 				-	CHECK IF ANIMATION AND LOOP ANIMATION TABS ARE ACTIVATED AND IN IDLE OR PLAY MODE ARE	-
@@ -735,7 +789,7 @@ var tpLayerTimelinesRev = new function(){
 			el.unwrap();
 		}
 
-		el.wrap('<div class="rs-preview-inside-looper" style="position:relative"></div>');
+		el.wrap('<div class="rs-preview-inside-looper" style="width:100%;height:100%;position:relative"></div>');
 
 		var loopobj =caption.find('.rs-preview-inside-looper'),
 			startdeg = params["loop_startdeg"],
@@ -827,36 +881,34 @@ var tpLayerTimelinesRev = new function(){
 	
 	t.rebuildLayerIdle = function(caption,timer,isDemo) {
 		
-		
 		timer = timer == undefined ? 50 : timer;
 		isDemo = isDemo == undefined ? false : isDemo;
-		
-		
+				
 		if (g_rebuildTimer == 0) {
 			timer = 0;
 			g_rebuildTimer = 999;
 		}
 		
-		
-		
+			
 		if (caption==undefined || jQuery(caption).length==0) return false;
-		
-		
-
+				
 		var cp = jQuery(caption);
 		
 
 		clearTimeout(cp.data('idlerebuildtimer'));
 		
 		
+		
 		t.rebuildLayerIdleProgress(caption);
+		
 		
 		var id = u.getSerialFromID(caption.attr('id')),
 			objLayer = u.getLayer(id,isDemo);
 		
-
-		
 		var e_img = caption.find('.tp-caption img');
+
+
+		u.updateHtmlLayerPosition(false,caption,objLayer,u.getVal(objLayer, 'top'),u.getVal(objLayer, 'left'),u.getVal(objLayer, 'align_hor'),u.getVal(objLayer, 'align_vert'));
 		
 		if (e_img.length>0 && !jQuery(e_img).hasClass("loaded")) {
 			jQuery(e_img).addClass("loaded");
@@ -878,15 +930,13 @@ var tpLayerTimelinesRev = new function(){
 
 			img.src = e_img[0].src;
 		} else {
-			u.updateHtmlLayerPosition(false,caption,objLayer,u.getVal(objLayer, 'top'),u.getVal(objLayer, 'left'),u.getVal(objLayer, 'align_hor'),u.getVal(objLayer, 'align_vert'));
+			//u.updateHtmlLayerPosition(false,caption,objLayer,u.getVal(objLayer, 'top'),u.getVal(objLayer, 'left'),u.getVal(objLayer, 'align_hor'),u.getVal(objLayer, 'align_vert'));
 			//update corners
 			u.updateHtmlLayerCorners(caption,objLayer);
 			//update cross position
 			u.updateCrossIconPosition(caption,objLayer);
 		}
-
-
-
+		
 		return true;
 	}
 	
@@ -959,9 +1009,11 @@ var tpLayerTimelinesRev = new function(){
 				mheight = u.getVal(params,"scaleY"); 
 			break;
 			case 'video':
-				mwidth = u.getVal(params,"video_width");
-				mheight = u.getVal(params,"video_height"); 				
+				mwidth = params.video_data.cover===true || params.video_data.fullwidth===true ? "100%" : u.getVal(params,"video_width");
+				mheight = params.video_data.cover===true || params.video_data.fullwidth===true ? "100%" :  u.getVal(params,"video_height"); 				
 				caption.find('.slide_layer_video').css({width:parseInt(mwidth,0)+"px",height:parseInt(mheight,0)+"px"});
+				
+				
 			break;			
 		}
 		
@@ -1044,6 +1096,12 @@ var tpLayerTimelinesRev = new function(){
 				punchgs.TweenLite.set(inlayer,{width:mwidth,height:mheight})						
 			}		
 		}
+
+		if (params.type==="video") {			
+				punchgs.TweenLite.set(inlayer.find('.slide_layer_video'),{width:mwidth,height:mheight})
+				punchgs.TweenLite.set(inlayer,{width:mwidth,height:mheight})									
+		}
+
 		if (params.inline !=undefined && params.inline.idle!=undefined)					
 			jQuery.each(params.inline.idle, function(key,value) {
 
@@ -1740,16 +1798,20 @@ var tpLayerTimelinesRev = new function(){
 
 	}
 	
-	function allLayerToIdle() {
-		jQuery('.slide_layer').each(function() {
-					t.rebuildLayerIdle(jQuery(this));
-		})
+	function allLayerToIdle(obj) {
+		var search = obj!=undefined && obj.type!=undefined ? '.slide_layer_type_'+obj.type : '.slide_layer';
+		jQuery(search).each(function() {				
+			t.rebuildLayerIdle(jQuery(this));
+		});
+		
 	}
 
-	t.allLayerToIdle = function() {
-		jQuery('.slide_layer').each(function() {
-					t.rebuildLayerIdle(jQuery(this));
-		})
+	t.allLayerToIdle = function(obj) {		
+		var search = obj!=undefined && obj.type!=undefined ? '.slide_layer_type_'+obj.type : '.slide_layer';		
+		jQuery(search).each(function() {							
+			t.rebuildLayerIdle(jQuery(this));
+		});
+		
 	}
 
 	/***********************************
@@ -1868,13 +1930,13 @@ var tpLayerTimelinesRev = new function(){
 			axis:"x",			
 			containment:"#master-rightheader",
 			create:function() {
-
-				jQuery('#mastertimer-maxcurtime').html(t.convToTime(jQuery('#mastertimer-maxtime').position().left-15));
-				jQuery('.slide-idle-section').css({left:jQuery('#mastertimer-maxtime').position().left});
+				mainMaxTimeLeft = jQuery('#mastertimer-maxtime').position().left;
+				jQuery('#mastertimer-maxcurtime').html(t.convToTime(mainMaxTimeLeft-15));
+				jQuery('.slide-idle-section').css({left:mainMaxTimeLeft});
 			},
 			start:function() {
-				jQuery('#mastertimer-maxcurtime').html(t.convToTime(jQuery('#mastertimer-maxtime').position().left-15));
-				jQuery('.slide-idle-section').css({left:jQuery('#mastertimer-maxtime').position().left});
+				jQuery('#mastertimer-maxcurtime').html(t.convToTime(mainMaxTimeLeft-15));
+				jQuery('.slide-idle-section').css({left:mainMaxTimeLeft});
 			},
 			drag:function() {
 				var w = jQuery('#mastertimer-maxtime').position().left;
@@ -1887,7 +1949,7 @@ var tpLayerTimelinesRev = new function(){
 			},
 			stop:function() {
 				var w = jQuery('#mastertimer-maxtime').position().left;
-
+				mainMaxTimeLeft = w;
 				jQuery('#mastertimer-maxcurtime').html(t.convToTime(w-15));
 				jQuery('.slide-idle-section').css({left:w});
 				jQuery('#delay').val((w-15)*10);
@@ -1971,6 +2033,7 @@ var tpLayerTimelinesRev = new function(){
 	}
 	
 	var setFakeAnim = function() {
+		
 		var found=false,
 			li = jQuery('.slide-trans-cur-ul li').first();
 		
@@ -1985,8 +2048,9 @@ var tpLayerTimelinesRev = new function(){
 		
 		jQuery('#fake-select-label').html(comingtext);					
 		jQuery('#fake-select-label').data('valu',comingtransition);
-
+		
 		removeAllSlots();
+		
 		slideAnimation();
 		found=true;
 		
@@ -1995,20 +2059,37 @@ var tpLayerTimelinesRev = new function(){
 	/**************************************
 		-	ADD SLIDE MAIN TO SORTBOX	-
 	**************************************/
+
+	var setSlideTransitionTimerBar = function() {
+		var cur = jQuery('#slide_in_sort_time'),
+			dragspeedin = cur.find('.tl-startanim'),
+			dur = jQuery('#transition_duration').val(),
+			maxtime = (mainMaxTimeLeft)-15;			
+		cur.find('.tl-fullanim').css({left:"15px",width:maxtime});
+		cur.find('.tl-startanim').css({width:dur/10});
+		cur.find('.sortbox_speedin').html(msToSec(dur));
+	}
+
+
 	var addSlideToSortbox = function() {
 
+		
 		var htmlSortbox = "";
 			
 		var cur = jQuery('#slide_in_sort_time'),
 			dragspeedin = cur.find('.tl-startanim'),
 			dur = jQuery('#transition_duration').val(),
-			maxtime = (jQuery('#mastertimer-maxtime').position().left)-15;			
-		cur.find(' .tl-fullanim').css({left:"15px",width:maxtime});
+			maxtime = (mainMaxTimeLeft)-15;			
+		cur.find('.tl-fullanim').css({left:"15px",width:maxtime});
 		cur.find('.tl-startanim').css({width:dur/10});
 		cur.find('.sortbox_speedin').html(msToSec(dur));
 		
-		setFakeAnim();
-				
+
+		
+		
+		//setFakeAnim();
+		
+		
 		cur.on('click',function() {
 			jQuery('#timline-manual-dialog').hide();
 		})
@@ -2038,7 +2119,7 @@ var tpLayerTimelinesRev = new function(){
 			}
 			//snap:".tl-fullanim"
 		});
-
+		
 		
 		
 	}
@@ -2052,62 +2133,61 @@ var tpLayerTimelinesRev = new function(){
 	t.addToSortbox = function(serial,objLayer){
 
 		
-	
-		if (jQuery('#layers-right ul li').length==1) {
+		if (jQuery('#layers-right ul li').length==1) 				
 				addSlideToSortbox();
-		}
-
+		
 
 		if (serial===undefined) return false;
 
 		
 		var endslideclass = "",
-			isVisible = isLayerVisible(serial),
+			isVisible = t.isLayerVisible(serial),
 			classLI = "",
 			sortboxText = t.getSortboxText(objLayer.alias),
-			depth = Number(objLayer.order)+1,
+			depth = Number(objLayer.order)+5,
 			htmlSortbox = "",
-			quicksb  = "";
+			quicksb  = ""
+			visibleclass = "in-on";
 			
+		
 			
 		//if(isVisible == false)
 		//	classLI = " sortitem-hidden";
 
+		
 
 		htmlSortbox += '<li id="layer_sort_'+serial+'" class="sortablelayers mastertimer-layer ui-state-default'+classLI+'">';
 		htmlSortbox += '	<div style="width:5000px;position:absolute;left:0px;top:0px;">';
-		htmlSortbox += '		<span style="margin-right:5px;width:18px;padding-right:10px;border-right:1px solid #f1f1f1">';
-		htmlSortbox += '			<i style="margin-left:5px;margin-right:0px;" class="layersortclass eg-icon-sort"></i>';
-		htmlSortbox += '				<input type="text" class="sortbox_depth" readonly title="Edit Depth" value="'+depth+'">';
+		htmlSortbox += '		<span style="margin-right:5px;width:25px;padding-right:10px;border-right:1px solid #f1f1f1; position:relative" class="tipsy_enabled_top" title="z-Index">';
+		htmlSortbox += '			<i style="margin-left:15px;margin-right:0px;" class="layersortclass eg-icon-sort"></i>';
+		htmlSortbox += '			<span class="sortbox_depth" title="z-Index">'+depth+'</span>';
 		htmlSortbox += '		</span>';
 		htmlSortbox += '		<span style="width:25px;border-right:1px solid #f1f1f1">';
-		htmlSortbox += '			<span class="till_slideend '+endslideclass+'" title="Snap to Slide End / Custom End" class="tipsy_enabled_top"><i class="eg-icon-back-in-time"></i><i class="eg-icon-download-2"></i></span>';
+		htmlSortbox += '			<span class="till_slideend tipsy_enabled_top '+endslideclass+'" title="Wait till Slides End / Custom End"><i class="eg-icon-back-in-time"></i><i class="eg-icon-download-2"></i></span>';
 		htmlSortbox += '		</span>';
-		htmlSortbox += '		<span class="text-selectable sort-hover-part layer_sort_layer_text_field">';
-		htmlSortbox += '			<span class="text-selectable sortbox_text"><i class="layertypeclass ';		
+		htmlSortbox += '		<span class="sort-hover-part layer_sort_layer_text_field">';
+		htmlSortbox += '			<span class="sortbox_text"><i class="layertypeclass ';		
 
-		quicksb += '<li id="layer_quicksort_'+serial+'" class="quicksortlayer ui-state-default">';
-		quicksb += '<div class="add-layer-button text-selectable">'		
-		quicksb += '<i class="';
+		
 		switch (objLayer.type) {
 			case "text":
 				htmlSortbox += 'rs-icon-layerfont';
-				quicksb += 'rs-icon-layerfont';
+		
 			break;
 			case "image":
 				htmlSortbox += 'rs-icon-layerimage';
-				quicksb += 'rs-icon-layerimage';
+		
 			break;
 			case "video":
 				htmlSortbox += 'rs-icon-layervideo';
-				quicksb += 'rs-icon-layervideo';
+		
 			break;
 		}
 
 		htmlSortbox += '"></i>';
-		quicksb += '"></i>';
-		htmlSortbox += '				<input class="text-selectable timer-layer-text" style="margin-top:-1px !important" type="text" enabled value="'+sortboxText + '">';
-		quicksb += '				<span class="add-layer-txt">'+sortboxText + '</span>';
+
+		htmlSortbox += '				<input class="timer-layer-text" style="margin-top:-1px !important" type="text" enabled value="'+sortboxText + '">';
+
 		htmlSortbox += '			</span>';
 		htmlSortbox += '		</span>';
 		htmlSortbox += '		<span class="timer-manual-edit"><i class="eg-icon-pencil"></i></span>'
@@ -2118,13 +2198,54 @@ var tpLayerTimelinesRev = new function(){
 
 		htmlSortbox += '</li>';
 
-		quicksb +='<span class="quick-layer-lock"><i class="eg-icon-lock-open"></i></span>';
-		quicksb +='<span class="quick-layer-view"><i class="eg-icon-eye"></i></span>';
-		quicksb +='</div></li>';
+		quicksb += '<li id="layer_quicksort_'+serial+'" data-serial="'+serial+'" class="quicksortlayer ui-state-default layer-toolbar-li">';
+		var btlist ='<span class="quick-edit-toolbar-in-list">';
+
+		
+		switch (objLayer.type) {
+			case "text":
+				quicksb += '<span class="layer-short-tool revdarkgray layer-title-with-icon"><i class="rs-icon-layerfont_n"></i>';
+				btlist += '<span id="button_edit_layer_'+serial+'" class="button_edit_layer layer-short-tool revblue"><i class="eg-icon-pencil"></i></span>';
+				btlist += '<span id="button_reset_size_'+serial+'" class="button_reset_size layer-short-tool revblue"><i class="eg-icon-resize-normal"></i></span>';
+			break;	
+			case "shape":
+				quicksb += '<span class="layer-short-tool revdarkgray layer-title-with-icon"><i class="rs-icon-layershape_n"></i>';
+				btlist += '<span id="button_edit_shape_'+serial+'" class="button_edit_shape layer-short-tool revblue"><i class="eg-icon-pencil"></i></span>';
+				btlist += '<span  class="layer-short-tool revdarkgray"></span>';
+			break;
+			case "button":
+				quicksb += '<span class="layer-short-tool revdarkgray layer-title-with-icon"><i class="rs-icon-layerbutton_n"></i>';
+				btlist += '<span id="button_edit_layer_'+serial+'" class="button_edit_layer layer-short-tool revblue"><i class="eg-icon-pencil"></i></span>';
+				btlist += '<span id="button_reset_size_'+serial+'" class="button_reset_size layer-short-tool revblue"><i class="eg-icon-resize-normal"></i></span>';
+			break;
+			case "image":
+				quicksb += '<span class="layer-short-tool revdarkgray layer-title-with-icon"><i class="rs-icon-layerimage_n"></i>';
+				btlist += '<span  id="button_change_image_source_'+serial+'" class="button_change_image_source layer-short-tool revblue"><i class="eg-icon-pencil"></i></span>';
+				btlist += '<span id="button_reset_size_'+serial+'" class="button_reset_size layer-short-tool revblue"><i class="eg-icon-resize-normal"></i></span>';
+			break;
+			case "video":
+				quicksb += '<span class="layer-short-tool revdarkgray layer-title-with-icon"><i class="rs-icon-layervideo_n"></i>';
+				btlist += '<span  id="button_change_video_settings_'+serial+'" class="button_change_video_settings layer-short-tool revblue"><i class="eg-icon-pencil"></i></span>';				
+				btlist += '<span  class="layer-short-tool revdarkgray"></span>';
+			break;
+		}
+		
+		quicksb += '<input type="text" class="layer-title-in-list" value="'+sortboxText+'"></span>';
+		quicksb += btlist;		
+		quicksb += '<span id="button_delete_layer_'+serial+'" class="button_delete_layer layer-short-tool revred"><i class="rs-lighttrash"></i></span>';
+		quicksb += '<span id="button_duplicate_layer_'+serial+'" class="button_duplicate_layer layer-short-tool revyellow" data-isstatic=""><i class="rs-lightcopy"></i></span>';
+		quicksb += '<span style="display:block;float:none;clear:both"></span></span>';
+		quicksb += '<span class="quick-layer-view layer-short-tool revdarkgray '+visibleclass+'"><i class="eg-icon-eye"></i></span>';
+		quicksb += '<span class="quick-layer-lock layer-short-tool revdarkgray"><i class="eg-icon-lock-open"></i></span>';
+		quicksb += '<div style="clear:both;display:block"></div>';
+		quicksb +='</li>';
+
+		
 
 		jQuery('#layers-left ul').append(htmlSortbox);
 		jQuery('.quick-layers-list').append(quicksb);
 
+		
 		if (jQuery('.quick-layers-list li').length>1) jQuery('.nolayersavailable').hide();
 
 		htmlSortbox = "";
@@ -2141,49 +2262,35 @@ var tpLayerTimelinesRev = new function(){
 		htmlSortbox += '</li>';
 		jQuery('#layers-right ul').append(htmlSortbox);
 
-		jQuery('.master-rightcell .layers-wrapper, .master-leftcell .layers-wrapper, #divLayers-wrapper').perfectScrollbar("update");
+		
+		jQuery('#layer_quicksort_'+serial).on('mouseenter',function(event) {
+			jQuery('.layer_due_list_element_selected').removeClass('layer_due_list_element_selected');
+			jQuery('#slide_layer_'+jQuery(this).data('serial')).addClass("layer_due_list_element_selected");
 
+		});
+
+		jQuery('#layer_quicksort_'+serial).on('mouseleave',function(event) {
+			jQuery('.layer_due_list_element_selected').removeClass('layer_due_list_element_selected');			
+		});
+
+		jQuery("#layers-left .tipsy_enabled_top").tipsy({
+  				gravity:"s",
+  				delayIn: 70
+  		});
+
+		
 		var cur = jQuery('#layer_sort_time_'+serial+" .timeline"),
 			qcur = jQuery('#layer_quicksort_'+serial),
 			dragfull = cur.find('.tl-fullanim'),
 			dragspeedin = cur.find('.tl-startanim'),
 			dragspeedout = cur.find('.tl-endanim'),
-			maxtime = (jQuery('#mastertimer-maxtime').position().left)-15; //slidemaxtime==undefined || slidemaxtime=="" || slidemaxtime<=0 ? g_slideTime : slidemaxtime;
-
-		qcur.find('.quick-layer-lock').click(function() {
-			var b = jQuery(this),
-				i = b.find('i'),
-				p = b.closest('.quicksortlayer');
-
-			if (i.hasClass("eg-icon-lock")) {
-				i.removeClass("eg-icon-lock").addClass("eg-icon-lock-open");
-			} else {
-				i.removeClass("eg-icon-lock-open").addClass("eg-icon-lock");
-			}
-		});
-
-		qcur.find('.quick-layer-view').click(function() {
-			var b = jQuery(this),
-				i = b.find('i'),
-				p = b.closest('.quicksortlayer');
-
-			if (p.hasClass("sortitem-hidden")) {
-				i.removeClass("eg-icon-eye").addClass("eg-icon-eye-off");
-			} else {
-				i.removeClass("eg-icon-eye-off").addClass("eg-icon-eye");
-			}
-		});
-
-
-		setCurTimer(dragfull);
+			maxtime = (mainMaxTimeLeft)-15; //slidemaxtime==undefined || slidemaxtime=="" || slidemaxtime<=0 ? g_slideTime : slidemaxtime;
+		
+		
+		
+		setCurTimer(dragfull,true);
 		cur.parent().find('.slide-idle-section').css({left:(maxtime+15)+"px"});
 		
-		jQuery('#mastertimer-wrapper').height((jQuery('#layers-right ul li').length+1)*32);
-		jQuery('.layers-wrapper').height(jQuery('#mastertimer-wrapper').height()-40);
-		jQuery('.layers-wrapper').perfectScrollbar("update");
-
-		
-
 		// DRAG LEFT / RIGHT THE FULL ANIMATION
 		dragfull.draggable({
 			containment:"parent",
@@ -2197,7 +2304,7 @@ var tpLayerTimelinesRev = new function(){
 			},
 			stop:function() {
 
-				var maxtime = (jQuery('#mastertimer-maxtime').position().left)-15,
+				var maxtime = (mainMaxTimeLeft)-15,
 					l = parseInt(dragfull.position().left),
 					w = dragfull.width(),
 					speedoutw = dragspeedout.width();
@@ -2217,24 +2324,29 @@ var tpLayerTimelinesRev = new function(){
 			}
 		})
 
+		
+		
+		var dsiw = dragspeedin.data('dsw') || dragspeedin.width(),
+			dsow = dragspeedout.data('dew') || dragspeedout.width();
+
 		// CHANGE DURATION OF ELEMENTS
 		dragfull.resizable({
 			containment:"parent",
 			handles:"w,e",
-			minWidth: (dragspeedin.width()+dragspeedout.width()),
-			maxWidth: (maxtime+dragspeedout.width()),
+			minWidth: (dsiw+dsow),
+			maxWidth: (maxtime+dsow),
 
 			// BASIC SETTINGS FOR THE DRAGBAR
 			create:function() {
 				
-
-				var maxtime = (jQuery('#mastertimer-maxtime').position().left)-15,
-					w = dragfull.width(),
-					speedoutw = dragspeedout.width(),
-					l = parseInt(dragfull.position().left);
-
+				var maxtime = (mainMaxTimeLeft)-15,
+					w =dragfull.data('dfw') || dragfull.width(),					
+					speedoutw = dragspeedout.data('dew') || dragspeedout.width(),
+					dfl = dragfull.data('dfl') || dragfull.position().left,
+					l = parseInt(dfl);
+								
 				// IF THE TIMELINE TOO LONGTH AT START
-				if (w+speedoutw>maxtime) {
+				if (w-speedoutw>maxtime) {
 					var neww = maxtime-l+ speedoutw;
 						newl = maxtime+speedoutw - neww + 15;
 					dragfull.css({width:neww+"px",left:newl+"px"});
@@ -2243,15 +2355,13 @@ var tpLayerTimelinesRev = new function(){
 
 			// ON START TO RESIZE, CHANGE SOME IMPORTANT PARAMETERS
 			start:function(e,ui) {
-				
-				
 					
 				// ADD CLASS ONCHANGE
 				dragfull.closest('.timeline').addClass("onchange");
 				jQuery('#timline-manual-dialog').show();
 				
 
-				var maxtime = (jQuery('#mastertimer-maxtime').position().left)-15,
+				var maxtime = (mainMaxTimeLeft)-15,
 					w = dragfull.width(),
 					speedinw = dragspeedin.width(),
 					speedoutw = dragspeedout.width(),
@@ -2293,7 +2403,7 @@ var tpLayerTimelinesRev = new function(){
 			}
 			//snap:".tl-fullanim"
 		});
-
+		
 		dragspeedin.resizable({
 			minWidth:0,
 			handles:"e",
@@ -2321,11 +2431,12 @@ var tpLayerTimelinesRev = new function(){
 			//snap:".tl-fullanim"
 		});
 
+		
 		dragspeedout.resizable({
 			minWidth:1,
 			handles:"w",
 			start:function() {
-				var maxtime = (jQuery('#mastertimer-maxtime').position().left)-15,
+				var maxtime = (mainMaxTimeLeft)-15,
 					w = dragfull.width(),
 					speedinw = dragspeedin.width(),
 					speedoutw = dragspeedout.width(),
@@ -2350,6 +2461,7 @@ var tpLayerTimelinesRev = new function(){
 			}
 			//snap:".tl-fullanim"
 		});
+		
 	}
 
 	/**
@@ -2359,7 +2471,7 @@ var tpLayerTimelinesRev = new function(){
 	var checkTillSlideEnd = function(serial,objLayer) {
 
 		
-		var maxtime = ((jQuery('#mastertimer-maxtime').position().left)-15)*10,
+		var maxtime = ((mainMaxTimeLeft)-15)*10,
 			li = jQuery('#layer_sort_'+serial);
 		
 
@@ -2377,40 +2489,35 @@ var tpLayerTimelinesRev = new function(){
 	/**
 	 * update timeline of current layer
 	 */
-	t.updateCurrentLayerTimeline = function(){
-
-		jQuery('.sortlist').find('.tl-fullanim').each(function() {
-			var caption = jQuery(this);
-			setTimeout(function() {
-					setCurTimer(caption);
-				},20);
-		})
-
+	t.updateCurrentLayerTimeline = function(){				
+		var timer = jQuery('#layers-right').find('.ui-state-hover .timeline .tl-fullanim');
+		
+		setTimeout(function() {					
+			setCurTimer(timer);					
+			t.updateCurTimer("",timer);
+		},20);
 	}
 
 	/**
 		Set the Current Timer Line to Position end start/end time should be set as well
 	*/
 	var setCurTimer = function(timer) {
-
+		
+		
 		var li = timer.closest("li"),
 			sortLayerID = li.attr("id"),
 			serial = u.getSerialFromSortID(sortLayerID),
 			objLayer = u.getLayer(serial);
-
-
-		
-		var tl = jQuery('#layer_sort_time_'+serial).find('.timeline'),
-			tw = tl.width(),
+				
+		var tl = jQuery('#layer_sort_time_'+serial).find('.timeline'),			
 			dragfull = tl.find('.tl-fullanim'),
 			dragstart =dragfull.find('.tl-startanim'),
 			dragend = dragfull.find('.tl-endanim'),
-			ft = ((jQuery('#mastertimer-maxtime').position().left)-15)*10,
+			ft = ((mainMaxTimeLeft)-15)*10,
 			ietime = tl.find('.splitinextratime'),
 			oetime = tl.find('.splitoutextratime'),
-			fromreal = false;
-					
-			
+			fromreal = false;		
+				
 		if (objLayer.realEndTime && objLayer.realEndTime!="undefined" && objLayer.realEndTime!=undefined) {				
 			 objLayer.endtime = objLayer.realEndTime;
 			 if (objLayer.endWithSlide) objLayer.endtime = 	(parseInt(ft,0)+parseInt(objLayer.endspeed,0));			
@@ -2418,6 +2525,7 @@ var tpLayerTimelinesRev = new function(){
 			 delete objLayer.endTimeFinal;
 			 delete objLayer.endSpeedFinal;			 
 		}
+		
 		
 		if (objLayer.endtime=="undefined" || objLayer.endtime==undefined) {
 			objLayer.endtime = ft;
@@ -2434,24 +2542,31 @@ var tpLayerTimelinesRev = new function(){
 		if (objLayer.endspeed<=0) objLayer.endspeed = 2;
 		if (objLayer.speed<=0) objLayer.speed = 2;		
 
+		
 
 		ietime.css({width:isw+"px"});
 		oetime.css({width:osw+"px"});
-				
-		var result = objLayer.endtime - objLayer.time;
 
-		dragfull.css({width:(( result)/10)+"px",
-					  left: (15+(objLayer.time/10))+"px"});
-
-		dragstart.css({width:(objLayer.speed/10) +"px" });
-		dragend.css({right:"0px",width:(objLayer.endspeed / 10)+"px" });
-		checkTillSlideEnd(serial,objLayer);
+		var result = objLayer.endtime - objLayer.time,
+			dfw = result/10,
+			dfl = 15+(objLayer.time/10),
+			dew = objLayer.endspeed/10,
+			dsw = objLayer.speed/10;
 
 		
+		dragfull.css({width:dfw+"px",
+					  left: dfl+"px"});
+		
+		dragstart.css({width:dsw +"px" });
+		dragend.css({right:"0px",width:dew+"px" });
+
+		dragfull.data('dfw',dfw);
+		dragfull.data('dfl',dfl);
+		dragend.data('dew',dew);
+		dragstart.data('dsw',dsw);
+
+		checkTillSlideEnd(serial,objLayer);
 	}
-
-	
-
 
 
 	/**
@@ -2499,6 +2614,7 @@ var tpLayerTimelinesRev = new function(){
 		Update the Current Timelines
 	*/
 	t.updateCurTimer = function(event,timer) {
+		
 		var li = timer.closest("li"),
 			sortLayerID = li.attr("id"),
 			serial = u.getSerialFromSortID(sortLayerID),
@@ -2515,7 +2631,7 @@ var tpLayerTimelinesRev = new function(){
 			endspeed = outspeedw*10,
 			starttime = (l-15)*10,
 			endtime = 	(l-15 + w)*10,
-			slidemaxtime = ((jQuery('#mastertimer-maxtime').position().left)-15)*10,
+			slidemaxtime = ((mainMaxTimeLeft)-15)*10,
 			ietime = li.find('.splitinextratime'),
 			oetime = li.find('.splitoutextratime');
 
@@ -2525,16 +2641,16 @@ var tpLayerTimelinesRev = new function(){
 
 		ietime.css({width:isw+"px"});
 		oetime.css({width:osw+"px"});
-
-
-
+			
 		jQuery('#layer_sort_time_'+serial).find('.sortbox_time').html(msToSec(starttime));
 		jQuery('#layer_sort_time_'+serial).find('.sortbox_timeend').html(msToSec(endtime));
 		jQuery('#layer_sort_time_'+serial).find('.sortbox_speedin').html(msToSec(startspeed));
 		jQuery('#layer_sort_time_'+serial).find('.sortbox_speedout').html(msToSec(endspeed));
-
-		jQuery('#layer_speed').val(startspeed);
-		jQuery('#layer_endspeed').val(endspeed);
+				
+		if (selectedLayerSerial == serial) {
+			jQuery('#layer_speed').val(startspeed);
+			jQuery('#layer_endspeed').val(endspeed);
+		}
 
 		dragstart.css({ left:"0px" });
 		dragend.css({ left:"auto", right:"0px" });
@@ -2618,9 +2734,10 @@ var tpLayerTimelinesRev = new function(){
 			var objUpdate = {order:i};
 			u.updateLayer(serial,objUpdate);
 
+			
 			//update sortbox order input
-			var depth = i+1;
-			jQuery("#"+sortID+" input.sortbox_depth").val(depth);
+			var depth = i+5;	
+			jQuery("#"+sortID+" .sortbox_depth").text(depth);
 			// Change Right Side Of Layer Container Also.
 			jQuery('#layer_sort_time_'+serial).appendTo(jQuery('#layers-right ul'));
 			jQuery('#layer_quicksort_'+serial).appendTo(jQuery('.quick-layers-list'));
@@ -2640,7 +2757,7 @@ var tpLayerTimelinesRev = new function(){
 		for(var key in u.getLayers()){
 			var layer = l[key];			
 			if(layer.order !== undefined){
-				var zindex = layer.order+100;
+				var zindex = Number(layer.order)+100;
 				jQuery("#slide_layer_"+key).css("z-index",zindex);
 			}
 		};
@@ -2737,7 +2854,7 @@ var tpLayerTimelinesRev = new function(){
 		});
 
 		//set click event
-		jQuery(".sortlist, #layers-right, .quick-layers-list").delegate("li","mousedown",function(){
+		jQuery(".sortlist, #layers-right").delegate("li","mousedown",function(){
 			
 			if (jQuery(this).hasClass("ui-state-hover")) return true;
 			if (jQuery(this).hasClass("mastertimer-slide")) {
@@ -2750,36 +2867,8 @@ var tpLayerTimelinesRev = new function(){
 		});
 
 
-		//on show / hide layer icon click - show / hide layer
-		jQuery(".quick-layers-list").delegate(".quick-layer-view","mousedown",function(event){
-
-			var sortboxID = jQuery(this).closest('.quicksortlayer').attr("id");
-			var serial = u.getSerialFromSortID(sortboxID);
-			var objLayer = u.getLayer(serial);
-			
-			if(isLayerVisible(serial)){
-				objLayer.visible = false;
-				t.hideLayer(serial);
-			}else{
-				objLayer.visible = true;
-				t.showLayer(serial);
-			}
-			//prevnt the layer from selecting
-			event.stopPropagation();
-		});
-
-		//on show / hide layer icon click - show / hide layer
-		jQuery(".quick-layers-list").delegate(".quick-layer-lock","mousedown",function(event){
-			var sortboxID = jQuery(this).closest('.quicksortlayer').attr("id");
-			var serial = u.getSerialFromSortID(sortboxID);
-			if(t.isLayerLocked(serial)) {				
-				t.unlockLayer(serial);
-			}
-			else {
-				t.lockLayer(serial);				
-			}
-			event.stopPropagation();
-		});
+		
+		
 
 		
 
@@ -2829,7 +2918,7 @@ var tpLayerTimelinesRev = new function(){
 				serial = u.getSerialFromSortID(sortboxID),
 				objLayer = u.getLayer(serial),
 				button = jQuery(this),
-				maxtime = (jQuery('#mastertimer-maxtime').position().left-15)*10;
+				maxtime = (mainMaxTimeLeft-15)*10;
 
 			if (button.hasClass("tillendon")) {
 				button.removeClass("tillendon")
@@ -2837,8 +2926,7 @@ var tpLayerTimelinesRev = new function(){
 				if (objLayer.endtime-objLayer.endspeed >= maxtime) {					
 					objLayer.endtime = maxtime + objLayer.endspeed - 100;
 
-					jQuery('#layer_sort_time_'+serial).find('.sortbox_timeend').html(msToSec(maxtime+objLayer.endspeed-100));
-					//t.updateCurrentLayerTimeline();
+					jQuery('#layer_sort_time_'+serial).find('.sortbox_timeend').html(msToSec(maxtime+objLayer.endspeed-100));					
 					setCurTimer(jQuery('#layer_sort_time_'+serial).find('.timeline'))
 				}
 			} else {
@@ -2846,6 +2934,7 @@ var tpLayerTimelinesRev = new function(){
 
 				objLayer.endtime =  maxtime + objLayer.endspeed;
 				jQuery('#layer_sort_time_'+serial).find('.sortbox_timeend').html(msToSec(maxtime + objLayer.endspeed));
+				
 				setCurTimer(jQuery('#layer_sort_time_'+serial).find('.timeline'));
 			}
 
@@ -2920,10 +3009,11 @@ var tpLayerTimelinesRev = new function(){
 	t.hideLayer = function(serial,skipGlobalButton){
 		var htmlLayer = jQuery("#slide_layer_"+serial);
 		htmlLayer.hide();
+		htmlLayer.addClass("currently_not_visible");
 		setSortboxItemHidden(serial);
 		
 		if(skipGlobalButton != true){
-			if(isAllLayersHidden())
+			if(t.isAllLayersHidden())
 				jQuery("#button_sort_visibility").addClass("e-disabled");
 		}
 	}
@@ -2935,6 +3025,7 @@ var tpLayerTimelinesRev = new function(){
 	t.showLayer = function(serial,skipGlobalButton){
 		var htmlLayer = jQuery("#slide_layer_"+serial);
 		htmlLayer.show();
+		htmlLayer.removeClass("currently_not_visible");
 		setSortboxItemVisible(serial);
 
 		if(skipGlobalButton != true)
@@ -2950,18 +3041,20 @@ var tpLayerTimelinesRev = new function(){
 	/**
 	 * get true / false if the layer is hidden
 	 */
-	var isLayerVisible = function(serial){
-		var htmlLayer = jQuery("#slide_layer_"+serial);
-		var isVisible = htmlLayer.is(":visible");
+	t.isLayerVisible = function(serial){
+		var htmlLayer = jQuery("#slide_layer_"+serial),
+		isVisible = true;
+		if (htmlLayer.hasClass("currently_not_visible"))
+			isVisible = false;
 		return(isVisible);
 	}
 
 	/**
 	 * get true / false if all layers hidden
 	 */
-	var isAllLayersHidden = function(){
+	t.isAllLayersHidden = function(){
 		for(serial in u.arrLayers){
-			if(isLayerVisible(serial) == true) {
+			if(t.isLayerVisible(serial) == true) {
 				return(false);
 			}
 		}
@@ -3038,6 +3131,7 @@ var tpLayerTimelinesRev = new function(){
 		if (quickItem) {
 			quickItem.addClass("sortitem-hidden");
 			quickItem.find('.eg-icon-eye').addClass("eg-icon-eye-off").removeClass('eg-icon-eye');
+			quickItem.find('.quick-layer-view').addClass("in-off");
 		}
 	}
 
@@ -3299,12 +3393,12 @@ var tpLayerTimelinesRev = new function(){
 		
 		
 		
-		//////////////////////////////
+	//////////////////////////////
 	//	SWAP SLIDE PROGRESS		//
 	//////////////////////////////
-	var slideAnimation = function(nextsh,actsh,comingtransition,givebackmtl) {
+	var slideAnimation = function(nextsh,actsh,comingtransition,givebackmtl,smallpreview) {
 
-
+		
 			if (nextsh!=undefined) {
 				var nextli = nextsh,
 					actli = actsh,
@@ -3324,7 +3418,11 @@ var tpLayerTimelinesRev = new function(){
 					
 			}
 
-			
+			if (comingtransition=="slidingoverlayvertical") 
+						comingtransition = "slidingoverlayup"	
+
+			if (comingtransition=="slidingoverlayhorizontal") 
+						comingtransition = "slidingoverlayleft"	
 		
 			if (comingtransition=="slideoverhorizontal") 
 						comingtransition = "slideoverleft"
@@ -3379,6 +3477,10 @@ var tpLayerTimelinesRev = new function(){
 							 ['slotfade-horizontal', 9, 0,0,500,'horizontal',true,null,9,p2o,p2o,500,25],
 							 ['slotfade-vertical', 10, 0,0 ,500,'vertical',true,null,10,p2o,p2o,500,25],
 							 ['fade', 11, 0, 1 ,300,'horizontal',true,null,11,p2io,p2io,1000,1],
+							 ['crossfade', 11, 1, 1 ,300,'horizontal',true,null,11,p2io,p2io,1000,1],
+							 ['fadethroughdark', 11, 2, 1 ,300,'horizontal',true,null,11,p2io,p2io,1000,1],
+							 ['fadethroughlight', 11, 3, 1 ,300,'horizontal',true,null,11,p2io,p2io,1000,1],
+							 ['fadethroughtransparent', 11, 4, 1 ,300,'horizontal',true,null,11,p2io,p2io,1000,1],
 							 ['slideleft', 12, 0,1,0,'horizontal',true,true,12,p3io,p3io,1000,1],
 							 ['slideup', 13, 0,1,0,'horizontal',true,true,13,p3io,p3io,1000,1],
 							 ['slidedown', 14, 0,1,0,'horizontal',true,true,14,p3io,p3io,1000,1],
@@ -3421,8 +3523,13 @@ var tpLayerTimelinesRev = new function(){
 							 ['scaledownfrombottom', 13, 4,1,0,'horizontal',true,true,43,p2io,p2i,1000,1],
 							 ['zoomout', 13, 5,1,0,'horizontal',true,true,44,p2io,p2i,1000,1],
 							 ['zoomin', 13, 6,1,0,'horizontal',true,true,45,p2io,p2i,1000,1],
+							 ['slidingoverlayup', 27, 0,1,0,'horizontal',true,true,47,p1io,p1o,2000,1],
+							 ['slidingoverlaydown', 28, 0,1,0,'horizontal',true,true,48,p1io,p1o,2000,1],
+							 ['slidingoverlayright', 30, 0,1,0,'horizontal',true,true,49,p1io,p1o,2000,1],
+							 ['slidingoverlayleft', 29, 0,1,0,'horizontal',true,true,50,p1io,p1o,2000,1],
 							 ['notransition',26,0,1,0,'horizontal',true,null,46,p2io,p2i,1000,1],							 
 						   ];
+
 
 
 			
@@ -3453,11 +3560,8 @@ var tpLayerTimelinesRev = new function(){
 
 
 
-			if (nexttrans>26) nexttrans = 26;
+			if (nexttrans>30) nexttrans = 30;
 			if (nexttrans<0) nexttrans = 0;
-
-
-
 
 			// PREPARED DEFAULT SETTINGS PER TRANSITION
 			STA = transitionsArray[STAindex];
@@ -3473,6 +3577,8 @@ var tpLayerTimelinesRev = new function(){
 			mtl.add(punchgs.TweenLite.set(nextsh.find('.defaultimg'),{autoAlpha:0}));
 			mtl.pause();
 
+			mtl.add(punchgs.TweenLite.set(actsh,{autoAlpha:1,force3D:"auto",zIndex:0}),0);
+			mtl.add(punchgs.TweenLite.set(nextsh,{autoAlpha:1,force3D:"auto",zIndex:1}),0);
 			
 
 
@@ -3534,7 +3640,9 @@ var tpLayerTimelinesRev = new function(){
 			ei = ei==="default" ? STA[9] || punchgs.Power2.easeInOut : ei || STA[9] || punchgs.Power2.easeInOut;
 			eo = eo==="default" ? STA[10] || punchgs.Power2.easeInOut : eo || STA[10] || punchgs.Power2.easeInOut;
 
-			/////////////////////////////////////
+
+
+	/////////////////////////////////////
 	// THE SLOTSLIDE - TRANSITION I.  //
 	////////////////////////////////////
 	if (nexttrans==0) {								// BOXSLIDE
@@ -3820,15 +3928,81 @@ var tpLayerTimelinesRev = new function(){
 	// SIMPLE FADE ANIMATION //
 	///////////////////////////
 	if (nexttrans==11 || nexttrans==26) {
-				var ssamount=0;
-						if (nexttrans==26) masterspeed=0;
+				var ssamount=0,
+					bgcol = specials == 2 ? "#000000" : specials == 3 ? "#ffffff" : "transparent";
+				if (nexttrans==26) masterspeed=0;
 
-						// ALL NEW SLOTS SHOULD BE SLIDED FROM THE LEFT TO THE RIGHT
-						nextsh.find('.slotslide').each(function(i) {
-							var ss=jQuery(this);
-							mtl.add(punchgs.TweenLite.from(ss,masterspeed/1000,{autoAlpha:0,force3D:"auto",ease:ei}),0);
-						});
+				if (smallpreview) {
+					mtl.add(punchgs.TweenLite.set(nextsh.parent(),{backgroundColor:bgcol,force3D:"auto"}),0);
+					switch (specials) {
+						case 0: 
+							mtl.add(punchgs.TweenLite.fromTo(actsh,masterspeed/1000,{autoAlpha:0,zIndex:1},{autoAlpha:1,zIndex:1,force3D:"auto",ease:ei}),0);
+							mtl.add(punchgs.TweenLite.set(nextsh,{autoAlpha:1,force3D:"auto",zIndex:0}),0);
+						break;
+
+						case 1:
+							mtl.add(punchgs.TweenLite.fromTo(actsh,masterspeed/1000,{autoAlpha:0},{autoAlpha:1,force3D:"auto",ease:ei}),0);
+							mtl.add(punchgs.TweenLite.fromTo(nextsh,masterspeed/1000,{autoAlpha:1},{autoAlpha:0,force3D:"auto",ease:ei}),0);
+						break;
+
+						case 2:
+						case 3:
+						case 4:
+							mtl.add(punchgs.TweenLite.fromTo(nextsh,masterspeed/2000,{autoAlpha:1},{autoAlpha:0,force3D:"auto",ease:ei}),0);
+							mtl.add(punchgs.TweenLite.set(actsh,{autoAlpha:0,force3D:"auto"}),0);
+							mtl.add(punchgs.TweenLite.fromTo(actsh,masterspeed/2000,{autoAlpha:0},{autoAlpha:1,force3D:"auto",ease:ei}),masterspeed/2000);							
+						break;
+					}
+				} else {				
+					nextsh.find('.slotslide').each(function(i) {
+						var ss=jQuery(this);
+						mtl.add(punchgs.TweenLite.fromTo(ss,masterspeed/1000,{autoAlpha:0},{autoAlpha:1,force3D:"auto",ease:ei}),0);
+					});
+				}
 	}
+
+	//////////////////////
+	// SLIDING OVERLAYS //
+	//////////////////////
+		
+	if (nexttrans==27||nexttrans==28||nexttrans==29||nexttrans==30) {
+
+		var slot = nextsh.find('.slot'),		
+			nd = nexttrans==27 || nexttrans==28 ? 1 : 2,
+			mhp = nexttrans==27 || nexttrans==29 ? "-100%" : "+100%",
+			php = nexttrans==27 || nexttrans==29 ? "+100%" : "-100%",
+			mep = nexttrans==27 || nexttrans==29 ? "-80%" : "80%",
+			pep = nexttrans==27 || nexttrans==29 ? "80%" : "-80%",
+			ptp = nexttrans==27 || nexttrans==29 ? "10%" : "-10%",
+			fa = {overwrite:"all"},
+			ta = {autoAlpha:0,zIndex:1,force3D:"auto",ease:punchgs.Power1.easeInOut},
+			fb = {position:"inherit",autoAlpha:0,overwrite:"all"},
+			tb = {autoAlpha:1,force3D:"auto",ease:punchgs.Power1.easeOut},
+			fc = {overwrite:"all",zIndex:2},
+			tc = {autoAlpha:1,force3D:"auto",overwrite:"all",ease:punchgs.Power1.easeInOut},
+			fd = {overwrite:"all",zIndex:2},
+			td = {autoAlpha:1,force3D:"auto",ease:punchgs.Power1.easeInOut},
+			at = nd==1 ? "y" : "x";
+
+		fa[at] = "0px";
+		ta[at] = mhp;
+		fb[at] = ptp;
+		tb[at] = "0%";
+		fc[at] = php;
+		tc[at] = mhp;
+		fd[at] = mep;
+		td[at] = pep;
+
+		slot.append('<span style="background-color:rgba(0,0,0,0.6);width:100%;height:100%;position:absolute;top:0px;left:0px;display:block;z-index:2"></span>');
+		
+		
+		mtl.add(punchgs.TweenLite.fromTo(actsh,masterspeed/1000,fa,ta),0);						
+		mtl.add(punchgs.TweenLite.fromTo(nextsh.find('.defaultimg'),masterspeed/2000,fb,tb),masterspeed/2000);				
+		mtl.add(punchgs.TweenLite.fromTo(slot,masterspeed/1000,fc,tc),0);	
+		mtl.add(punchgs.TweenLite.fromTo(slot.find('.slotslide div'),masterspeed/1000,fd,td),0);			
+	}
+
+
 
 	if (nexttrans==12 || nexttrans==13 || nexttrans==14 || nexttrans==15) {
 				masterspeed = masterspeed;
@@ -4287,19 +4461,25 @@ var tpLayerTimelinesRev = new function(){
 		});
 	}	
 
+	
+
 			// SHOW FIRST LI && ANIMATE THE CAPTIONS
 			mtl.add(punchgs.TweenLite.set(nextsh.find('.defaultimg'),{autoAlpha:1}));
 			mtl.add(punchgs.TweenLite.set(nextsh.find('.slot'),{autoAlpha:0}));		
 
 			mtl.seek(100000);
-
+	
 			if (givebackmtl!=undefined)
 				return mtl;
 			else
 				jQuery('#divbgholder').data('slidetimeline',mtl);
 			
 		}
-		
+	
+
+	
+
+
 	///////////////////////
 	//	REMOVE SLOTS	//
 	/////////////////////
@@ -4324,4 +4504,5 @@ var tpLayerTimelinesRev = new function(){
 			if (seekinpos) mst.seek(tpos);
 		}
 	}
+	
 }

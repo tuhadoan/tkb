@@ -110,6 +110,9 @@ class RevSliderFunctions{
 		return($var);
 	}
 	
+	public static function sortByOrder($a, $b) {
+		return $a['order'] - $b['order'];
+	}
 	
 	/**
 	 * validate that some file exists, if not - throw error
@@ -566,10 +569,10 @@ class RevSliderFunctions{
 			$height .= ','. $slider->slider->getParam("height_notebook", 768, RevSlider::FORCE_NUMERIC);
 			$height .= ','. intval($slider->slider->getParam("height_tablet", 960, RevSlider::FORCE_NUMERIC));
 			$height .= ','. intval($slider->slider->getParam("height_mobile", 720, RevSlider::FORCE_NUMERIC));
-			
-			
+						
 			$responsive = (isset($arrValues['width'])) ? $arrValues['width'] : '1240';
 			$def = (isset($arrValues['width'])) ? $arrValues['width'] : '1240';
+			
 			$responsive.= ',';
 			if($enable_custom_size_notebook == 'on'){
 				$responsive.= (isset($arrValues['width_notebook'])) ? $arrValues['width_notebook'] : '1024';
@@ -598,7 +601,18 @@ class RevSliderFunctions{
 				'width' => $width
 			);
 		}else{
+			
+			$responsive = (isset($arrValues['width'])) ? $arrValues['width'] : '1240';
+			$def = (isset($arrValues['width'])) ? $arrValues['width'] : '1240';
+			$responsive.= ',';			
+			$responsive.= (isset($arrValues['width_notebook'])) ? $arrValues['width_notebook'] : '1024';
+			$responsive.= ',';	
+			$responsive.= (isset($arrValues['width_tablet'])) ? $arrValues['width_tablet'] : '778';
+			$responsive.= ',';			
+			$responsive.= (isset($arrValues['width_mobile'])) ? $arrValues['width_mobile'] : '480';
+			
 			return array(
+				'visibilitylevel' => $responsive,
 				'height' => $slider->slider->getParam("height", "868", RevSlider::FORCE_NUMERIC),
 				'width' => $slider->slider->getParam("width", "1240", RevSlider::FORCE_NUMERIC)
 			);

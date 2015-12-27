@@ -2,6 +2,17 @@
  * 6.0 Content
  * -----------------------------------------------------------------------------
  */
+
+ #main{
+ 	&.site-main{
+ 		padding-top: 60px;
+ 		padding-bottom: 60px;
+ 	}
+ 	&.site-main.no-padding{
+ 		padding-top: 0;
+ 		padding-bottom: 0;
+ 	}
+ }
 .dawn-posts-list{
 	.site-content{
 		.entry-content{
@@ -9,10 +20,6 @@
 			overflow: hidden;
 		}
 	}
-}
-
-.content-area {
-	padding-top: 48px;
 }
 
 .hentry {

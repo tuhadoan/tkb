@@ -1638,7 +1638,7 @@ function dt_morphsearchform(){
 
 function dt_font_awesome_options($none_select = true){
 	$font_awesome =  array(
-			esc_html_e('None','dawnthemes') =>'none',
+			esc_html__('None asdf','dawnthemes') =>'none',
 			'fa fa-adjust' => '\f042',
 			'fa fa-adn' => '\f170',
 			'fa fa-align-center' => '\f037',
