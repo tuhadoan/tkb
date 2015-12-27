@@ -1,0 +1,23 @@
+// Override bootstrap variables
+$main_color:				#24890d;
+$brand-primary:         	$main_color;
+$text-color:            	#545454;
+$link-color:      			#333;
+$link-hover-color:      	$main_color;
+$link-hover-decoration: 	none;
+
+$font-size: 14px;
+$line-height: 1.5; // 21px
+
+//== Colors
+//
+//## Gray and brand colors for use across Bootstrap.
+
+
+$brand-primary:         	$main_color;
+$brand-primary-secondary: 	$brand-primary; 
+$brand-success:         	#a0ce4e;//#428bca;7aba35 
+$brand-info:            	#63B5FD;
+$brand-warning:         	#FEAB62;
+$brand-danger:          	#FE252C;
+$background-color-default: $main_color;

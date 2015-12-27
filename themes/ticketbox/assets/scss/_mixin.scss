@@ -1,0 +1,133 @@
+// Mixins
+// --------------------------------------------------
+
+// Utilities
+@import "mixins/hide-text";
+@import "mixins/opacity";
+@import "mixins/image";
+@import "mixins/labels";
+@import "mixins/reset-filter";
+@import "mixins/resize";
+@import "mixins/responsive-visibility";
+@import "mixins/size";
+@import "mixins/tab-focus";
+@import "mixins/text-emphasis";
+@import "mixins/text-overflow";
+@import "mixins/vendor-prefixes";
+
+// Components
+@import "mixins/alerts";
+@import "mixins/buttons";
+@import "mixins/panels";
+@import "mixins/pagination";
+@import "mixins/list-group";
+@import "mixins/nav-divider";
+@import "mixins/forms";
+@import "mixins/progress-bar";
+@import "mixins/table-row";
+
+// Skins
+@import "mixins/background-variant";
+@import "mixins/border-radius";
+@import "mixins/gradients";
+
+// Layout
+@import "mixins/clearfix";
+@import "mixins/center-block";
+@import "mixins/nav-vertical-align";
+@import "mixins/grid-framework";
+@import "mixins/grid";
+
+
+
+// Font awesome
+@mixin font-awesome($code, $size){
+  content: "\#{$code}";
+  display: inline-block;
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  @include square($size);
+  text-align: center;
+  line-height: $size;
+}
+
+@mixin ulclear() {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+@mixin border-arrow-top ($width, $height, $color){
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 $width/2 $height $width/2;
+  border-color: transparent transparent $color transparent;
+}
+@mixin border-arrow-bottom ($width, $height, $color){
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: $height $width/2 0 $width/2;
+  border-color: $color transparent transparent transparent;
+}
+@mixin border-arrow-right ($width, $height, $color){
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: $height/2 0 $height/2 $width;
+  border-color: transparent transparent transparent $color;
+}
+@mixin border-arrow-left ($width, $height, $color){
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: $height/2 $width $height/2 0;
+  border-color: transparent $color transparent transparent;
+}
+@mixin border-arrow-bottom-2($width, $height, $color){
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width:$width/2 0  0 $height/2;
+  border-color: $color transparent transparent transparent;
+}
+@mixin border-arrow-top-2($width, $height, $color){
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width:$width/2  $height/2 0 0;
+  border-color: $color transparent transparent transparent;
+}
+
+// Limit text length to n lines
+@mixin max-lines($lines,$line_height){
+	overflow: hidden;
+	text-overflow: ellipsis;
+   display: -webkit-box;
+   -webkit-box-orient: vertical;
+   -webkit-line-clamp: $lines; /* number of lines to show */
+   line-height: $line_height;        /* fallback */
+   max-height: $line_height * $lines;       /* fallback */
+}
+
+@-webkit-keyframes dtnavloadding{
+	0%{-webkit-transform:rotate(0);transform:rotate(0)}100%{-webkit-transform:rotate(360deg);transform:rotate(360deg)}
+}
+@keyframes dtnavloadding{
+	0%{-webkit-transform:rotate(0);transform:rotate(0)}100%{-webkit-transform:rotate(360deg);transform:rotate(360deg)}
+}
+
+@-webkit-keyframes dtsheen {
+  100% {
+    transform: rotateZ(60deg) translate(1em, -9em);
+  }
+}
+@keyframes dtsheen {
+  100% {
+    transform: rotateZ(60deg) translate(1em, -9em);
+  }
+}
