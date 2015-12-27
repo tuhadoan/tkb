@@ -116,34 +116,17 @@
 
 }
 
-.menu-toggle {
-	background-color: #000;
-	border-radius: 0;
-	cursor: pointer;
-	width: 48px;
-	height: 48px;
-	margin: 0;
-	overflow: hidden;
-	padding: 0;
+.menu-toggle{
 	position: absolute;
+	display: none;
 	top: 50%;
-	right: 30px;
+	left: 0;
+	@include translate(0,-50%);
+	width: 32px;
+	height: 32px;
+	background: #4d6467;
+	line-height: 32px;
+	cursor: pointer;
 	text-align: center;
-	display:none;
-	@include translate(0, -50%);
-
-	&:before {
-		color: #fff;
-		content: "\f0c9";
-		padding: 16px;
-	}
-
-	&:active,
-	&:focus,
-	&:hover {
-		background-color: #444;
-	}
-	&:focus {
-		outline: 1px dotted;
-	}
+	margin-top: 2px;
 }

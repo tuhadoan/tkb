@@ -254,11 +254,11 @@ if (! class_exists ( 'DTHook' )) :
 								<?php endif;?>
 								<div class="form-group">
 									<label for="log"><?php esc_html_e('Username','dawnthemes')?></label>
-								    <input type="text" id="username" name="log" autofocus required class="form-control" value="" placeholder="<?php esc_attresc_html_e( "Username", 'dawnthemes' );?>">
+								    <input type="text" id="username" name="log" autofocus required class="form-control" value="" placeholder="<?php esc_attr( "Username", 'dawnthemes' );?>">
 								 </div>
 								 <div class="form-group">
 								    <label for="password"><?php esc_html_e('Password','dawnthemes')?></label>
-								    <input type="password" id="password" required value="" name="pwd" class="form-control" placeholder="<?php esc_attresc_html_e( "Password", 'dawnthemes' );?>">
+								    <input type="password" id="password" required value="" name="pwd" class="form-control" placeholder="<?php esc_attr( "Password", 'dawnthemes' );?>">
 								  </div>
 								  <div class="checkbox clearfix">
 								    <label class="form-flat-checkbox">
