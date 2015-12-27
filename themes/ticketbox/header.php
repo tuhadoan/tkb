@@ -31,7 +31,7 @@ $is_sticky_menu = dt_get_theme_option('sticky_menu','yes') == 'yes' ? ' is_stick
 </head>
 
 <body <?php body_class(); ?>>
-<div id="sidebar-offcanvas" class="sidebar-offcanvas">
+<div class="offcanvas">
           <!-- BEGIN: Sidebar Offcanvas Header -->
           <div class="sidebar-offcanvas-header">
             <!-- BEGIN: User Panel -->
@@ -49,7 +49,6 @@ $is_sticky_menu = dt_get_theme_option('sticky_menu','yes') == 'yes' ? ' is_stick
             <!-- BEGIN: Toggle Wrap -->
             <div class="toggle-wrap pull-right">
               <span class="toggle-icon search-toggle"><i class="fa fa-search"></i></span>
-              <span class="toggle-icon offcanvas-toggle"><i class="fa fa-bars"></i></span>
             </div><!-- END: Toggle Wrap -->
           </div><!-- END: Sidebar Offcanvas Header -->
           <!-- BEGIN: User Menu -->
@@ -90,17 +89,16 @@ $is_sticky_menu = dt_get_theme_option('sticky_menu','yes') == 'yes' ? ' is_stick
 </div>
 
 <div id="page" class="hfeed site">
+	<div class="offcanvas-overlay"></div>
 	<header id="header" class="site-header <?php echo esc_attr( $is_sticky_menu );?>" role="banner">
 		<div class="container">
 				<div class="header-main">
 					<div class="header-left">
-						<span class="sidebar-offcanvas-toggle"><i class="fa fa-bars"></i></span>
+						<span class="menu-toggle"><i class="fa fa-bars"></i></span>
 						<h1 class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home"><img class="logo" src="<?php echo dt_get_theme_option('logo','');?>"/></a></h1>
 					</div>
 					<div class="header-right">
 						<nav id="primary-navigation" class="site-navigation primary-navigation" role="navigation">
-							<button class="menu-toggle"><?php esc_html_e( 'Primary Menu', 'ticketbox' ); ?></button>
-							<a class="screen-reader-text skip-link" href="#content"><?php esc_html_e( 'Skip to content', 'ticketbox' ); ?></a>
 							<?php wp_nav_menu( array( 'theme_location' => 'primary', 'menu_class' => 'nav-menu', 'menu_id' => 'primary-menu' ) ); ?>
 						</nav>
 						

@@ -220,8 +220,6 @@ function dawn_scripts() {
 	wp_enqueue_style( 'ticketbox-ie', get_template_directory_uri() . '/assets/css/ie.css', array( 'dawn-style' ), '20131205' );
 	wp_style_add_data( 'ticketbox-ie', 'conditional', 'lt IE 9' );
 
-	wp_enqueue_script( 'jquery'); // use default jQuery packed inside WordPress. If newer version is needed, this should be dequeue and enqueue again
-	
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
 	}
@@ -234,9 +232,9 @@ function dawn_scripts() {
 		wp_enqueue_script( 'jquery-masonry' );
 	}
 	
-	wp_enqueue_script( 'bootstrap', get_template_directory_uri() . '/assets/js/bootstrap.min.js', array(), '3.5.5', true );
+	wp_enqueue_script( 'bootstrap', get_template_directory_uri() . '/assets/js/bootstrap.min.js', array('jquery'), '3.5.5', true );
 	
-	wp_enqueue_script( 'hover-intent', get_template_directory_uri() . '/assets/js/jquery.hoverIntent.js', array(), '', true );
+	wp_enqueue_script( 'hover-intent', get_template_directory_uri() . '/assets/js/jquery.hoverIntent.js', array('jquery'), '', true );
 
 	wp_enqueue_script( 'ticketbox-script', get_template_directory_uri() . '/assets/js/functions.js', array( 'jquery' ), '20150315', true );
 }

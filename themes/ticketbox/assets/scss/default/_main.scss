@@ -2,11 +2,14 @@
  * 6.0 Content
  * -----------------------------------------------------------------------------
  */
-
- #main{
+#page{
+	@include transition-transform(.5s ease 0s);
+}
+#main{
  	&.site-main{
  		padding-top: 60px;
  		padding-bottom: 60px;
+ 		min-height: 500px;
  	}
  	&.site-main.no-padding{
  		padding-top: 0;
@@ -1250,15 +1253,18 @@ a.post-thumbnail:hover {
 
 .admin-bar{
 	// top 32px
-	#sidebar-offcanvas{
+	.offcanvas{
 		top: 32px;
+		@media (max-width: 600px){
+			top: 64px;
+		}
 	}
 
 	#header,.site-header{
 		&.is_sticky_menu{
-			top: 32px;
+			//top: 32px;
 			@media (max-width: 600px){
-				
+				//top: 64px;
 			}
 		}
 	}

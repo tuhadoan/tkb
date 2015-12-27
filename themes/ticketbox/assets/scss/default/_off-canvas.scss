@@ -3,26 +3,6 @@
  * -----------------------------------------------------------------------------
  */
 
-.body-offcanvas{
-	margin-left: 320px;
-	position: relative;
-}
-.body-offcanvas #header {
-	left: 320px;
-}
-.sidebar-offcanvas{
-	width: 320px;
-	height: 100%;
-	overflow: hidden;
-	overflow-y: visible;
-	position: fixed;
-	left: 0;
-	top: 0;
-	background: #eaeaea;
-	display: none;
-	z-index: 999;
-}
-
 /* Sidebar offcanvas header */
 .sidebar-offcanvas-header{
 	height: 80px;
