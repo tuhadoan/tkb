@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
 function vc_settings_tabs_vc_roles( $tabs ) {
 	//inster after vc-general tab
 	if ( array_key_exists( 'vc-general', $tabs ) ) {
@@ -17,7 +20,9 @@ function vc_settings_tabs_vc_roles( $tabs ) {
 	return $tabs;
 }
 
-add_filter( 'vc_settings_tabs', 'vc_settings_tabs_vc_roles' );
+if ( ! is_network_admin() ) {
+	add_filter( 'vc_settings_tabs', 'vc_settings_tabs_vc_roles' );
+}
 
 function vc_settings_render_tab_vc_roles() {
 	return 'pages/vc-settings/tab-vc-roles.php';
@@ -38,8 +43,7 @@ function vc_roles_settings_save() {
 add_action( 'wp_ajax_vc_roles_settings_save', 'vc_roles_settings_save' );
 if ( 'vc-roles' == vc_get_param( 'page' ) ) {
 	function vc_settings_render_tab_vc_roles_scripts() {
-		wp_register_script( 'vc_settings-roles-tab-js', vc_asset_url( 'js/lib/vc-roles-tab.js' ),
-		array( 'jquery' ), WPB_VC_VERSION, true );
+		wp_register_script( 'vc_accordion_script', vc_asset_url( 'lib/vc_accordion/vc-accordion.min.js' ), array( 'jquery' ), WPB_VC_VERSION, true );
 	}
 
 	add_action( 'admin_init', 'vc_settings_render_tab_vc_roles_scripts' );

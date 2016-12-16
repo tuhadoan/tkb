@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
 
 /**
  * WPBakery Visual Composer main class.
@@ -62,7 +65,9 @@ class Vc_Shortcode_Edit_Form implements Vc_Render {
 			->check( 'vc_user_access_check_shortcode_edit', $tag )
 			->validateDie( __( 'Access denied', 'js_composer' ) );
 
-		$params = array_map( 'vc_htmlspecialchars_decode_deep', (array) stripslashes_deep( vc_post_param( 'params' ) ) );
+		$params = (array) stripslashes_deep( vc_post_param( 'params' ) );
+		$params = array_map( 'vc_htmlspecialchars_decode_deep', $params );
+
 		require_once vc_path_dir( 'EDITORS_DIR', 'class-vc-edit-form-fields.php' );
 		$fields = new Vc_Edit_Form_Fields( $tag, $params );
 		$fields->render();
@@ -76,7 +81,7 @@ class Vc_Shortcode_Edit_Form implements Vc_Render {
 	 * @use Vc_Shortcode_Edit_Form::renderFields
 	 */
 	public function build() {
-		_deprecated_function( 'Vc_Shortcode_Edit_Form::build', '4.4', 'Vc_Shortcode_Edit_Form::renderFields' );
+		_deprecated_function( 'Vc_Shortcode_Edit_Form::build', '4.4 (will be removed in 5.1)', 'Vc_Shortcode_Edit_Form::renderFields' );
 
 		$tag = vc_post_param( 'element' );
 		vc_user_access()
@@ -108,7 +113,7 @@ class Vc_Shortcode_Edit_Form implements Vc_Render {
 		if ( isset( $param['edit_field_class'] ) ) {
 			$new_css = $param['edit_field_class'];
 		} else {
-			$new_css = 'vc_col-xs-12 vc_column';
+			$new_css = 'vc_col-xs-12';
 		}
 		array_unshift( $css, $new_css );
 		$param['vc_single_param_edit_holder_class'] = $css;

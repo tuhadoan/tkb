@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
 
 /**
  * Class Vc_AutoComplete
@@ -68,7 +71,7 @@ class Vc_AutoComplete {
 				}
 
 				if ( is_array( $value ) && isset( $value['value'], $value['label'] ) ) {
-					$output .= '<li data-value="' . $value['value'] . '"  data-label="' . $value['label'] . '" data-index="' . $key . '" class="vc_autocomplete-label vc_data"><span class="vc_autocomplete-label">' . $value['label'] . '</span> <a class="vc_autocomplete-remove">&times;</a></li>';
+					$output .= '<li data-value="' . $value['value'] . '"  data-label="' . $value['label'] . '" class="vc_autocomplete-label vc_data"><span class="vc_autocomplete-label">' . $value['label'] . '</span> <a class="vc_autocomplete-remove">&times;</a></li>';
 				}
 			}
 		}

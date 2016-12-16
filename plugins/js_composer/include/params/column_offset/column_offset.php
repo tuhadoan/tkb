@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
 
 /**
  * @property mixed data
@@ -87,8 +90,7 @@ class Vc_Column_Offset {
 			return '<span class="vc_description">' . __( 'Default value from width attribute', 'js_composer' ) . '</span>';
 		}
 		$empty_label = 'xs' === $size ? '' : __( 'Inherit from smaller', 'js_composer' );
-		$output = '<select name="vc_col_' . $size . '_size" class="vc_column_offset_field" data-type="size-' . $size . '">'
-		          . '<option value="" style="color: #ccc;">' . $empty_label . '</option>';
+		$output = '<select name="vc_col_' . $size . '_size" class="vc_column_offset_field" data-type="size-' . $size . '">' . '<option value="" style="color: #ccc;">' . $empty_label . '</option>';
 		foreach ( $this->column_width_list as $label => $index ) {
 			$value = 'vc_col-' . $size . '-' . $index;
 			$output .= '<option value="' . $value . '"' . ( in_array( $value, $this->data ) ? ' selected="true"' : '' ) . '>' . $label . '</option>';
@@ -106,11 +108,7 @@ class Vc_Column_Offset {
 	public function offsetControl( $size ) {
 		$prefix = 'vc_col-' . $size . '-offset-';
 		$empty_label = 'xs' === $size ? __( 'No offset', 'js_composer' ) : __( 'Inherit from smaller', 'js_composer' );
-		$output = '<select name="vc_' . $size . '_offset_size" class="vc_column_offset_field" data-type="offset-' . $size . '">'
-		          . '<option value="" style="color: #ccc;">' . $empty_label . '</option>'
-		          . ( 'xs' === $size ? '' :
-				'<option value="' . $prefix . '0" style="color: #ccc;">' . __( 'No offset', 'js_composer' ) . '</option>'
-				  );
+		$output = '<select name="vc_' . $size . '_offset_size" class="vc_column_offset_field" data-type="offset-' . $size . '">' . '<option value="" style="color: #ccc;">' . $empty_label . '</option>' . ( 'xs' === $size ? '' : '<option value="' . $prefix . '0" style="color: #ccc;"' . ( in_array( $prefix . '0', $this->data ) ? ' selected="true"' : '' ) . '>' . __( 'No offset', 'js_composer' ) . '</option>' );
 		foreach ( $this->column_width_list as $label => $index ) {
 			$value = $prefix . $index;
 			$output .= '<option value="' . $value . '"' . ( in_array( $value, $this->data ) ? ' selected="true"' : '' ) . '>' . $label . '</option>';
@@ -155,7 +153,7 @@ function vc_column_offset_class_merge( $column_offset, $width ) {
  *
  */
 function vc_load_column_offset_param() {
-	vc_add_shortcode_param( 'column_offset', 'vc_column_offset_form_field', vc_asset_url( 'js/params/column_offset.js' ) );
+	vc_add_shortcode_param( 'column_offset', 'vc_column_offset_form_field' );
 }
 
 add_action( 'vc_load_default_params', 'vc_load_column_offset_param' );

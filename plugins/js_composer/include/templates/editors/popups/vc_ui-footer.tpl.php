@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
+?>
 <div class="vc_ui-panel-footer-container" data-vc-ui-element="panel-footer">
 	<div class="vc_ui-panel-footer">
 		<div class="vc_ui-button-group">

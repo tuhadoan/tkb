@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
 
 class WpbMap_Grid_Item extends WPBMap {
 	protected static $gitem_user_sc = false;

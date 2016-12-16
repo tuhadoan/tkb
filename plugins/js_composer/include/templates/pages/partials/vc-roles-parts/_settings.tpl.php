@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
 $tabs = array();
 foreach ( vc_settings()->getTabs() as $tab => $title ) {
 	$tabs[] = array( $tab . '-tab', $title );

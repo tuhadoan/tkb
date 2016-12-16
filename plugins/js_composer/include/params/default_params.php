@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
 
 /**
  * WPBakery Visual Composer shortcode default attributes functions for rendering.
@@ -105,6 +108,18 @@ function vc_checkbox_form_field( $settings, $value ) {
 	return $output;
 }
 
+add_filter( 'vc_map_get_param_defaults', 'vc_checkbox_param_defaults', 10, 2 );
+function vc_checkbox_param_defaults( $value, $param ) {
+	if ( 'checkbox' === $param['type'] ) {
+		$value = '';
+		if ( isset( $param['std'] ) ) {
+			$value = $param['std'];
+		}
+	}
+
+	return $value;
+}
+
 /**
  * Checkbox shortcode attribute type generator.
  *
@@ -176,19 +191,6 @@ function vc_taxonomies_form_field( $settings, $value ) {
 }
 
 /**
- * @deprecated, will be removed in 4.9
- *
- * @param $settings
- * @param $value
- *
- * @since 4.4
- * @return string
- */
-function vc_taxomonies_form_field( $settings, $value ) {
-	return vc_taxonomies_form_field( $settings, $value );
-}
-
-/**
  * Exploded textarea shortcode attribute type generator.
  *
  * Data saved and coma-separated values are merged with line breaks and returned in a textarea.
@@ -205,6 +207,25 @@ function vc_exploded_textarea_form_field( $settings, $value ) {
 	return '<textarea name="'
 	       . $settings['param_name'] . '" class="wpb_vc_param_value wpb-textarea '
 	       . $settings['param_name'] . ' ' . $settings['type'] . '">' . $value . '</textarea>';
+}
+
+/**
+ * Safe Textarea shortcode attribute type generator.
+ *
+ * @param $settings
+ * @param $value
+ *
+ * @since 4.8.2
+ * @return string - html string.
+ */
+function vc_exploded_textarea_safe_form_field( $settings, $value ) {
+	$value = vc_value_from_safe( $value, true );
+	$value = str_replace( ',', "\n", $value );
+
+	return '<textarea name="'
+	. $settings['param_name'] . '" class="wpb_vc_param_value wpb-textarea '
+	. $settings['param_name'] . ' ' . $settings['type'] . '">'
+	. $value . '</textarea>';
 }
 
 /**
@@ -285,10 +306,10 @@ function vc_attach_images_form_field( $settings, $value, $tag, $single = false )
 	$output .= '</div>';
 	if ( true === $single ) {
 		$output .= '<a class="gallery_widget_add_images" href="#" use-single="true" title="'
-		           . __( 'Add image', 'js_composer' ) . '">' . __( 'Add image', 'js_composer' ) . '</a>'; //class: button
+		           . __( 'Add image', 'js_composer' ) . '"><i class="vc-composer-icon vc-c-icon-add"></i>' . __( 'Add image', 'js_composer' ) . '</a>'; //class: button
 	} else {
 		$output .= '<a class="gallery_widget_add_images" href="#" title="'
-		           . __( 'Add images', 'js_composer' ) . '">' . __( 'Add images', 'js_composer' ) . '</a>'; //class: button
+		           . __( 'Add images', 'js_composer' ) . '"><i class="vc-composer-icon vc-c-icon-add"></i>' . __( 'Add images', 'js_composer' ) . '</a>'; //class: button
 	}
 
 	return $output;

@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
 
 /**
  * WPBakery Visual Composer shortcodes attributes class.
@@ -75,15 +78,17 @@ class WpbakeryShortcodeParams {
 	}
 
 	/**
+	 * @deprecated 4.4 - TODO check for usage
+	 * @not used
 	 * @since 4.2
 	 */
 	public static function enqueueScripts() {
+		// _deprecated_function( 'WpbakeryShortcodeParams::enqueueScripts', '4.4' );
 		if ( self::isEnqueue() ) {
 			foreach ( self::$enqueue_script as $item ) {
 				wp_register_script( $item['name'], $item['script'], array(
 					'jquery',
 					'wp-color-picker',
-					'wpb_js_composer_js_view',
 				), WPB_VC_VERSION, true );
 				wp_enqueue_script( $item['name'] );
 			}
@@ -200,7 +205,7 @@ function vc_add_shortcode_param( $name, $form_field_callback, $script_url = null
  * @return bool
  */
 function add_shortcode_param( $name, $form_field_callback, $script_url = null ) {
-	_deprecated_function( 'add_shortcode_param', '4.4', 'vc_add_shortcode_param' );
+	_deprecated_function( 'add_shortcode_param', '4.4 (will be removed in 5.1)', 'vc_add_shortcode_param' );
 
 	return vc_add_shortcode_param( $name, $form_field_callback, $script_url );
 }
@@ -218,7 +223,7 @@ function add_shortcode_param( $name, $form_field_callback, $script_url = null ) 
  * @return mixed|string - returns html which will be render in hook
  */
 function do_shortcode_param_settings_field( $name, $param_settings, $param_value, $tag ) {
-	_deprecated_function( 'do_shortcode_param_settings_field', '4.4', 'vc_do_shortcode_param_settings_field' );
+	_deprecated_function( 'do_shortcode_param_settings_field', '4.4 (will be removed in 5.1)', 'vc_do_shortcode_param_settings_field' );
 
 	return vc_do_shortcode_param_settings_field( $name, $param_settings, $param_value, $tag );
 }
@@ -247,7 +252,7 @@ function vc_do_shortcode_param_settings_field( $name, $param_settings, $param_va
  * @deprecated 4.8
  */
 function vc_generate_dependencies_attributes( $settings ) {
-	_deprecated_function( 'vc_generate_dependencies_attributes', '4.8' );
+	_deprecated_function( 'vc_generate_dependencies_attributes', '4.8 (will be removed in 5.1)' );
 
 	return '';
 }

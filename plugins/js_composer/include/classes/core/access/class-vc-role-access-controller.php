@@ -1,4 +1,8 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
+
 require_once vc_path_dir( 'CORE_DIR', 'access/abstract-class-vc-access.php' );
 
 /**
@@ -48,7 +52,11 @@ class Vc_Role_Access_Controller extends Vc_Access {
 	 * @return mixed;
 	 */
 	public function getState() {
-		$state = $this->getRole() && isset( $this->getRole()->capabilities[ $this->getStateKey() ] ) ? $this->getRole()->capabilities[ $this->getStateKey() ] : null;
+		$role = $this->getRole();
+		$state = null;
+		if ( $role && isset( $role->capabilities, $role->capabilities[ $this->getStateKey() ] ) ) {
+			$state = $role->capabilities[ $this->getStateKey() ];
+		}
 
 		return apply_filters( 'vc_role_access_with_' . $this->getPart() . '_get_state', $state, $this->getRole() );
 	}
@@ -63,16 +71,17 @@ class Vc_Role_Access_Controller extends Vc_Access {
 	 *
 	 * @param bool $value
 	 *
-	 * @return bool
+	 * @return $this
 	 */
 	public function setState( $value = true ) {
-		$this->getRole() && $this->getRole()
-		                         ->add_cap( $this->getStateKey(), $value );
+		$this->getRole() && $this->getRole()->add_cap( $this->getStateKey(), $value );
+
+		return $this;
 	}
 
 	/**
 	 * Can user do what he doo.
-	 * Any rule has three types of state: true,false, string.
+	 * Any rule has three types of state: true, false, string.
 	 *
 	 * @param string $rule
 	 * @param bool|true $check_state
@@ -170,10 +179,12 @@ class Vc_Role_Access_Controller extends Vc_Access {
 		$caps = array();
 		if ( $role ) {
 			$role = apply_filters( 'vc_role_access_all_caps_role', $role );
-			foreach ( $role->capabilities as $key => $value ) {
-				if ( preg_match( '/^' . $this->getStateKey() . '\//', $key ) ) {
-					$rule = preg_replace( '/^' . $this->getStateKey() . '\//', '', $key );
-					$caps[ $rule ] = $value;
+			if ( isset( $role->capabilities ) && is_array( $role->capabilities ) ) {
+				foreach ( $role->capabilities as $key => $value ) {
+					if ( preg_match( '/^' . $this->getStateKey() . '\//', $key ) ) {
+						$rule = preg_replace( '/^' . $this->getStateKey() . '\//', '', $key );
+						$caps[ $rule ] = $value;
+					}
 				}
 			}
 		}

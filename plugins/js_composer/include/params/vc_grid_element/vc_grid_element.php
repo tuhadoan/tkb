@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
 
 
 class Vc_Grid_Element {
@@ -263,8 +266,7 @@ function vc_vc_grid_element_form_field( $settings, $value ) {
 function vc_load_vc_grid_element_param() {
 	vc_add_shortcode_param(
 		'vc_grid_element',
-		'vc_vc_grid_element_form_field',
-		vc_asset_url( 'js/params/vc_grid_element.js' )
+		'vc_vc_grid_element_form_field'
 	);
 }
 

@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
 
 global $vc_html_editor_already_is_use;
 $vc_html_editor_already_is_use = false;

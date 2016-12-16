@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
 
 /**
  * Get woocommerce data for product
@@ -25,7 +28,6 @@ function vc_gitem_template_attribute_woocommerce_product( $value, $data ) {
 		$label = apply_filters( 'vc_gitem_template_attribute_woocommerce_product_' . $data . '_label',
 		Vc_Vendor_Woocommerce::getProductFieldLabel( $data ) . ': ' );
 	}
-	$price_format = get_woocommerce_price_format();
 	switch ( $data ) {
 		case 'id':
 			$value = (int) $product->is_type( 'variation' ) ? $product->get_variation_id() : $product->id;
@@ -34,17 +36,13 @@ function vc_gitem_template_attribute_woocommerce_product( $value, $data ) {
 			$value = $product->get_sku();
 			break;
 		case 'price':
-			$value = sprintf( $price_format, wc_format_decimal( $product->get_price(), 2 ),
-			get_woocommerce_currency() );
+			$value = wc_price( $product->get_price() );
 			break;
 		case 'regular_price':
-			$value = sprintf( $price_format, wc_format_decimal( $product->get_regular_price(), 2 ),
-			get_woocommerce_currency() );
+			$value = wc_price( $product->get_regular_price() );
 			break;
 		case 'sale_price':
-			$value = sprintf( get_woocommerce_price_format(),
-				$product->get_sale_price() ? wc_format_decimal( $product->get_sale_price(), 2 ) : '',
-			get_woocommerce_currency() );
+			$value = wc_price( $product->get_sale_price() );
 			break;
 		case 'price_html':
 			$value = $product->get_price_html();

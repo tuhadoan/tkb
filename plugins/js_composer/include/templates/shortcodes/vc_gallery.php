@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
 
 /**
  * Shortcode attributes
@@ -16,11 +19,12 @@
  * @var $el_class
  * @var $interval
  * @var $css
+ * @var $css_animation
  * Shortcode class
  * @var $this WPBakeryShortCode_VC_gallery
  */
 $thumbnail = '';
-$title = $source = $type = $onclick = $custom_links = $custom_links_target = $img_size = $external_img_size = $images = $custom_srcs = $el_class = $interval = $css = '';
+$title = $source = $type = $onclick = $custom_links = $custom_links_target = $img_size = $external_img_size = $images = $custom_srcs = $el_class = $interval = $css = $css_animation = '';
 $large_img_src = '';
 
 $attributes = vc_map_get_attributes( $this->getShortcode(), $atts );
@@ -55,6 +59,7 @@ if ( 'nivo' === $type ) {
 } elseif ( 'image_grid' === $type ) {
 	wp_enqueue_script( 'vc_grid-js-imagesloaded' );
 	wp_enqueue_script( 'isotope' );
+	wp_enqueue_style( 'isotope-css' );
 
 	$el_start = '<li class="isotope-item">';
 	$el_end = '</li>';
@@ -82,9 +87,10 @@ if ( '' === $images ) {
 	$images = '-1,-2,-3';
 }
 
-$pretty_rel_random = ' rel="prettyPhoto[rel-' . get_the_ID() . '-' . rand() . ']"';
+$pretty_rel_random = ' data-rel="prettyPhoto[rel-' . get_the_ID() . '-' . rand() . ']"';
 
 if ( 'custom_link' === $onclick ) {
+	$custom_links = vc_value_from_safe( $custom_links );
 	$custom_links = explode( ',', $custom_links );
 }
 
@@ -94,7 +100,9 @@ switch ( $source ) {
 		break;
 
 	case 'external_link':
-		$images = explode( ',', $custom_srcs );
+		$images = vc_value_from_safe( $custom_srcs );
+		$images = explode( ',', $images );
+
 		break;
 }
 foreach ( $images as $i => $image ) {
@@ -144,7 +152,7 @@ foreach ( $images as $i => $image ) {
 }
 
 $class_to_filter = 'wpb_gallery wpb_content_element vc_clearfix';
-$class_to_filter .= vc_shortcode_custom_css_class( $css, ' ' ) . $this->getExtraClass( $el_class );
+$class_to_filter .= vc_shortcode_custom_css_class( $css, ' ' ) . $this->getExtraClass( $el_class ) . $this->getCSSAnimation( $css_animation );
 $css_class = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, $class_to_filter, $this->settings['base'], $atts );
 
 $output = '';

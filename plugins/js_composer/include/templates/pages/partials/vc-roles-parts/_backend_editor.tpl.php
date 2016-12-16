@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
 vc_include_template( 'pages/partials/vc-roles-parts/_part.tpl.php', array(
 	'part' => $part,
 	'role' => $role,

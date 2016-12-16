@@ -1,4 +1,8 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
+
 /** @var $box Vc_Templates_Panel_Editor */
 $with_tabs = count( $categories ) > 0;
 if ( count( $categories ) > 0 ) :

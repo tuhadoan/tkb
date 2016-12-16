@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
 /**
  * Shortcode attributes
  * @var $atts
@@ -139,8 +142,7 @@ $css_class = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, $class_to_filter
 $this->setLinkTarget( $grid_link_target );
 
 ?>
-	<div
-		class="<?php echo esc_attr( trim( $css_class ) ); ?>">
+	<div class="<?php echo esc_attr( trim( $css_class ) ); ?>">
 		<div class="wpb_wrapper">
 			<?php echo wpb_widget_title( array( 'title' => $title, 'extraclass' => 'wpb_teaser_grid_heading' ) ) ?>
 			<div class="teaser_grid_container">
@@ -160,8 +162,7 @@ $this->setLinkTarget( $grid_link_target );
 					?>
 					<div class="vc_clearfix"></div>
 				<?php endif ?>
-				<ul class="wpb_thumbnails wpb_thumbnails-fluid vc_clearfix"
-				    data-layout-mode="<?php echo $grid_layout_mode ?>">
+				<ul class="wpb_thumbnails wpb_thumbnails-fluid vc_clearfix" data-layout-mode="<?php echo $grid_layout_mode ?>">
 					<?php
 					/**
 					 * Enqueue js/css

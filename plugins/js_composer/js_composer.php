@@ -3,7 +3,7 @@
 Plugin Name: WPBakery Visual Composer
 Plugin URI: http://vc.wpbakery.com
 Description: Drag and drop page builder for WordPress. Take full control over your WordPress site, build any layout you can imagine – no programming knowledge required.
-Version: 4.8.0.1
+Version: 5.0.1
 Author: Michael M - WPBakery.com
 Author URI: http://wpbakery.com
 */
@@ -19,7 +19,7 @@ if ( ! defined( 'WPB_VC_VERSION' ) ) {
 	/**
 	 *
 	 */
-	define( 'WPB_VC_VERSION', '4.8.0.1' );
+	define( 'WPB_VC_VERSION', '5.0.1' );
 }
 
 /**
@@ -152,7 +152,7 @@ class Vc_Manager {
 		$this->setPaths( array(
 			'APP_ROOT' => $dir,
 			'WP_ROOT' => preg_replace( '/$\//', '', ABSPATH ),
-			'APP_DIR' => basename( $dir ),
+			'APP_DIR' => basename( plugin_basename( $dir ) ),
 			'CONFIG_DIR' => $dir . '/config',
 			'ASSETS_DIR' => $dir . '/assets',
 			'ASSETS_DIR_NAME' => 'assets',
@@ -180,10 +180,19 @@ class Vc_Manager {
 		require_once $this->path( 'AUTOLOAD_DIR', 'vc-shortcode-autoloader.php' );
 		require_once $this->path( 'SHORTCODES_DIR', 'shortcodes.php' );
 		// Add hooks
-		add_action( 'plugins_loaded', array( &$this, 'pluginsLoaded' ), 9 );
-		add_action( 'init', array( &$this, 'init' ), 9 );
-
-		register_activation_hook( __FILE__, array( $this, 'activationHook' ) );
+		add_action( 'plugins_loaded', array(
+			$this,
+			'pluginsLoaded',
+		), 9 );
+		add_action( 'init', array(
+			$this,
+			'init',
+		), 9 );
+		$this->setPluginName( $this->path( 'APP_DIR', 'js_composer.php' ) );
+		register_activation_hook( __FILE__, array(
+			$this,
+			'activationHook',
+		) );
 	}
 
 	/**
@@ -259,14 +268,15 @@ class Vc_Manager {
 		 * if frontend editor is enabled init editor.
 		 */
 		vc_enabled_frontend() && vc_frontend_editor()->init();
-		// Load Automapper
-		vc_automapper()->addAjaxActions();
 		do_action( 'vc_before_mapping' ); // VC ACTION
 		// Include default shortcodes.
 		$this->mapper()->init(); //execute all required
 		do_action( 'vc_after_mapping' ); // VC ACTION
 		// Load && Map shortcodes from Automapper.
 		vc_automapper()->map();
+		if ( vc_user_access()->wpAny( 'manage_options' )->part( 'settings' )->can( 'vc-updater-tab' )->get() ) {
+			vc_license()->setupReminder();
+		}
 		do_action( 'vc_after_init' );
 	}
 
@@ -313,9 +323,11 @@ class Vc_Manager {
 	/**
 	 * Enables to add hooks in activation process.
 	 * @since 4.5
+	 *
+	 * @param $networkWide
 	 */
-	public function activationHook() {
-		do_action( 'vc_activation_hook' );
+	public function activationHook( $networkWide = false ) {
+		do_action( 'vc_activation_hook', $networkWide );
 	}
 
 	/**
@@ -325,30 +337,25 @@ class Vc_Manager {
 	 * @since 4.4
 	 */
 	public function loadComponents() {
-		$manifest_file = apply_filters(
-			'vc_autoload_components_manifest_file',
-			vc_path_dir( 'AUTOLOAD_DIR', $this->components_manifest )
-		);
+		$manifest_file = apply_filters( 'vc_autoload_components_manifest_file', vc_path_dir( 'AUTOLOAD_DIR', $this->components_manifest ) );
 		if ( is_file( $manifest_file ) ) {
 			ob_start();
 			require_once $manifest_file;
 			$data = ob_get_clean();
 			if ( $data ) {
 				$components = (array) json_decode( $data );
-				$components = apply_filters(
-					'vc_autoload_components_list',
-					$components
-				);
+				$components = apply_filters( 'vc_autoload_components_list', $components );
+				$dir = vc_path_dir( 'AUTOLOAD_DIR' );
 				foreach ( $components as $component => $description ) {
-					$component_path = vc_path_dir( 'AUTOLOAD_DIR', $component );
-					if ( false === strpos( $component_path, '*' ) && is_file( $component_path ) ) {
-						require $component_path;
+					$component_path = $dir . '/' . $component;
+					if ( false === strpos( $component_path, '*' ) ) {
+						require_once $component_path;
 					} else {
 						$components_paths = glob( $component_path );
-						if ( is_array( $components_paths ) && ! empty( $components_paths ) ) {
+						if ( is_array( $components_paths ) ) {
 							foreach ( $components_paths as $path ) {
-								if ( false === strpos( $path, '*' ) && is_file( $path ) ) {
-									require $path;
+								if ( false === strpos( $path, '*' ) ) {
+									require_once $path;
 								}
 							}
 						}
@@ -367,14 +374,8 @@ class Vc_Manager {
 	 * @return void
 	 */
 	protected function asAdmin() {
-		// License management and activation/deactivation methods.
-		vc_license()->addAjaxHooks();
-		// Settings page. Adds menu page in admin panel.
-		// vc_settings()->addMenuPageHooks();
-		// Load backend editor hooks
-		// @todo : maybe do this only if be editor is enabled? fix_roles
+		vc_license()->init();
 		vc_backend_editor()->addHooksSettings();
-		// If auto updater is enabled initialize updating notifications service.
 	}
 
 	/**
@@ -399,47 +400,27 @@ class Vc_Manager {
 		 * 6. page_editable - by vc_action
 		 */
 		if ( is_admin() ) {
-
 			if ( 'vc_inline' === vc_action() ) {
-				vc_user_access()
-					->wpAny( array(
-						'edit_post',
-						(int) vc_request_param( 'post_id' ),
-					) )
-					->validateDie()
-					->part( 'frontend_editor' )
-					->can()
-					->validateDie();
+				vc_user_access()->wpAny( array(
+					'edit_post',
+					(int) vc_request_param( 'post_id' ),
+				) )->validateDie()->part( 'frontend_editor' )->can()->validateDie();
 				$this->mode = 'admin_frontend_editor';
-			} elseif ( ( vc_user_access()
-					->wpAny( 'edit_posts', 'edit_pages' )
-					->get() ) && (
-				           'vc_upgrade' === vc_action() ||
-				           ( 'update-selected' === vc_get_param( 'action' ) && $this->pluginName() === vc_get_param( 'plugins' ) ) )
+			} elseif ( ( vc_user_access()->wpAny( 'edit_posts', 'edit_pages' )
+					->get() ) && ( 'vc_upgrade' === vc_action() || ( 'update-selected' === vc_get_param( 'action' ) && $this->pluginName() === vc_get_param( 'plugins' ) ) )
 			) {
 				$this->mode = 'admin_updater';
-			} elseif ( vc_user_access()
-				           ->wpAny( 'manage_options' )
-				           ->get() && isset( $_GET['page'] ) && $_GET['page'] === $this->settings()
-			                                                                           ->page()
-			) {
+			} elseif ( vc_user_access()->wpAny( 'manage_options' )->get() && isset( $_GET['page'] ) && array_key_exists( $_GET['page'], vc_settings()->getTabs() ) ) {
 				$this->mode = 'admin_settings_page';
 			} else {
 				$this->mode = 'admin_page';
 			}
 		} else {
 			if ( isset( $_GET['vc_editable'] ) && 'true' === $_GET['vc_editable'] ) {
-				vc_user_access()
-					->checkAdminNonce()
-					->validateDie()
-					->wpAny( array(
-						'edit_post',
-						(int) vc_request_param( 'vc_post_id' ),
-					) )
-					->validateDie()
-					->part( 'frontend_editor' )
-					->can()
-					->validateDie();
+				vc_user_access()->checkAdminNonce()->validateDie()->wpAny( array(
+					'edit_post',
+					(int) vc_request_param( 'vc_post_id' ),
+				) )->validateDie()->part( 'frontend_editor' )->can()->validateDie();
 				$this->mode = 'page_editable';
 			} else {
 				$this->mode = 'page';
@@ -458,7 +439,10 @@ class Vc_Manager {
 	protected function setVersion() {
 		$version = get_option( 'vc_version' );
 		if ( ! is_string( $version ) || version_compare( $version, WPB_VC_VERSION ) !== 0 ) {
-			add_action( 'vc_after_init', array( vc_settings(), 'rebuild' ) );
+			add_action( 'vc_after_init', array(
+				vc_settings(),
+				'rebuild',
+			) );
 			update_option( 'vc_version', WPB_VC_VERSION );
 		}
 	}
@@ -621,9 +605,7 @@ class Vc_Manager {
 	public function isNetworkPlugin() {
 		if ( is_null( $this->is_network_plugin ) ) {
 			// Check is VC as network plugin
-			if ( is_multisite() && ( is_plugin_active_for_network( 'js_composer/js_composer.php' )
-			                         || is_network_only_plugin( 'js_composer/js_composer.php' ) )
-			) {
+			if ( is_multisite() && ( is_plugin_active_for_network( $this->pluginName() ) || is_network_only_plugin( $this->pluginName() ) ) ) {
 				$this->setAsNetworkPlugin( true );
 			}
 		}
@@ -639,9 +621,7 @@ class Vc_Manager {
 	 * @param bool $value
 	 */
 	public function disableUpdater( $value = true ) {
-		if ( 'administrator' !== vc_user_access()->part( 'settings' )->getRoleName() ) {
-			$this->disable_updater = $value;
-		}
+		$this->disable_updater = $value;
 	}
 
 	/**
@@ -742,7 +722,11 @@ class Vc_Manager {
 			$vc = new Vc_Base();
 			// DI Set template new modal editor.
 			require_once $this->path( 'EDITORS_DIR', 'popups/class-vc-templates-panel-editor.php' );
+			require_once $this->path( 'CORE_DIR', 'shared-templates/class-vc-shared-templates.php' );
 			$vc->setTemplatesPanelEditor( new Vc_Templates_Panel_Editor() );
+			// Create shared templates
+			$vc->shared_templates = new Vc_Shared_Templates();
+
 			// DI Set edit form
 			require_once $this->path( 'EDITORS_DIR', 'popups/class-vc-shortcode-edit-form.php' );
 			$vc->setEditForm( new Vc_Shortcode_Edit_Form() );
@@ -853,12 +837,13 @@ class Vc_Manager {
 	 * @return Vc_Updater
 	 */
 	public function updater() {
+
 		if ( ! isset( $this->factory['updater'] ) ) {
 			do_action( 'vc_before_init_updater' );
 			require_once $this->path( 'UPDATERS_DIR', 'class-vc-updater.php' );
 			$updater = new Vc_Updater();
 			require_once vc_path_dir( 'UPDATERS_DIR', 'class-vc-updating-manager.php' );
-			$updater->setUpdateManager( new Vc_Updating_Manager( WPB_VC_VERSION, $updater->versionUrl(), vc_plugin_name() ) );
+			$updater->setUpdateManager( new Vc_Updating_Manager( WPB_VC_VERSION, $updater->versionUrl(), $this->pluginName() ) );
 			$this->factory['updater'] = $updater;
 			do_action( 'vc_after_init_updater' );
 		}
@@ -874,6 +859,14 @@ class Vc_Manager {
 	 */
 	public function pluginName() {
 		return $this->plugin_name;
+	}
+
+	/**
+	 * @since 4.8.1
+	 *
+	 */
+	public function setPluginName( $name ) {
+		$this->plugin_name = $name;
 	}
 
 	/**

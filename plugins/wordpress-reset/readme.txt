@@ -1,10 +1,10 @@
 === WordPress Reset ===
-Contributors: sivel
+Contributors: sivel, aristath
 Donate Link: http://sivel.net/donate
 Tags: wordpress-reset, wordpress, reset, admin
 Requires at least: 2.8
-Tested up to: 3.8
-Stable tag: 1.3.3
+Tested up to: 4.5
+Stable tag: 1.4
 
 Resets the WordPress database back to it's defaults. Deletes all customizations and content. Does not modify files only resets the database.
 
@@ -67,6 +67,12 @@ Fix sql query, so that _ isn't being used as a single character match
 Fixes a deprecated notice in WordPress 3.3, removed the $auto_reactivate variable, and look for REACTIVATE_WP_RESET to be defined in wp-config.php, as well as the ability to activate additional plugins using a global $reactivate_wp_reset_additional array defined in wp-config.php
 
 == Changelog ==
+
+= 1.4 =
+January 19, 2016
+
+* Fix compatibility with PHP 7.0
+* Internationalization
 
 = 1.3.3 (2013-12-18): =
 * Fix an issue where a user does not have a user_level

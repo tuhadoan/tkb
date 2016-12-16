@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
+?>
 <div class="vc_faq-tab changelog">
 	<h3><?php _e( 'New to Visual Composer or Looking for More Information?', 'js_composer' ); ?></h3>
 
@@ -57,7 +62,7 @@
 		<div class="vc_col-xs-4">
 			<h4><a target="_blank" href="http://go.wpbakery.com/vc-how-tos">Visual Composer "How To's"</a></h4>
 
-			<p>In this section you will find a quick tips in form of video tutorials on how to operate with Visual Composer.</p>
+			<p>In this section, you will find quick tips in form of video tutorials on how to operate with Visual Composer.</p>
 		</div>
 
 		<div class="vc_col-xs-4">

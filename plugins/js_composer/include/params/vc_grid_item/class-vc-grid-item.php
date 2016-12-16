@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
 
 /**
  * Class Vc_Grid_Item to build grid item.
@@ -222,6 +225,7 @@ class Vc_Grid_Item {
 			$shortcodes_custom_css = visual_composer()->parseShortcodesCustomCss( $predefined_template['template'] );
 		}
 		if ( ! empty( $shortcodes_custom_css ) ) {
+			$shortcodes_custom_css = strip_tags( $shortcodes_custom_css );
 			$output .= '<style type="text/css" data-type="vc_shortcodes-custom-css">';
 			$output .= $shortcodes_custom_css;
 			$output .= '</style>';
@@ -237,6 +241,7 @@ class Vc_Grid_Item {
 	 */
 	public function parseTemplate( $template ) {
 		$this->mapShortcodes();
+		WPBMap::addAllMappedShortcodes();
 		$attr = ' width="' . $this->gridAttribute( 'element_width', 12 ) . '"'
 		        . ' is_end="' . ( 'true' === $this->isEnd() ? 'true' : '' ) . '"';
 		$template = preg_replace( '/(\[(\[?)vc_gitem\b)/', '$1' . $attr, $template );
@@ -321,6 +326,7 @@ class Vc_Grid_Item {
 	 * @return mixed|void
 	 */
 	public function attribute( $name, $post, $data = '' ) {
+		$data = html_entity_decode( $data );
 		return apply_filters( 'vc_gitem_template_attribute_' . trim( $name ),
 			( isset( $post->$name ) ? $post->$name : '' ), array(
 				'post' => $post,

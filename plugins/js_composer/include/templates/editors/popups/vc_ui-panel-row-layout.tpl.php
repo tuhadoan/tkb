@@ -1,3 +1,8 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
+?>
 <div class="vc_ui-font-open-sans vc_ui-panel-window vc_media-xs vc_ui-panel" data-vc-panel=".vc_ui-panel-header-header" data-vc-ui-element="panel-row-layout" id="vc_ui-panel-row-layout">
 	<div class="vc_ui-panel-window-inner">
 		<?php vc_include_template('editors/popups/vc_ui-header.tpl.php', array(
@@ -11,11 +16,11 @@
 					<div class="vc_col-sm-12 vc_column vc_layout-panel-switcher">
 						<div class="wpb_element_label"><?php _e( 'Row layout', 'js_composer' ) ?></div>
 						<?php foreach ( $vc_row_layouts as $layout ) :  ?>
-							<a data-vc-ui-element="button-layout" class="vc_layout-btn <?php echo $layout['icon_class']
-							                                   . '" data-cells="' . $layout['cells']
+							<a data-vc-ui-element="button-layout" class="vc_layout-btn" <?php echo 'data-cells="' . $layout['cells']
 							                                   . '" data-cells-mask="' . $layout['mask']
-							                                   . '" title="' . $layout['title'] ?>"><span
-									class="icon"></span></a>
+							                                   . '" title="' . $layout['title'] ?>">
+								<i class="vc-composer-icon vc-c-icon-<?php echo $layout['icon_class'] ?>"></i>
+							</a>
 						<?php endforeach ?>
 						<span
 							class="vc_description vc_clearfix"><?php _e( 'Select row layout from predefined options.', 'js_composer' ); ?></span>

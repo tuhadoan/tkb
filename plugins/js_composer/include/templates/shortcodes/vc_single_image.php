@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
 
 /**
  * Shortcode attributes
@@ -145,7 +148,7 @@ switch ( $onclick ) {
 		wp_enqueue_style( 'prettyphoto' );
 
 		$a_attrs['class'] = 'prettyphoto';
-		$a_attrs['rel'] = 'prettyPhoto[rel-' . get_the_ID() . '-' . rand() . ']';
+		$a_attrs['data-rel'] = 'prettyPhoto[rel-' . get_the_ID() . '-' . rand() . ']';
 
 		// backward compatibility
 		if ( vc_has_class( 'prettyphoto', $el_class ) ) {

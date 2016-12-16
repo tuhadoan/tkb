@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
 
 require_once vc_path_dir( 'EDITORS_DIR', 'class-vc-edit-form-fields.php' );
 
@@ -220,4 +223,14 @@ function vc_param_group_parse_atts( $atts_string ) {
 	$array = json_decode( urldecode( $atts_string ), true );
 
 	return $array;
+}
+
+add_filter( 'vc_map_get_param_defaults', 'vc_param_group_param_defaults', 10, 2 );
+function vc_param_group_param_defaults( $value, $param ) {
+	if ( 'param_group' === $param['type'] && isset( $param['params'] ) && empty( $value ) ) {
+		$defaults = vc_map_get_params_defaults( $param['params'] );
+		$value = urlencode( json_encode( array( $defaults ) ) );
+	}
+
+	return $value;
 }

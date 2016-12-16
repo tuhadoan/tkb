@@ -1,10 +1,19 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
+
 require_once vc_path_dir( 'EDITORS_DIR', 'navbar/class-vc-navbar.php' );
 /** @var $post WP_Post */
 $nav_bar = new Vc_Navbar( $post );
 $nav_bar->render();
 /** @var $editor Vc_Backend_Editor */
 ?>
+	<style>
+		#wpb_visual_composer {
+			display: none;
+		}
+	</style>
 	<div class="metabox-composer-content">
 		<div id="visual_composer_content" class="wpb_main_sortable main_wrapper"></div>
 		<?php require vc_path_dir( 'TEMPLATES_DIR', 'editors/partials/vc_welcome_block.tpl.php' ); ?>

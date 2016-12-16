@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
 
 /**
  * WPBakery Visual Composer shortcodes
@@ -13,7 +16,7 @@ class WPBakeryShortCode_VC_Accordion extends WPBakeryShortCode {
 		parent::__construct( $settings );
 	}
 
-	public function contentAdmin( $atts, $content ) {
+	public function contentAdmin( $atts, $content = null ) {
 		$width = $custom_markup = '';
 		$shortcode_attributes = array( 'width' => '1/1' );
 		foreach ( $this->settings['params'] as $param ) {
@@ -29,7 +32,7 @@ class WPBakeryShortCode_VC_Accordion extends WPBakeryShortCode {
 
 		$inner = '';
 		foreach ( $this->settings['params'] as $param ) {
-			$param_value = isset( $$param['param_name'] ) ? $$param['param_name'] : '';
+			$param_value = isset( ${$param['param_name']} ) ? ${$param['param_name']} : '';
 			if ( is_array( $param_value ) ) {
 				// Get first element from the array
 				reset( $param_value );

@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
 
 add_filter( 'attachment_fields_to_edit', 'vc_attachment_filter_field', 10, 2 );
 add_filter( 'media_meta', 'vc_attachment_filter_media_meta', 10, 2 );
@@ -86,7 +89,6 @@ function vc_attachment_filter_field( $form_fields, $post ) {
  * Optional _POST params:
  * - array filters: mapped array of ids and filters to apply
  *
- * @return string json
  */
 function vc_media_editor_add_image() {
 	vc_user_access()

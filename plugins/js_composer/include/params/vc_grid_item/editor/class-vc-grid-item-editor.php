@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
 
 /**
  * Manger for new post type for single grid item design with constructor
@@ -21,20 +24,29 @@ class Vc_Grid_Item_Editor extends Vc_Backend_Editor {
 	public function addHooksSettings() {
 		add_action( 'add_meta_boxes', array(
 			$this,
-			'addScripts',
+			'render',
 		) );
 		add_action( 'vc_templates_render_backend_template', array(
 			&$this,
-			'loadPredefinedTemplate',
+			'loadTemplate',
 		), 10, 2 );
-		add_action( 'vc_ui-template-preview', array(
-			&$this,
-			'replaceTemplatesPanelEditorJsAction',
-		) );
+		/*		add_action( 'vc_ui-template-preview', array(
+					&$this,
+					'replaceTemplatesPanelEditorJsAction',
+				) );*/
 	}
 
 	public function addScripts() {
-		if ( $this->isValidPostType() ) {
+		$this->render( get_post_type() );
+	}
+
+	public function render( $post_type ) {
+		if ( $this->isValidPostType( $post_type ) ) {
+			$this->registerBackendJavascript();
+			$this->registerBackendCss();
+			// B.C:
+			visual_composer()->registerAdminCss();
+			visual_composer()->registerAdminJavascript();
 			add_action( 'admin_print_scripts-post.php', array(
 				&$this,
 				'printScriptsMessages',
@@ -44,6 +56,10 @@ class Vc_Grid_Item_Editor extends Vc_Backend_Editor {
 				'printScriptsMessages',
 			), 300 );
 		}
+	}
+
+	public function editorEnabled() {
+		return vc_user_access()->part( 'grid_builder' )->can()->get();
 	}
 
 	public function replaceTemplatesPanelEditorJsAction() {
@@ -56,23 +72,24 @@ class Vc_Grid_Item_Editor extends Vc_Backend_Editor {
 	 * @return void
 	 */
 	public static function createPostType() {
-		register_post_type( self::$post_type,
-			array(
-				'labels' => self::getPostTypesLabels(),
-				'public' => false,
-				'has_archive' => false,
-				'show_in_nav_menus' => false,
-				'exclude_from_search' => true,
-				'publicly_queryable' => false,
-				'show_ui' => true,
-				'show_in_menu' => false,
-				'query_var' => true,
-				'capability_type' => 'post',
-				'hierarchical' => false,
-				'menu_position' => null,
-				'supports' => array( 'title', 'editor' ),
-			)
-		);
+		register_post_type( self::$post_type, array(
+			'labels' => self::getPostTypesLabels(),
+			'public' => false,
+			'has_archive' => false,
+			'show_in_nav_menus' => false,
+			'exclude_from_search' => true,
+			'publicly_queryable' => false,
+			'show_ui' => true,
+			'show_in_menu' => false,
+			'query_var' => true,
+			'capability_type' => 'post',
+			'hierarchical' => false,
+			'menu_position' => null,
+			'supports' => array(
+				'title',
+				'editor',
+			),
+		) );
 	}
 
 	public static function getPostTypesLabels() {
@@ -91,10 +108,13 @@ class Vc_Grid_Item_Editor extends Vc_Backend_Editor {
 	/**
 	 * Rewrites validation for correct post_type of th post.
 	 *
+	 * @param string $type
 	 * @return bool
 	 */
-	public function isValidPostType() {
-		return get_post_type() === $this->postType();
+	public function isValidPostType( $type = '' ) {
+		$type = ! empty( $type ) ? $type : get_post_type();
+
+		return $this->editorEnabled() && $this->postType() === $type;
 	}
 
 	/**
@@ -113,12 +133,10 @@ class Vc_Grid_Item_Editor extends Vc_Backend_Editor {
 	 * @access public
 	 */
 	public function addMetaBox() {
-		add_meta_box( 'wpb_visual_composer',
-			__( 'Grid Builder', 'js_composer' ),
-			array(
-				&$this,
-				'renderEditor',
-			), $this->postType(), 'normal', 'high' );
+		add_meta_box( 'wpb_visual_composer', __( 'Grid Builder', 'js_composer' ), array(
+			&$this,
+			'renderEditor',
+		), $this->postType(), 'normal', 'high' );
 	}
 
 	/**
@@ -127,7 +145,10 @@ class Vc_Grid_Item_Editor extends Vc_Backend_Editor {
 	 * @return array
 	 */
 	public function shortcodesControls() {
-		return array( 'delete', 'edit' );
+		return array(
+			'delete',
+			'edit',
+		);
 	}
 
 	/**
@@ -138,6 +159,10 @@ class Vc_Grid_Item_Editor extends Vc_Backend_Editor {
 	 * @return mixed|void
 	 */
 	public function renderEditor( $post = null ) {
+		if ( ! vc_user_access()->part( 'grid_builder' )->can()->get() ) {
+			return;
+		}
+
 		add_filter( 'vc_wpbakery_shortcode_get_controls_list', array(
 			$this,
 			'shortcodesControls',
@@ -148,7 +173,10 @@ class Vc_Grid_Item_Editor extends Vc_Backend_Editor {
 			'editor' => $this,
 			'post' => $this->post,
 		) );
-		add_action( 'admin_footer', array( &$this, 'renderEditorFooter' ) );
+		add_action( 'admin_footer', array(
+			&$this,
+			'renderEditorFooter',
+		) );
 		do_action( 'vc_backend_editor_render' );
 		do_action( 'vc_vc_grid_item_editor_render' );
 		add_action( 'vc_user_access_check-shortcode_edit', array(
@@ -159,20 +187,16 @@ class Vc_Grid_Item_Editor extends Vc_Backend_Editor {
 			&$this,
 			'accessCheckShortcodeAll',
 		), 10, 2 );
+
+		return;
 	}
 
 	public function accessCheckShortcodeEdit( $null, $shortcode ) {
-		return vc_user_access()
-			->part( 'grid_builder' )
-			->can()
-			->get();
+		return vc_user_access()->part( 'grid_builder' )->can()->get();
 	}
 
 	public function accessCheckShortcodeAll( $null, $shortcode ) {
-		return vc_user_access()
-			->part( 'grid_builder' )
-			->can()
-			->get();
+		return vc_user_access()->part( 'grid_builder' )->can()->get();
 	}
 
 	/**
@@ -188,37 +212,18 @@ class Vc_Grid_Item_Editor extends Vc_Backend_Editor {
 		do_action( 'vc_backend_editor_footer_render' );
 	}
 
-	/**
-	 *
-	 */
-	/*
-	public function printScriptsMessages() {
-		parent::printScriptsMessages();
-
-		if ( $this->isValidPostType() ) {
-			$this->enqueueEditorScripts();
-		}
-	}
-	*/
-	/**
-	 * Enqueue required javascript libraries and css files.
-	 *
-	 * @since  4.8
-	 * @access public
-	 */
-	public function enqueueEditorScripts() {
-		parent::enqueueEditorScripts();
-		wp_register_script( 'vc_grid_item_editor',
-			vc_asset_url( 'js/params/vc_grid_item/editor.js' ),
-			array( 'wpb_js_composer_js_custom_views' ),
-		WPB_VC_VERSION, true );
-
+	public function registerBackendJavascript() {
+		parent::registerBackendJavascript();
+		wp_register_script( 'vc_grid_item_editor', vc_asset_url( 'js/dist/grid-builder.min.js' ), array( 'vc-backend-min-js' ), WPB_VC_VERSION, true );
 		wp_localize_script( 'vc_grid_item_editor', 'i18nLocaleGItem', array(
 			'preview' => __( 'Preview', 'js_composer' ),
 			'builder' => __( 'Builder', 'js_composer' ),
-			'add_template_message' => __( 'If you add this template, all your current changes will be removed. Are you sure you want to add template?',
-			'js_composer' ),
+			'add_template_message' => __( 'If you add this template, all your current changes will be removed. Are you sure you want to add template?', 'js_composer' ),
 		) );
+	}
+
+	public function enqueueJs() {
+		parent::enqueueJs();
 		wp_enqueue_script( 'vc_grid_item_editor' );
 	}
 
@@ -232,11 +237,18 @@ class Vc_Grid_Item_Editor extends Vc_Backend_Editor {
 	}
 
 	public function loadPredefinedTemplate( $template_id, $template_type ) {
-		if ( 'grid_templates' === $template_type ) {
-			ob_start();
-			$this->templatesEditor()->load( $template_id );
+		ob_start();
+		$this->templatesEditor()->load( $template_id );
 
-			return ob_get_clean();
+		return ob_get_clean();
+
+	}
+
+	public function loadTemplate( $template_id, $template_type ) {
+		if ( 'grid_templates' === $template_type ) {
+			return $this->loadPredefinedTemplate( $template_id, $template_type );
+		} else if ( 'grid_templates_custom' === $template_type ) {
+			return $this->templatesEditor()->loadCustomTemplate( $template_id );
 		}
 
 		return $template_id;
@@ -247,18 +259,11 @@ class Vc_Grid_Item_Editor extends Vc_Backend_Editor {
 	}
 
 	public function renderTemplatePreview() {
-		vc_user_access()
-			->checkAdminNonce()
-			->validateDie()
-			->wpAny( 'edit_posts', 'edit_pages' )
-			->validateDie()
-			->part( 'grid_builder' )
-			->can()
-			->validateDie();
+		vc_user_access()->checkAdminNonce()->validateDie()->wpAny( 'edit_posts', 'edit_pages' )->validateDie()->part( 'grid_builder' )->can()->validateDie();
 
 		add_action( 'vc_templates_render_backend_template_preview', array(
 			&$this,
-			'loadPredefinedTemplate',
+			'loadTemplate',
 		), 10, 2 );
 		add_filter( 'vc_render_template_preview_include_template', array(
 			&$this,

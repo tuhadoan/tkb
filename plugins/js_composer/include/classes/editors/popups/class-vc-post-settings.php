@@ -1,18 +1,14 @@
 <?php
-
-/**
- * WPBakery Visual Composer main class.
- *
- * @package WPBakeryVisualComposer
- * @since   4.3
- */
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
 
 /**
  * Post settings like custom css for page are displayed here.
  *
  * @since   4.3
  */
-class Vc_Post_Settings implements Vc_Render {
+class Vc_Post_Settings {
 	/**
 	 * @var Vc_Editor_Interface
 	 */
@@ -32,14 +28,6 @@ class Vc_Post_Settings implements Vc_Render {
 		return $this->editor;
 	}
 
-	/**
-	 * @deprecated 4.7
-	 */
-	public function render() {
-		vc_include_template( 'editors/popups/panel_post_settings.tpl.php', array(
-			'box' => $this,
-		) );
-	}
 	/**
 	 *
 	 */

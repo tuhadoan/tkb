@@ -32,13 +32,22 @@
     padding-right: @vcui-panel-content-padding-horizontal;
   }
   .vc_ui-control-button {
-    padding-left: .3em;
-    padding-right: .3em;
-    .spinner {
+    padding-left: .2em;
+    padding-right: .2em;
+    .vc-composer-icon {
+      font-size: 20px;
+
+      &.vc-c-icon-add {
+        font-size: 24px;
+      }
+    }
+    .vc_ui-wp-spinner {
       margin: 0;
       height: 16px;
       width: 16px;
-      background-size: cover;
+      &::before {
+        &:extend(.vc_ui-wp-spinner::before);
+      }
     }
   }
 
@@ -101,6 +110,9 @@
     .vc_ui-preview-icon {
       &:extend(.vc_ui-icon-pixel-control-triangle-asc-dark all);
     }
+    .vc-c-icon-arrow_drop_down {
+      &:extend(.vc-c-icon-arrow_drop_up all);
+    }
   }
 }
 
@@ -118,6 +130,9 @@
         display: none;
       }
     }
+  }
+  h3 {
+    margin-bottom: 0.5em;
   }
 }
 
@@ -138,13 +153,21 @@
   }
 }
 
-// todo: ask Pavel about this nasty important
-[data-vc-template-search="true"] .vc_edit-form-tab {
-  display: flex !important;
-  &.vc-search-result-empty {
-    display: none !important;
+// todo: remove this nasty important @todo 4.10
+[data-vc-template-search="true"] {
+  .vc_edit-form-tab {
+    display: flex !important;
+    &.vc-search-result-empty {
+      display: none !important;
+    }
+    [data-vc-hide-on-search="true"] {
+      display: none;
+    }
+    .vc_ui-template-list.vc_ui-list-bar {
+      margin-bottom: 0;
+    }
   }
-  [data-vc-hide-on-search="true"] {
-    display: none;
+  .vc_ui-panel-content{
+    padding-bottom: 0;
   }
 }

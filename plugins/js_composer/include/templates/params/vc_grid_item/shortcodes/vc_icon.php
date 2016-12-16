@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
 /** @var $this WPBakeryShortCode_VC_Icon */
 $icon = $color = $size = $align = $el_class = $custom_color = $link = $background_style = $background_color =
 $type = $icon_fontawesome = $icon_openiconic = $icon_typicons = $icon_entypoicons = $icon_linecons =
